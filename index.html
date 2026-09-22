@@ -18,14 +18,14 @@
 
 <style>
 :root{
-  --bg:#08111f;
-  --surface:#101d31;
-  --surface2:#142640;
-  --raised:#1a3151;
-  --line:#284568;
+  --bg:#f2f3f5;
+  --surface:#ffffff;
+  --surface2:#e9eaed;
+  --raised:#ffffff;
+  --line:#d7d9dd;
 
-  --text:#f4f7fb;
-  --muted:#8fa3bf;
+  --text:#1c1e21;
+  --muted:#6b6f76;
 
   --gold:#f5bd55;
   --gold2:#ffd77c;
@@ -59,7 +59,7 @@
 html,
 body{
   background:
-    radial-gradient(circle at 50% -10%,#17345c 0%,transparent 42%),
+    radial-gradient(circle at 50% -10%,#e4e6ea 0%,transparent 42%),
     var(--bg);
   color:var(--text);
   min-height:100%;
@@ -732,6 +732,501 @@ nav button.on{
 }
 
 /* ---------------- TOAST ---------------- */
+
+#toast{
+  position:fixed;
+
+  left:50%;
+
+  bottom:
+    calc(92px + env(safe-area-inset-bottom));
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  background:#172a45;
+
+  border:1px solid var(--line);
+
+  padding:11px 18px;
+
+  border-radius:14px;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:.25s;
+
+  z-index:60;
+
+  max-width:88vw;
+
+  text-align:center;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+}
+
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%);
+}
+
+/* ---------------- ODDS ---------------- */
+
+.odds{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.odds div{
+  background:#091524;
+  border-radius:11px;
+  padding:8px;
+  text-align:center;
+  font-size:13px;
+}
+
+.odds b{
+  display:block;
+  color:var(--gold2);
+}
+
+/* ---------------- SMALL ---------------- */
+
+.empty{
+  text-align:center;
+  padding:15px 5px;
+  color:var(--muted);
+}
+
+.success-text{
+  color:var(--ok);
+}
+
+.warning-text{
+  color:var(--warning);
+}
+
+.error-text{
+  color:var(--bad);
+}
+
+@media(max-width:360px){
+  body{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .hero .amt{
+    font-size:40px;
+  }
+
+  .btn.sm{
+    padding:7px 9px;
+    font-size:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= SVG ICON SYSTEM ================= -->
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+
+<symbol id="i-home" viewBox="0 0 24 24">
+  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+  <polyline points="9 22 9 12 15 12 15 22"/>
+</symbol>
+
+<symbol id="i-tasks" viewBox="0 0 24 24">
+  <path d="m3 17 2 2 4-4"/>
+  <path d="m3 7 2 2 4-4"/>
+  <path d="M13 6h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 18h8"/>
+</symbol>
+
+<symbol id="i-spin" viewBox="0 0 24 24">
+  <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+  <path d="M20 3v4"/>
+  <path d="M22 5h-4"/>
+  <path d="M4 17v2"/>
+  <path d="M5 18H3"/>
+</symbol>
+
+<symbol id="i-users" viewBox="0 0 24 24">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</symbol>
+
+<symbol id="i-wallet" viewBox="0 0 24 24">
+  <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
+  <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+</symbol>
+
+<symbol id="i-shield" viewBox="0 0 24 24">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+</symbol>
+
+<symbol id="i-flame" viewBox="0 0 24 24">
+  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+</symbol>
+
+<symbol id="i-play" viewBox="0 0 24 24">
+  <polygon points="6 3 20 12 6 21 6 3"/>
+</symbol>
+
+<symbol id="i-check" viewBox="0 0 24 24">
+  <path d="M20 6 9 17l-5-5"/>
+</symbol>
+
+<symbol id="i-lock" viewBox="0 0 24 24">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</symbol>
+
+<symbol id="i-copy" viewBox="0 0 24 24">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1 1.1-2 2-2h10c1.1 0 2 .9 2 2"/>
+</symbol>
+
+<symbol id="i-link" viewBox="0 0 24 24">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</symbol>
+
+<symbol id="i-gift" viewBox="0 0 24 24">
+  <rect x="3" y="8" width="18" height="4" rx="1"/>
+  <path d="M12 8v13"/>
+  <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+  <path d="M7.5 8a2.5 2.5 0 1 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 1 1 4.5-5"/>
+</symbol>
+
+<symbol id="i-trophy" viewBox="0 0 24 24">
+  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+  <path d="M4 22h16"/>
+  <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+  <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+  <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+</symbol>
+
+<symbol id="i-send" viewBox="0 0 24 24">
+  <path d="M7 7h10v10"/>
+  <path d="M7 17 17 7"/>
+</symbol>
+
+<symbol id="i-refresh" viewBox="0 0 24 24">
+  <path d="M20 11a8.1 8.1 0 0 0-15.5-2"/>
+  <path d="M4 5v4h4"/>
+  <path d="M4 13a8.1 8.1 0 0 0 15.5 2"/>
+  <path d="M20 19v-4h-4"/>
+</symbol>
+
+</svg>
+
+<!-- ================= APP ================= -->
+
+<div id="app">
+  <div class="loading-wrap">
+    <div class="spinner"></div>
+    <div class="loading-title">Loading Adewa</div>
+    <div class="loading-text">Connecting securely...</div>
+  </div>
+</div>
+
+<nav id="nav" style="display:none">
+  <div id="navin"></div>
+</nav>
+
+<div id="gate">
+  <div class="in"></div>
+</div>
+
+<div id="fatal">
+  <div class="in"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+/* =========================================================
+   TELEGRAM
+========================================================= */
+
+const tg = window.Telegram && window.Telegram.WebApp;
+
+if(tg){
+  tg.ready();
+  tg.expand();
+
+  try{
+    tg.setHeaderColor('#f2f3f5');
+    tg.setBackgroundColor('#f2f3f5');
+  }catch(e){}
+}
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const API = 'https://fulus-backend.vercel.app';
+
+/*
+  Ad waterfall config.
+  Replace with your real AdsGram block id.
+*/
+const ADSGRAM_BLOCK_ID = 'YOUR_ADSGRAM_BLOCK_ID';
+
+const adsgram =
+  (
+    window.Adsgram &&
+    ADSGRAM_BLOCK_ID !== 'YOUR_ADSGRAM_BLOCK_ID'
+  )
+    ? window.Adsgram.init({
+        blockId: ADSGRAM_BLOCK_ID
+      })
+    : null;
+
+const $ = (s) => document.querySelector(s);
+
+const esc = (s) =>
+  String(s == null ? '' : s).replace(
+    /[&<>"']/g,
+    (c) => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c])
+  );
+
+const ic = (n, cls='') =>
+  `<svg class="ic ${cls}"><use href="#i-${n}"></use></svg>`;
+
+const sleep = (ms) =>
+  new Promise((r) => setTimeout(r,ms));
+
+const fmt = (n) =>
+  Number(n || 0).toLocaleString('en-US');
+
+const LEVELS = [
+  'Bronze',
+  'Silver',
+  'Gold'
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+
+/*
+  Language toggle (Amharic default / English).
+  Only the labels below are translated so far — wrap any
+  more strings you want localized as t('your_key') and add
+  the pair to I18N.
+*/
+const I18N = {
+
+  am:{
+    tab_home:'ቤት',
+    tab_earn:'ግኝ',
+    tab_spin:'ስፒን',
+    tab_invite:'ጋብዝ',
+    tab_wallet:'ዋሌት',
+    tab_admin:'አድሚን',
+
+    balance:'ቀሪ ሂሳብ',
+    streak:'ቀን streak',
+    best:'ምርጥ',
+    check_in:'Check in',
+    start_streak:'streak ጀምር',
+    checked_in_today:'ዛሬ ገብተሃል',
+    ads_today:'ዛሬ ማስታወቂያ',
+    free_spins:'ነጻ ስፒኖች',
+    watch_an_ad:'ማስታወቂያ እይ',
+    watch_ad:'ማስታወቂያ ተመልከት',
+    limit_reached:'ገደብ ደርሷል',
+    tasks:'ስራዎች',
+    invite_friends:'ጓደኞችን ጋብዝ',
+    copy_invite_link:'ሊንክ ኮፒ አድርግ',
+    promo_code:'ፕሮሞ ኮድ',
+    redeem:'ተጠቀም',
+    vip_unlimited:'⭐ VIP · ያልተገደበ ማስታወቂያ'
+  },
+
+  en:{
+    tab_home:'Home',
+    tab_earn:'Earn',
+    tab_spin:'Spin',
+    tab_invite:'Invite',
+    tab_wallet:'Wallet',
+    tab_admin:'Admin',
+
+    balance:'Balance',
+    streak:'day streak',
+    best:'Best',
+    check_in:'Check in',
+    start_streak:'Start streak',
+    checked_in_today:'Checked in today',
+    ads_today:'Ads today',
+    free_spins:'Free spins',
+    watch_an_ad:'Watch an ad',
+    watch_ad:'Watch ad',
+    limit_reached:'Limit reached',
+    tasks:'Tasks',
+    invite_friends:'Invite friends',
+    copy_invite_link:'Copy invite link',
+    promo_code:'Promo code',
+    redeem:'Redeem',
+    vip_unlimited:'⭐ VIP · unlimited ads'
+  }
+
+};
+
+let LANG =
+  localStorage.getItem('lang') ||
+  'am';
+
+const t = (k) =>
+  (I18N[LANG] && I18N[LANG][k]) ||
+  I18N.en[k] ||
+  k;
+
+function toggleLang(){
+
+  LANG =
+    LANG === 'am'
+      ? 'en'
+      : 'am';
+
+  localStorage.setItem(
+    'lang',
+    LANG
+  );
+
+  api(
+    '/api/lang',
+    { lang:LANG }
+  ).catch(()=>{});
+
+  drawNav();
+
+  if(ME) render();
+
+}
+
+let ME = null;
+let TAB = 'home';
+
+let busy = false;
+let gateOpen = false;
+let gateChecking = false;
+
+let GATE = null;
+
+let TASKS = [];
+let WINNERS = [];
+let TOP = [];
+let INVITERS = [];
+let EARNERS = [];
+let WDS = [];
+let ADMIN = null;
+
+let wheelKind = 'free';
+let rot = 0;
+
+let gateTimer = null;
+
+/* =========================================================
+   DEVICE ID
+========================================================= */
+
+function deviceId(){
+
+  try{
+
+    let d = localStorage.getItem('did');
+
+    if(!d){
+
+      d =
+        (
+          crypto.randomUUID
+            ? crypto.randomUUID()
+            : String(Math.random()).slice(2) + Date.now()
+        )
+        .replace(/-/g,'');
+
+      localStorage.setItem('did',d);
+    }
+
+    return d;
+
+  }catch(e){
+
+    return 'nostore';
+
+  }
+
+}
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+const ERR = {
+
+  timeout:
+    'Server timeout. Check your connection and try again.',
+
+  bad_auth:
+    'Open this app from the Telegram bot.',
+
+  quota:
+    'You reached today\'s ad limit.',
+
+  invalid_view:
+    'The ad was not watched to the end.',
+
+  no_spins:
+    'No free spins left today.',
+
+  no_coins:
+    'Not enough coins.',
+
+  closed:
+    'Withdrawals are closed right now.',
+
+  interval:
+    'You can withdraw once every 2 days.',
+
+  referrals:
+    'You need more qualified referrals to withdraw.',
+
+  under_review:
+    'Your account is under review.',
+
+  bad_input:
+    'Check the details and try again.',
+
+  min:
+    'Amount is below the minimum.',
+
+  cap:
+  /* ---------------- TOAST ---------------- */
 
 #toast{
   position:fixed;
