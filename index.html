@@ -3336,6 +3336,17 @@ function vSpin(){
   const s =
     ME.cfg.spin;
 
+  /*
+   * FIX: guard against a spin config that hasn't been
+   * saved on the backend yet, so the wheel/buttons never
+   * show "undefined" — they just show 0 until the admin
+   * panel saves real values.
+   */
+  if(!Array.isArray(s.free_prizes) || !s.free_prizes.length) s.free_prizes = [0];
+  if(!Array.isArray(s.paid_odds)) s.paid_odds = [];
+  if(s.cost === undefined || s.cost === null) s.cost = 0;
+  if(s.free_left === undefined || s.free_left === null) s.free_left = 0;
+
   const win =
     WINNERS.length
 
