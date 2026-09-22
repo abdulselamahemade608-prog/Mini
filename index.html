@@ -31,9 +31,9 @@
   --text:#f5f8fc;
   --muted:#8ea0bc;
 
-  --gold:#f5bd55;
-  --gold2:#ffd77c;
-  --gold-ink:#241700;
+  --gold:#16c777;
+  --gold2:#4bffa0;
+  --gold-ink:#04150b;
 
   --blue:#4f9cff;
   --blue2:#7bb8ff;
@@ -64,9 +64,9 @@
 html,
 body{
   background:
-    radial-gradient(circle at 12% -8%,rgba(79,156,255,.16) 0%,transparent 38%),
-    radial-gradient(circle at 88% 0%,rgba(245,189,85,.14) 0%,transparent 40%),
-    radial-gradient(circle at 50% 105%,rgba(53,212,154,.08) 0%,transparent 45%),
+    radial-gradient(circle at 15% -8%,rgba(75,255,160,.14) 0%,transparent 40%),
+    radial-gradient(circle at 85% 0%,rgba(22,199,119,.12) 0%,transparent 42%),
+    radial-gradient(circle at 50% 105%,rgba(75,255,160,.06) 0%,transparent 45%),
     var(--bg);
   background-attachment:fixed;
   color:var(--text);
@@ -198,22 +198,22 @@ p.muted,
   background:
     radial-gradient(
       circle at 88% -10%,
-      rgba(245,189,85,.24),
+      rgba(75,255,160,.22),
       transparent 42%
     ),
     radial-gradient(
       circle at 0% 110%,
-      rgba(79,156,255,.16),
+      rgba(22,199,119,.14),
       transparent 45%
     ),
     linear-gradient(
       150deg,
-      #1c3f6e 0%,
-      #101f38 60%,
-      #0b1626 100%
+      #16301f 0%,
+      #0e1a13 60%,
+      #0a120d 100%
     );
 
-  border-color:rgba(255,215,124,.28);
+  border-color:rgba(75,255,160,.28);
 }
 
 .hero .amt{
@@ -547,6 +547,11 @@ nav button:active{
   transform:scale(.94);
 }
 
+.navemoji{
+  font-size:20px;
+  line-height:1;
+}
+
 /* ---------------- SPIN ---------------- */
 
 .wheelbox{
@@ -639,12 +644,12 @@ nav button:active{
   background:
     radial-gradient(
       circle at 50% 0%,
-      rgba(79,156,255,.14) 0%,
+      rgba(75,255,160,.12) 0%,
       transparent 42%
     ),
     radial-gradient(
       circle at 100% 100%,
-      rgba(245,189,85,.1) 0%,
+      rgba(22,199,119,.1) 0%,
       transparent 45%
     ),
     var(--bg);
@@ -688,12 +693,55 @@ nav button:active{
   text-align:center;
 }
 
+.boot-logo{
+  width:96px;
+  height:96px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:26px;
+
+  background:
+    linear-gradient(
+      150deg,
+      #4bffa0,
+      #16c777
+    );
+
+  font-size:44px;
+  font-weight:800;
+  color:#05130b;
+
+  box-shadow:
+    0 0 0 1px rgba(76,255,160,.25),
+    0 0 60px 14px rgba(46,224,132,.35);
+
+  margin-bottom:18px;
+
+  animation:
+    bootPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes bootPulse{
+  0%,100%{
+    box-shadow:
+      0 0 0 1px rgba(76,255,160,.25),
+      0 0 60px 14px rgba(46,224,132,.35);
+  }
+  50%{
+    box-shadow:
+      0 0 0 1px rgba(76,255,160,.35),
+      0 0 78px 22px rgba(46,224,132,.5);
+  }
+}
+
 .spinner{
   width:34px;
   height:34px;
 
-  border:3px solid rgba(143,163,191,.22);
-  border-top-color:var(--gold);
+  border:3px solid rgba(46,224,132,.18);
+  border-top-color:#2ee084;
 
   border-radius:50%;
 
@@ -704,7 +752,8 @@ nav button:active{
 }
 
 .loading-title{
-  font-weight:700;
+  font-weight:800;
+  font-size:19px;
   margin-top:8px;
 }
 
@@ -738,7 +787,7 @@ nav button:active{
   height:17px;
 
   border:2px solid var(--line);
-  border-top-color:var(--gold);
+  border-top-color:#2ee084;
 
   border-radius:50%;
 
@@ -1004,9 +1053,10 @@ nav button:active{
 
 <div id="app">
   <div class="loading-wrap">
+    <div class="boot-logo">A</div>
+    <div class="loading-title">Adewa</div>
+    <div class="loading-text">Loading your portal...</div>
     <div class="spinner"></div>
-    <div class="loading-title">Loading Adewa</div>
-    <div class="loading-text">Connecting securely...</div>
   </div>
 </div>
 
@@ -1038,8 +1088,8 @@ if(tg){
   tg.expand();
 
   try{
-    tg.setHeaderColor('#08111f');
-    tg.setBackgroundColor('#08111f');
+    tg.setHeaderColor('#05090f');
+    tg.setBackgroundColor('#05090f');
   }catch(e){}
 }
 
@@ -2273,6 +2323,15 @@ async function boot(){
 
 function drawNav(){
 
+  const NAV_EMOJI = {
+    home:'🏠',
+    tasks:'📺',
+    spin:'🎡',
+    users:'👥',
+    wallet:'💰',
+    shield:'🛠️'
+  };
+
   const tabs = [
 
     ['home','home',t('tab_home')],
@@ -2304,7 +2363,7 @@ function drawNav(){
           class="${TAB === id ? 'on' : ''}"
           onclick="go('${id}')"
         >
-          ${ic(i)}
+          <span class="navemoji">${NAV_EMOJI[i] || '•'}</span>
           <span>${l}</span>
         </button>
 
@@ -3443,7 +3502,7 @@ function buildWheel(kind){
           cy="100"
           r="99"
           fill="#08111f"
-          stroke="#f5bd55"
+          stroke="#16c777"
           stroke-width="2"
         />
     `;
@@ -3511,7 +3570,7 @@ function buildWheel(kind){
           fill="${
             p === 0
               ? '#8fa3bf'
-              : '#ffd77c'
+              : '#4bffa0'
           }"
         >
           ${p}
@@ -3527,7 +3586,7 @@ function buildWheel(kind){
         cx="100"
         cy="100"
         r="10"
-        fill="#f5bd55"
+        fill="#16c777"
       />
 
       </svg>
