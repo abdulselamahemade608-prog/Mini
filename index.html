@@ -1103,7 +1103,7 @@ const API = 'https://fulus-backend.vercel.app';
   Ad waterfall config.
   Replace with your real AdsGram block id.
 */
-const ADSGRAM_BLOCK_ID = '49234';
+const ADSGRAM_BLOCK_ID = '49404';
 
 /*
   Lazily create/return the AdsGram controller.
@@ -1120,7 +1120,7 @@ function getAdsgram(){
   if(
     !window.__adsgram_ctrl &&
     window.Adsgram &&
-    ADSGRAM_BLOCK_ID !== 'YOUR_ADSGRAM_BLOCK_ID'
+    ADSGRAM_BLOCK_ID !== '49404'
   ){
 
     try{
