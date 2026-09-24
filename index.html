@@ -1125,7 +1125,14 @@ const adsgram =
   This is separate from the rewarded ad inside watchAd(),
   which keeps its own AdsGram-first waterfall unchanged.
 */
+const MAX_BUTTON_ADS = 3;   // max ads shown from ordinary buttons per session
+let buttonAdsShown = 0;
+
 async function showInterstitialAd(){
+
+  if(buttonAdsShown >= MAX_BUTTON_ADS) return;
+
+  buttonAdsShown++;
 
   try{
 
