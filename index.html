@@ -1,4217 +1,4904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+
+<title>Adewa</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Ethiopic:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://libtl.com/sdk.js" data-zone="11849985" data-sdk="show_11849985"></script>
+<!--
+  Ad waterfall: AdsGram tries first, Monetag (above) is the
+  fallback. Replace ADSGRAM_BLOCK_ID below with your real
+  AdsGram block id from https://adsgram.ai — leave the
+  Monetag zone above unchanged.
+-->
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+<style>
+:root{
+  --bg:#05090f;
+  --surface:#101a2c;
+  --surface2:#152238;
+  --raised:#1c2d47;
+  --line:rgba(148,180,222,.16);
+
+  --text:#f5f8fc;
+  --muted:#8ea0bc;
+
+  --gold:#16c777;
+  --gold2:#4bffa0;
+  --gold-ink:#04150b;
+
+  --blue:#4f9cff;
+  --blue2:#7bb8ff;
+
+  --ok:#35d49a;
+  --bad:#ff6d61;
+  --warning:#f5bd55;
+
+  --radius:22px;
+  --glass:rgba(255,255,255,.045);
+
+  font-family:
+    "Inter",
+    "Noto Sans Ethiopic",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    sans-serif;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  background:
+    radial-gradient(circle at 15% -8%,rgba(75,255,160,.14) 0%,transparent 40%),
+    radial-gradient(circle at 85% 0%,rgba(22,199,119,.12) 0%,transparent 42%),
+    radial-gradient(circle at 50% 105%,rgba(75,255,160,.06) 0%,transparent 45%),
+    var(--bg);
+  background-attachment:fixed;
+  color:var(--text);
+  min-height:100%;
+  letter-spacing:-.1px;
+}
+
+body{
+  padding:14px 14px calc(104px + env(safe-area-inset-bottom));
+  max-width:480px;
+  margin:0 auto;
+  font-size:15px;
+  line-height:1.45;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+  border:0;
+  cursor:pointer;
+}
+
+button:disabled{
+  cursor:default;
+}
+
+.ic{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  flex:none;
+}
+
+.ic.sm{
+  width:17px;
+  height:17px;
+}
+
+h2{
+  font-size:17px;
+  font-weight:700;
+  margin:20px 2px 10px;
+}
+
+p.muted,
+.muted{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.between{
+  justify-content:space-between;
+}
+
+.grow{
+  flex:1;
+  min-width:0;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.grid2 .card{
+  margin:0;
+}
+
+/* ---------------- CARDS ---------------- */
+
+@keyframes cardIn{
+  from{
+    opacity:0;
+    transform:translateY(6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.card{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.05),
+      rgba(255,255,255,0) 60%
+    ),
+    var(--glass),
+    var(--surface);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:12px;
+
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.05);
+
+  animation:cardIn .35s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.hero{
+  padding:22px 18px 19px;
+  position:relative;
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      circle at 88% -10%,
+      rgba(75,255,160,.22),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 0% 110%,
+      rgba(22,199,119,.14),
+      transparent 45%
+    ),
+    linear-gradient(
+      150deg,
+      #16301f 0%,
+      #0e1a13 60%,
+      #0a120d 100%
+    );
+
+  border-color:rgba(75,255,160,.28);
+}
+
+.hero .amt{
+  font-size:46px;
+  font-weight:800;
+  letter-spacing:-1.5px;
+  font-variant-numeric:tabular-nums;
+  line-height:1.05;
+  margin-top:7px;
+}
+
+.hero .amt small{
+  font-size:16px;
+  color:var(--gold2);
+  font-weight:700;
+  letter-spacing:0;
+  margin-left:6px;
+}
+
+.hero .etb{
+  color:var(--muted);
+  margin-top:5px;
+}
+
+/* ---------------- FLAME / LEVEL ---------------- */
+
+.flame{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+
+  display:grid;
+  place-items:center;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold2),
+      var(--gold)
+    );
+
+  color:var(--gold-ink);
+
+  box-shadow:
+    0 8px 20px rgba(245,189,85,.15);
+}
+
+.flame .ic{
+  width:24px;
+  height:24px;
+}
+
+.badge{
+  font-size:12px;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:99px;
+
+  background:var(--raised);
+  border:1px solid var(--line);
+}
+
+.badge.b1{
+  color:#e6a66a;
+}
+
+.badge.b2{
+  color:#dce5f2;
+}
+
+.badge.b3{
+  color:var(--gold2);
+}
+
+/* ---------------- PROGRESS ---------------- */
+
+.bar{
+  height:8px;
+  border-radius:99px;
+  background:#0a1525;
+  overflow:hidden;
+  margin:12px 0 6px;
+}
+
+.bar i{
+  display:block;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold),
+      var(--gold2)
+    );
+
+  border-radius:99px;
+  transition:width .5s ease;
+}
+
+/* ---------------- BUTTONS ---------------- */
+
+.btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  width:100%;
+  padding:14px 16px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold2),
+      var(--gold)
+    );
+
+  color:var(--gold-ink);
+
+  font-weight:750;
+
+  box-shadow:
+    0 10px 24px rgba(245,189,85,.22),
+    inset 0 1px 0 rgba(255,255,255,.35);
+
+  transition:
+    transform .15s ease,
+    opacity .15s ease,
+    filter .15s ease,
+    box-shadow .15s ease;
+}
+
+.btn:hover{
+  filter:brightness(1.06);
+  box-shadow:
+    0 12px 28px rgba(245,189,85,.3),
+    inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+.btn:active:not([disabled]){
+  transform:scale(.97);
+}
+
+.btn.ghost{
+  background:var(--raised);
+  color:var(--text);
+  border:1px solid var(--line);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.btn.sm{
+  width:auto;
+  padding:9px 14px;
+  border-radius:12px;
+  font-size:13px;
+}
+
+.btn[disabled]{
+  opacity:.4;
+  box-shadow:none;
+  filter:grayscale(.3);
+}
+
+/* ---------------- INPUTS ---------------- */
+
+input,
+select,
+textarea{
+  width:100%;
+  padding:12px 13px;
+
+  border-radius:13px;
+
+  background:#091524;
+  color:var(--text);
+
+  border:1px solid var(--line);
+
+  margin-top:6px;
+
+  outline:none;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(245,189,85,.08);
+}
+
+label{
+  display:block;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* ---------------- LIST ---------------- */
+
+.item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  padding:13px 0;
+
+  border-top:1px solid var(--line);
+}
+
+.item:first-child{
+  border-top:0;
+  padding-top:0;
+}
+
+.item:last-child{
+  padding-bottom:0;
+}
+
+.item .t{
+  font-weight:650;
+}
+
+.pill{
+  font-size:12px;
+  font-weight:700;
+
+  padding:4px 9px;
+
+  border-radius:99px;
+
+  background:rgba(245,189,85,.12);
+  color:var(--gold2);
+}
+
+.pill.ok{
+  background:rgba(53,212,154,.12);
+  color:var(--ok);
+}
+
+.pill.bad{
+  background:rgba(255,109,97,.12);
+  color:var(--bad);
+}
+
+/* ---------------- NAVIGATION ---------------- */
+
+nav{
+  position:fixed;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  display:flex;
+  justify-content:center;
+
+  padding:
+    0
+    14px
+    calc(14px + env(safe-area-inset-bottom));
+
+  z-index:20;
+
+  pointer-events:none;
+}
+
+nav div{
+  display:flex;
+  width:100%;
+  max-width:480px;
+  pointer-events:auto;
+
+  background:rgba(14,22,38,.82);
+
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+
+  border:1px solid var(--line);
+  border-radius:20px;
+
+  padding:6px;
+
+  box-shadow:
+    0 16px 34px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+nav button{
+  flex:1;
+
+  background:none;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  gap:4px;
+
+  color:var(--muted);
+
+  font-size:11px;
+
+  padding:8px 0;
+
+  border-radius:14px;
+
+  transition:
+    color .2s ease,
+    background .2s ease,
+    transform .15s ease;
+}
+
+nav button.on{
+  color:var(--gold-ink);
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold2),
+      var(--gold)
+    );
+  box-shadow:0 6px 16px rgba(245,189,85,.28);
+}
+
+nav button:active{
+  transform:scale(.94);
+}
+
+.navemoji{
+  font-size:20px;
+  line-height:1;
+}
+
+/* ---------------- SPIN ---------------- */
+
+.wheelbox{
+  position:relative;
+  width:min(78vw,300px);
+  margin:8px auto 18px;
+}
+
+.pointer{
+  position:absolute;
+
+  left:50%;
+  top:-8px;
+
+  transform:translateX(-50%);
+
+  width:0;
+  height:0;
+
+  border-left:11px solid transparent;
+  border-right:11px solid transparent;
+  border-top:20px solid var(--gold);
+
+  z-index:2;
+
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.3));
+}
+
+#wheel{
+  transition:transform 4s cubic-bezier(.12,.7,.1,1);
+}
+
+#wheel svg{
+  width:100%;
+  display:block;
+
+  filter:
+    drop-shadow(0 8px 22px rgba(0,0,0,.35));
+}
+
+.ticker{
+  overflow:hidden;
+  white-space:nowrap;
+
+  background:var(--surface);
+
+  border:1px solid var(--line);
+  border-radius:13px;
+
+  padding:8px 0;
+  margin-bottom:6px;
+}
+
+.ticker span{
+  display:inline-block;
+
+  padding-left:100%;
+
+  animation:
+    tick 26s linear infinite;
+
+  color:var(--muted);
+  font-size:13px;
+}
+
+@keyframes tick{
+  to{
+    transform:translateX(-100%);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ticker span{
+    animation:none;
+    padding-left:12px;
+  }
+
+  #wheel{
+    transition-duration:.01s;
+  }
+}
+
+/* ---------------- OVERLAYS ---------------- */
+
+#gate,
+#fatal{
+  position:fixed;
+  inset:0;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(75,255,160,.12) 0%,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(22,199,119,.1) 0%,
+      transparent 45%
+    ),
+    var(--bg);
+
+  z-index:50;
+
+  padding:
+    calc(28px + env(safe-area-inset-top))
+    18px
+    24px;
+
+  overflow:auto;
+
+  display:none;
+}
+
+#gate .in,
+#fatal .in{
+  max-width:480px;
+  margin:0 auto;
+}
+
+#gate h1,
+#fatal h1{
+  font-size:27px;
+  line-height:1.15;
+  letter-spacing:-.6px;
+}
+
+/* ---------------- LOADING ---------------- */
+
+.loading-wrap{
+  min-height:70vh;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  text-align:center;
+}
+
+.boot-logo{
+  width:96px;
+  height:96px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:26px;
+
+  background:
+    linear-gradient(
+      150deg,
+      #4bffa0,
+      #16c777
+    );
+
+  font-size:44px;
+  font-weight:800;
+  color:#05130b;
+
+  box-shadow:
+    0 0 0 1px rgba(76,255,160,.25),
+    0 0 60px 14px rgba(46,224,132,.35);
+
+  margin-bottom:18px;
+
+  animation:
+    bootPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes bootPulse{
+  0%,100%{
+    box-shadow:
+      0 0 0 1px rgba(76,255,160,.25),
+      0 0 60px 14px rgba(46,224,132,.35);
+  }
+  50%{
+    box-shadow:
+      0 0 0 1px rgba(76,255,160,.35),
+      0 0 78px 22px rgba(46,224,132,.5);
+  }
+}
+
+.spinner{
+  width:34px;
+  height:34px;
+
+  border:3px solid rgba(46,224,132,.18);
+  border-top-color:#2ee084;
+
+  border-radius:50%;
+
+  animation:
+    sp .75s linear infinite;
+
+  margin:25px auto;
+}
+
+.loading-title{
+  font-weight:800;
+  font-size:19px;
+  margin-top:8px;
+}
+
+.loading-text{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
+
+@keyframes sp{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.channel-loading{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+
+  color:var(--muted);
+
+  font-size:13px;
+
+  padding:12px 0;
+}
+
+.mini-spinner{
+  width:17px;
+  height:17px;
+
+  border:2px solid var(--line);
+  border-top-color:#2ee084;
+
+  border-radius:50%;
+
+  animation:sp .7s linear infinite;
+}
+
+/* ---------------- GATE ---------------- */
+
+.gate-top{
+  margin-bottom:20px;
+}
+
+.gate-icon{
+  width:52px;
+  height:52px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold2),
+      var(--gold)
+    );
+
+  color:var(--gold-ink);
+
+  margin-bottom:18px;
+
+  box-shadow:
+    0 10px 25px rgba(245,189,85,.15);
+}
+
+.gate-icon .ic{
+  width:27px;
+  height:27px;
+}
+
+.channel-card{
+  background:var(--surface);
+
+  border:1px solid var(--line);
+  border-radius:18px;
+
+  padding:4px 15px;
+
+  margin-bottom:13px;
+}
+
+.channel-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* ---------------- TOAST ---------------- */
+
+#toast{
+  position:fixed;
+
+  left:50%;
+
+  bottom:
+    calc(92px + env(safe-area-inset-bottom));
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  background:#172a45;
+
+  border:1px solid var(--line);
+
+  padding:11px 18px;
+
+  border-radius:14px;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:.25s;
+
+  z-index:60;
+
+  max-width:88vw;
+
+  text-align:center;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+}
+
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%);
+}
+
+/* ---------------- ODDS ---------------- */
+
+.odds{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.odds div{
+  background:#091524;
+  border-radius:11px;
+  padding:8px;
+  text-align:center;
+  font-size:13px;
+}
+
+.odds b{
+  display:block;
+  color:var(--gold2);
+}
+
+/* ---------------- SMALL ---------------- */
+
+.empty{
+  text-align:center;
+  padding:15px 5px;
+  color:var(--muted);
+}
+
+.success-text{
+  color:var(--ok);
+}
+
+.warning-text{
+  color:var(--warning);
+}
+
+.error-text{
+  color:var(--bad);
+}
+
+@media(max-width:360px){
+  body{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .hero .amt{
+    font-size:40px;
+  }
+
+  .btn.sm{
+    padding:7px 9px;
+    font-size:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= SVG ICON SYSTEM ================= -->
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+
+<symbol id="i-home" viewBox="0 0 24 24">
+  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+  <polyline points="9 22 9 12 15 12 15 22"/>
+</symbol>
+
+<symbol id="i-tasks" viewBox="0 0 24 24">
+  <path d="m3 17 2 2 4-4"/>
+  <path d="m3 7 2 2 4-4"/>
+  <path d="M13 6h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 18h8"/>
+</symbol>
+
+<symbol id="i-spin" viewBox="0 0 24 24">
+  <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+  <path d="M20 3v4"/>
+  <path d="M22 5h-4"/>
+  <path d="M4 17v2"/>
+  <path d="M5 18H3"/>
+</symbol>
+
+<symbol id="i-users" viewBox="0 0 24 24">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</symbol>
+
+<symbol id="i-wallet" viewBox="0 0 24 24">
+  <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
+  <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+</symbol>
+
+<symbol id="i-shield" viewBox="0 0 24 24">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+</symbol>
+
+<symbol id="i-flame" viewBox="0 0 24 24">
+  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+</symbol>
+
+<symbol id="i-play" viewBox="0 0 24 24">
+  <polygon points="6 3 20 12 6 21 6 3"/>
+</symbol>
+
+<symbol id="i-check" viewBox="0 0 24 24">
+  <path d="M20 6 9 17l-5-5"/>
+</symbol>
+
+<symbol id="i-lock" viewBox="0 0 24 24">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</symbol>
+
+<symbol id="i-copy" viewBox="0 0 24 24">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1 1.1-2 2-2h10c1.1 0 2 .9 2 2"/>
+</symbol>
+
+<symbol id="i-link" viewBox="0 0 24 24">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</symbol>
+
+<symbol id="i-gift" viewBox="0 0 24 24">
+  <rect x="3" y="8" width="18" height="4" rx="1"/>
+  <path d="M12 8v13"/>
+  <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+  <path d="M7.5 8a2.5 2.5 0 1 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 1 1 4.5-5"/>
+</symbol>
+
+<symbol id="i-trophy" viewBox="0 0 24 24">
+  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+  <path d="M4 22h16"/>
+  <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+  <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+  <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+</symbol>
+
+<symbol id="i-send" viewBox="0 0 24 24">
+  <path d="M7 7h10v10"/>
+  <path d="M7 17 17 7"/>
+</symbol>
+
+<symbol id="i-refresh" viewBox="0 0 24 24">
+  <path d="M20 11a8.1 8.1 0 0 0-15.5-2"/>
+  <path d="M4 5v4h4"/>
+  <path d="M4 13a8.1 8.1 0 0 0 15.5 2"/>
+  <path d="M20 19v-4h-4"/>
+</symbol>
+
+</svg>
+
+<!-- ================= APP ================= -->
+
+<div id="app">
+  <div class="loading-wrap">
+    <div class="boot-logo">A</div>
+    <div class="loading-title">Adewa</div>
+    <div class="loading-text">Loading your portal...</div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<nav id="nav" style="display:none">
+  <div id="navin"></div>
+</nav>
+
+<div id="gate">
+  <div class="in"></div>
+</div>
+
+<div id="fatal">
+  <div class="in"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
 'use strict';
 
-/*
- * ---------------------------------------------------------
- * ONE-TIME DATABASE MIGRATION
- * Run this once against your Postgres database before
- * deploying this version (psql / any SQL client):
- *
- *   ALTER TABLE users
- *     ADD COLUMN IF NOT EXISTS vip_unlimited_until timestamptz,
- *     ADD COLUMN IF NOT EXISTS lang varchar(5) DEFAULT 'am',
- *     ADD COLUMN IF NOT EXISTS last_ip text,
- *     ADD COLUMN IF NOT EXISTS ads_coins numeric NOT NULL DEFAULT 0,
- *     ADD COLUMN IF NOT EXISTS invite_coins numeric NOT NULL DEFAULT 0,
- *     ADD COLUMN IF NOT EXISTS daily_ads numeric NOT NULL DEFAULT 0,
- *     ADD COLUMN IF NOT EXISTS daily_invite numeric NOT NULL DEFAULT 0,
- *     ADD COLUMN IF NOT EXISTS daily_task numeric NOT NULL DEFAULT 0,
- *     ADD COLUMN IF NOT EXISTS daily_earn_day date;
- *
- *   ALTER TABLE withdrawals
- *     ADD COLUMN IF NOT EXISTS holder_name text,
- *     ADD COLUMN IF NOT EXISTS from_ads numeric NOT NULL DEFAULT 0,
- *     ADD COLUMN IF NOT EXISTS from_invite numeric NOT NULL DEFAULT 0;
- *
- *   ALTER TABLE tasks
- *     ADD COLUMN IF NOT EXISTS sponsor text;
- *
- *   CREATE TABLE IF NOT EXISTS task_broadcasts(
- *     id bigserial PRIMARY KEY,
- *     task_id bigint NOT NULL,
- *     chat_id bigint NOT NULL,
- *     message_id bigint NOT NULL
- *   );
- *   CREATE INDEX IF NOT EXISTS task_broadcasts_task_idx
- *     ON task_broadcasts(task_id);
- *
- * Also set this new environment variable on Vercel:
- *   CRON_SECRET = <any random string you pick>
- * It protects the two cron endpoints added below
- * (/api/cron/streak-reminder and /api/cron/weekly-rewards).
- * Point a Vercel Cron Job (or any scheduler) at each URL
- * with header:  x-cron-key: <that same value>
- *
- * New: BOT_USERNAME = your bot's @username without the @
- * (used only inside the proof-channel message templates).
- * ---------------------------------------------------------
- */
+/* =========================================================
+   TELEGRAM
+========================================================= */
 
-const express = require('express');
-const cors = require('cors');
-const crypto = require('crypto');
-const { Pool } = require('pg');
+const tg = window.Telegram && window.Telegram.WebApp;
 
-/* ---------- config (Vercel environment variables) ---------- */
+if(tg){
+  tg.ready();
+  tg.expand();
 
-const BOT_TOKEN = process.env.BOT_TOKEN || '';
-
-/*
- * ADMIN_ID = old/single admin support
- * ADMIN_IDS = multiple admins, comma separated
- *
- * Example:
- * ADMIN_IDS=123456789,987654321,555555555
- */
-const ADMIN_IDS = String(
-  process.env.ADMIN_IDS || process.env.ADMIN_ID || ''
-)
-  .split(',')
-  .map((x) => x.trim())
-  .filter(Boolean);
-
-const PROOF_CHANNEL = process.env.PROOF_CHANNEL || '@proof_chnallel';
-
-const WITHDRAW_CHANNEL =
-  process.env.WITHDRAW_CHANNEL || '';
-
-const WEBHOOK_SECRET =
-  process.env.WEBHOOK_SECRET || '';
-
-const CRON_SECRET =
-  process.env.CRON_SECRET || '';
-
-const MINI_APP_URL =
-  process.env.MINI_APP_URL ||
-  'https://abdulselamahemade608-prog.github.io/Mini';
-
-const BOT_USERNAME =
-  process.env.BOT_USERNAME || '';
-
-/*
- * ---------- AI FAQ / admin assistant (NEW) ----------
- * Answers ordinary user questions automatically using
- * Claude, so a human admin doesn't have to reply to every
- * "how do I withdraw" / "when do I get paid" message.
- *
- * Set these two on Vercel:
- *   ANTHROPIC_API_KEY = your Anthropic API key
- *   CLAUDE_MODEL      = optional, defaults to a fast/cheap model
- */
-const ANTHROPIC_API_KEY =
-  process.env.ANTHROPIC_API_KEY || '';
-
-const CLAUDE_MODEL =
-  process.env.CLAUDE_MODEL ||
-  'claude-haiku-4-5-20251001';
-
-/*
- * Fallback knowledge used until an admin sets custom
- * knowledge with /setfaq <text>, or via
- * POST /api/admin/setting {key:"faq_knowledge", value:"..."}.
- * Edit this any time — it only affects the AI's answers,
- * nothing else in the app.
- */
-const DEFAULT_FAQ_KNOWLEDGE = `
-App name: Adewa (formerly FulusApp) — a Telegram Mini App where users earn coins.
-Sections: Home, Tasks, Invite, Withdraw.
-Earning sources: watching ads, completing tasks, inviting friends.
-Coins convert to Birr (ETB); the exchange rate is set by the admin (often 100 coins = 1 Birr).
-Withdraw methods: Telebirr, CBE, M-Pesa (Safaricom). Each withdrawal has a small service fee.
-Withdrawals are reviewed and paid manually by an admin; proof of payment is posted in the proof channel.
-Invited friends must join the required channels and be active on 2 separate days before the inviter is paid the referral reward.
-There are daily limits on ads/earnings, and VIP users (based on invite count) get higher or unlimited ad limits.
-If you don't know a specific number (exact fee %, exact minimum withdrawal, exact reward), say a human admin will confirm it — never guess exact figures.
-`;
-
-/*
- * The only 3 withdraw methods allowed, and the
- * validation rule for the phone/account number
- * typed for each one.
- */
-const WITHDRAW_METHODS = {
-  telebirr: /^09\d{8}$/,
-  mpesa: /^07\d{8}$/,
-  cbe: /^(1000\d{9}|10000\d{8})$/
-};
-
-/*
- * Default required channels.
- *
- * IMPORTANT:
- * The bot must be able to use getChatMember() for these channels.
- */
-const DEFAULT_GATE_CHANNELS = [
-  '@andbndj',
-  '@proof_chnallel',
-  '@ABDU_CRYPTO',
-  '@m_r_work1'
-];
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-  max: 3
-});
-
-const app = express();
-
-app.use(cors());
-app.use(express.json({ limit: '100kb' }));
-
-const q = (t, p) => pool.query(t, p);
-
-const ah = (fn) => (req, res, next) =>
-  Promise.resolve(fn(req, res, next)).catch((e) => {
-    console.error(e);
-    res.status(500).json({ error: 'server' });
-  });
-
-const todayStr = () =>
-  new Date().toISOString().slice(0, 10);
-
-const dayDiff = (a, b) =>
-  Math.round((Date.parse(a) - Date.parse(b)) / 864e5);
-
-const fail = (res, code, error, extra = {}) =>
-  res.status(code).json({ error, ...extra });
-
-const isAdmin = (id) =>
-  ADMIN_IDS.includes(String(id));
-
-/* ---------- telegram helpers ---------- */
-
-async function tg(method, body) {
-  try {
-    const r = await fetch(
-      `https://api.telegram.org/bot${BOT_TOKEN}/${method}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      }
-    );
-
-    return await r.json();
-  } catch (e) {
-    return {
-      ok: false,
-      description: String(e)
-    };
-  }
+  try{
+    tg.setHeaderColor('#05090f');
+    tg.setBackgroundColor('#05090f');
+  }catch(e){}
 }
 
-/* ---------- AI FAQ helper (NEW) ---------- */
+/* =========================================================
+   CONFIG
+========================================================= */
 
-async function askFAQAI(question, knowledge) {
-  if (!ANTHROPIC_API_KEY) return null;
+const API = 'https://fulus-backend.vercel.app';
 
-  try {
-    const r = await fetch(
-      'https://api.anthropic.com/v1/messages',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: CLAUDE_MODEL,
-          max_tokens: 400,
-          system:
-            'You are the automatic support assistant for the Adewa Telegram earning app. ' +
-            'Reply directly and briefly (2-5 short sentences), in the SAME language the user wrote in (Amharic or English). ' +
-            'Only rely on the facts given below. If the question is unrelated to the app, or you are not sure of an exact number or rule, ' +
-            'say that a human admin will confirm it soon — never invent amounts, dates, or rules.\n\n' +
-            knowledge,
-          messages: [
-            {
-              role: 'user',
-              content: String(question).slice(0, 2000)
-            }
-          ]
-        })
-      }
-    );
+/*
+  Ad waterfall config.
+  Replace with your real AdsGram block id.
+*/
+const ADSGRAM_BLOCK_ID = '49234';
 
-    const data = await r.json();
-
-    const text = (data.content || [])
-      .filter((c) => c.type === 'text')
-      .map((c) => c.text)
-      .join('\n')
-      .trim();
-
-    return text || null;
-  } catch (e) {
-    console.error('askFAQAI', e);
-    return null;
-  }
-}
-
-/* ---------- Telegram Mini App auth ---------- */
-
-function verifyInitData(initData) {
-  if (!initData || !BOT_TOKEN) return null;
-
-  const p = new URLSearchParams(initData);
-  const hash = p.get('hash');
-
-  if (!hash) return null;
-
-  p.delete('hash');
-
-  const str = [...p.entries()]
-    .sort((a, b) => (a[0] < b[0] ? -1 : 1))
-    .map(([k, v]) => `${k}=${v}`)
-    .join('\n');
-
-  const secret = crypto
-    .createHmac('sha256', 'WebAppData')
-    .update(BOT_TOKEN)
-    .digest();
-
-  const calc = crypto
-    .createHmac('sha256', secret)
-    .update(str)
-    .digest('hex');
-
-  if (calc !== hash) return null;
-
-  if (
-    Date.now() / 1000 -
-      Number(p.get('auth_date') || 0) >
-    86400
-  ) {
-    return null;
-  }
-
-  try {
-    return {
-      user: JSON.parse(p.get('user')),
-      start: p.get('start_param') || ''
-    };
-  } catch {
-    return null;
-  }
-}
-
-/* ---------- settings ---------- */
-
-let sCache = {
-  t: 0,
-  v: {}
-};
-
-async function settings() {
-  if (Date.now() - sCache.t < 30000) {
-    return sCache.v;
-  }
-
-  const { rows } = await q(
-    'SELECT key, value FROM settings'
-  );
-
-  const v = {};
-
-  rows.forEach((r) => {
-    v[r.key] = r.value;
-  });
-
-  /*
-   * If gate_channels is missing or empty,
-   * automatically use the 5 default channels.
-   */
-  if (
-    !Array.isArray(v.gate_channels) ||
-    !v.gate_channels.length
-  ) {
-    v.gate_channels = DEFAULT_GATE_CHANNELS;
-  }
-
-  /*
-   * FIX: if the admin panel has never saved these yet,
-   * the settings table simply has no row for them, so
-   * S.free_table / S.paid_table / S.spin_cost were
-   * `undefined`. That produced an empty prize list in
-   * /api/me (the wheel showed "undefined" segments) and
-   * crashed pick() with a "Cannot read properties of
-   * undefined (reading 'reduce')" 500 whenever a user
-   * actually spun. These defaults keep the spin screen
-   * working immediately, and the admin panel still
-   * overrides them the moment real values are saved.
-   */
-  if (
-    !Array.isArray(v.free_table) ||
-    !v.free_table.length
-  ) {
-    v.free_table = [
-      [0, 55],
-      [3, 25],
-      [5, 15],
-      [10, 5]
-    ];
-  }
-
-  if (
-    !Array.isArray(v.paid_table) ||
-    !v.paid_table.length
-  ) {
-    v.paid_table = [
-      [0, 40],
-      [5, 25],
-      [10, 15],
-      [20, 10],
-      [25, 1],
-      [1, 9]
-    ];
-  }
-
-  if (
-    v.spin_cost === undefined ||
-    v.spin_cost === null ||
-    v.spin_cost === ''
-  ) {
-    v.spin_cost = 20;
-  }
-
-  if (
-    v.coin_per_etb === undefined ||
-    v.coin_per_etb === null ||
-    v.coin_per_etb === ''
-  ) {
-    /* 1 ETB = 100 coins by default; admin can change this any time. */
-    v.coin_per_etb = 100;
-  }
-
-  /*
-   * Admin toggles: which earning source can currently be
-   * withdrawn. Default both on (normal withdraw behaviour).
-   */
-  if (v.ads_payment_enabled === undefined) {
-    v.ads_payment_enabled = true;
-  }
-
-  if (v.invite_payment_enabled === undefined) {
-    v.invite_payment_enabled = true;
-  }
-
-  if (
-    v.withdraw_fee_percent === undefined ||
-    v.withdraw_fee_percent === null ||
-    v.withdraw_fee_percent === ''
-  ) {
-    v.withdraw_fee_percent = 3;
-  }
-
-  if (
-    v.free_spins === undefined ||
-    v.free_spins === null ||
-    v.free_spins === ''
-  ) {
-    v.free_spins = 5;
-  }
-
-  /*
-   * AI FAQ / admin assistant (NEW): on by default,
-   * admin can turn it off with /faqoff or the setting.
-   */
-  if (v.faq_bot_enabled === undefined) {
-    v.faq_bot_enabled = true;
-  }
-
-  sCache = {
-    t: Date.now(),
-    v
-  };
-
-  return v;
-}
-
-const SETTING_KEYS = [
-  'coin_per_etb',
-  'ad_reward',
-  'ad_cooldown',
-  'ad_min_seconds',
-  'ads_per_level',
-  'free_spins',
-  'spin_cost',
-  'free_table',
-  'paid_table',
-  'freeze_price',
-  'milestone_bonus',
-  'referral_reward',
-  'min_withdraw_etb',
-  'withdraw_referrals_required',
-  'withdraw_interval_hours',
-  'global_daily_cap_etb',
-  'withdrawals_open',
-  'ads_payment_enabled',
-  'invite_payment_enabled',
-  'withdraw_fee_percent',
-  'gate_channels',
-  'gate_cache_min',
-
-  /* --- VIP / weekly rewards / anti-cheat --- */
-  'vip_invites_unlimited',
-  'weekly_top_inviter_min',
-  'weekly_top_inviter_bonus_etb',
-  'anticheat_ip_check',
-
-  /* --- AI FAQ / admin assistant (NEW) --- */
-  'faq_knowledge',
-  'faq_bot_enabled'
-];
-
-/* ---------- users ---------- */
-
-async function ensureUser(tu, refId) {
-  const ins = await q(
-    `INSERT INTO users(id, first_name, username)
-     VALUES($1,$2,$3)
-     ON CONFLICT(id) DO NOTHING
-     RETURNING id`,
-    [
-      tu.id,
-      tu.first_name || '',
-      tu.username || ''
-    ]
-  );
-
-  if (ins.rowCount) {
-    if (
-      refId &&
-      /^\d+$/.test(String(refId)) &&
-      String(refId) !== String(tu.id)
-    ) {
-      await q(
-        `UPDATE users
-         SET referred_by=$2
-         WHERE id=$1
-         AND EXISTS(
-           SELECT 1 FROM users WHERE id=$2
-         )`,
-        [tu.id, refId]
-      );
-    }
-  } else {
-    await q(
-      `UPDATE users
-       SET first_name=$2,
-           username=$3
-       WHERE id=$1`,
-      [
-        tu.id,
-        tu.first_name || '',
-        tu.username || ''
-      ]
-    );
-  }
-}
-
-/* ---------- authentication ---------- */
-
-const auth = ah(async (req, res, next) => {
-  const d = verifyInitData(
-    req.headers['x-init-data']
-  );
-
-  if (!d || !d.user) {
-    return fail(res, 401, 'bad_auth');
-  }
-
-  const m = /^ref_(\d+)$/.exec(
-    d.start || ''
-  );
-
-  await ensureUser(
-    d.user,
-    m ? m[1] : null
-  );
-
-  const { rows } = await q(
-    `SELECT *,
-      last_checkin::text AS last_checkin_s,
-      free_spins_day::text AS fsd
-     FROM users
-     WHERE id=$1`,
-    [d.user.id]
-  );
-
-  const u = rows[0];
-
-  if (!u) {
-    return fail(res, 404, 'user_not_found');
-  }
-
-  if (u.banned) {
-    return fail(res, 403, 'banned');
-  }
-
-  const dev = String(
-    req.headers['x-device'] || ''
-  ).slice(0, 64);
-
-  if (dev && !u.device_hash) {
-    await q(
-      `UPDATE users
-       SET device_hash=$2
-       WHERE id=$1`,
-      [u.id, dev]
-    );
-
-    const c = await q(
-      `SELECT COUNT(*)::int AS c
-       FROM users
-       WHERE device_hash=$1`,
-      [dev]
-    );
-
-    if (c.rows[0].c > 2) {
-      await q(
-        `UPDATE users
-         SET flagged=true
-         WHERE id=$1`,
-        [u.id]
-      );
-
-      u.flagged = true;
-    }
-
-    u.device_hash = dev;
-  }
-
-  /*
-   * Best-effort anti-cheat: track the caller's IP
-   * (Vercel puts the real client IP in x-forwarded-for)
-   * and flag accounts that pile up on the same IP.
-   * This is a simple heuristic, not real VPN detection —
-   * true VPN/proxy detection needs a paid IP-reputation
-   * API (e.g. ipqualityscore.com); wire one in here if
-   * you get a key, using the same flagging pattern.
-   */
-  const ip = String(
-    req.headers['x-forwarded-for'] || ''
+const adsgram =
+  (
+    window.Adsgram &&
+    ADSGRAM_BLOCK_ID !== 'YOUR_ADSGRAM_BLOCK_ID'
   )
-    .split(',')[0]
-    .trim()
-    .slice(0, 64);
+    ? window.Adsgram.init({
+        blockId: ADSGRAM_BLOCK_ID
+      })
+    : null;
 
-  if (ip && ip !== u.last_ip) {
-    await q(
-      `UPDATE users
-       SET last_ip=$2
-       WHERE id=$1`,
-      [u.id, ip]
+/*
+  Generic interstitial ad (NEW).
+  Used as a bonus impression on ordinary buttons across the
+  app (gate, streak/freeze, spin, referral, promo, withdraw).
+  Order here is Monetag first, AdsGram as fallback, and if
+  neither has an ad ready it just skips silently — it never
+  blocks or delays the button's own action either way.
+  This is separate from the rewarded ad inside watchAd(),
+  which keeps its own AdsGram-first waterfall unchanged.
+*/
+async function showInterstitialAd(){
+
+  try{
+
+    if(typeof show_11849985 === 'function'){
+
+      await show_11849985();
+
+      return;
+
+    }
+
+  }catch(e){}
+
+  try{
+
+    if(adsgram){
+
+      await adsgram.show();
+
+      return;
+
+    }
+
+  }catch(e){}
+
+}
+
+const $ = (s) => document.querySelector(s);
+
+const esc = (s) =>
+  String(s == null ? '' : s).replace(
+    /[&<>"']/g,
+    (c) => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c])
+  );
+
+const ic = (n, cls='') =>
+  `<svg class="ic ${cls}"><use href="#i-${n}"></use></svg>`;
+
+const sleep = (ms) =>
+  new Promise((r) => setTimeout(r,ms));
+
+const fmt = (n) =>
+  Number(n || 0).toLocaleString('en-US');
+
+const LEVELS = [
+  'Bronze',
+  'Silver',
+  'Gold'
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+
+/*
+  UI labels (English only). Wrap any more strings you want
+  centralized as t('your_key') and add it below.
+*/
+const I18N = {
+  tab_home:'Home',
+  tab_earn:'Earn',
+  tab_spin:'Spin',
+  tab_invite:'Invite',
+  tab_wallet:'Wallet',
+  tab_admin:'Admin',
+
+  balance:'Balance',
+  streak:'day streak',
+  best:'Best',
+  check_in:'Check in',
+  start_streak:'Start streak',
+  checked_in_today:'Checked in today',
+  ads_today:'Ads today',
+  free_spins:'Free spins',
+  watch_an_ad:'Watch an ad',
+  watch_ad:'Watch ad',
+  limit_reached:'Limit reached',
+  tasks:'Tasks',
+  invite_friends:'Invite friends',
+  copy_invite_link:'Copy invite link',
+  promo_code:'Promo code',
+  redeem:'Redeem',
+  vip_unlimited:'⭐ VIP · unlimited ads'
+};
+
+const t = (k) => I18N[k] || k;
+
+let ME = null;
+let TAB = 'home';
+
+let busy = false;
+let gateOpen = false;
+let gateChecking = false;
+
+let GATE = null;
+
+let TASKS = [];
+let WINNERS = [];
+let TOP = [];
+let INVITERS = [];
+let EARNERS = [];
+let WDS = [];
+let CAL = [];
+let ADMIN = null;
+
+let wheelKind = 'free';
+let rot = 0;
+
+let gateTimer = null;
+
+/* =========================================================
+   DEVICE ID
+========================================================= */
+
+function deviceId(){
+
+  try{
+
+    let d = localStorage.getItem('did');
+
+    if(!d){
+
+      d =
+        (
+          crypto.randomUUID
+            ? crypto.randomUUID()
+            : String(Math.random()).slice(2) + Date.now()
+        )
+        .replace(/-/g,'');
+
+      localStorage.setItem('did',d);
+    }
+
+    return d;
+
+  }catch(e){
+
+    return 'nostore';
+
+  }
+
+}
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+const ERR = {
+
+  timeout:
+    'Server timeout. Check your connection and try again.',
+
+  bad_auth:
+    'Open this app from the Telegram bot.',
+
+  quota:
+    'You reached today\'s ad limit.',
+
+  invalid_view:
+    'The ad was not watched to the end.',
+
+  no_spins:
+    'No free spins left today.',
+
+  no_coins:
+    'Not enough coins.',
+
+  closed:
+    'Withdrawals are closed right now.',
+
+  interval:
+    'You can withdraw once every 2 days.',
+
+  referrals:
+    'You need more qualified referrals to withdraw.',
+
+  under_review:
+    'Your account is under review.',
+
+  bad_input:
+    'Check the details and try again.',
+
+  bad_method:
+    'Choose Telebirr, CBE or Mpesa.',
+
+  bad_telebirr:
+    'Telebirr number must be 10 digits and start with 09.',
+
+  bad_mpesa:
+    'Mpesa number must be 10 digits and start with 07.',
+
+  bad_cbe:
+    'CBE account must be 13 digits and start with 1000 or 10000.',
+
+  no_withdrawable_coins:
+    'You do not have enough withdrawable coins from the enabled earning sources.',
+
+  broadcast_failed:
+    'Broadcast failed.', 
+
+  min:
+    'Amount is below the minimum.',
+
+  cap:
+    'Daily payout limit reached.',
+
+  limit:
+    'This task is full.',
+
+  already:
+    'Already done.',
+
+  not_joined:
+    'Join the channel first, then tap Verify.',
+
+  invalid_code:
+    'Invalid or expired code.',
+
+  code_full:
+    'This code has no uses left.',
+
+  banned:
+    'This account is blocked.',
+
+  ads_unavailable:
+    'Ads could not load. Please retry.',
+
+  ad_closed:
+    'Watch the full ad to earn coins.',
+
+  server:
+    'Something went wrong. Try again.',
+
+  not_recoverable:
+    'The streak can no longer be saved.'
+
+};
+
+function errMsg(e){
+
+  if(e && e.code === 'cooldown'){
+
+    return `Wait ${
+      e.data && e.data.wait
+        ? e.data.wait
+        : 30
+    }s before the next ad.`;
+
+  }
+
+  return (
+    ERR[e && e.code] ||
+    ERR[e && e.message] ||
+    (
+      e &&
+      e.message === 'Failed to fetch'
+        ? ERR.timeout
+        : e && e.message
+    ) ||
+    ERR.server
+  );
+
+}
+
+/* =========================================================
+   API
+========================================================= */
+
+async function api(path,body){
+
+  const c = new AbortController();
+
+  const to = setTimeout(
+    () => c.abort(),
+    20000
+  );
+
+  try{
+
+    const r = await fetch(
+      API + path,
+      {
+        method: body ? 'POST' : 'GET',
+
+        signal:c.signal,
+
+        headers:{
+          'Content-Type':'application/json',
+
+          'x-init-data':
+            (tg && tg.initData) || '',
+
+          'x-device':
+            deviceId()
+        },
+
+        body:
+          body
+            ? JSON.stringify(body)
+            : undefined
+      }
     );
 
-    u.last_ip = ip;
-
-    const S = await settings();
-
-    if (S.anticheat_ip_check) {
-      const c = await q(
-        `SELECT COUNT(*)::int AS c
-         FROM users
-         WHERE last_ip=$1`,
-        [ip]
+    const j =
+      await r.json().catch(
+        () => ({})
       );
 
-      if (c.rows[0].c > 2) {
-        await q(
-          `UPDATE users
-           SET flagged=true
-           WHERE last_ip=$1`,
-          [ip]
-        );
+    if(
+      r.status === 403 &&
+      j.error === 'gate'
+    ){
 
-        u.flagged = true;
-      }
-    }
-  }
+      openGate();
 
-  req.user = u;
+      throw Object.assign(
+        new Error('gate'),
+        {code:'gate'}
+      );
 
-  next();
-});
-
-/* ---------- Gate ---------- */
-
-const forceThrottle = new Map();
-
-async function checkGate(user, force) {
-  const S = await settings();
-
-  let chans = Array.isArray(S.gate_channels)
-    ? S.gate_channels
-    : DEFAULT_GATE_CHANNELS;
-
-  if (!chans.length) {
-    chans = DEFAULT_GATE_CHANNELS;
-  }
-
-  const cached =
-    user.gate_ok_until &&
-    new Date(user.gate_ok_until) >
-      new Date();
-
-  if (cached && !force) {
-    return {
-      ok: true,
-      channels: chans.map((c) => ({
-        chat: c,
-        joined: true
-      }))
-    };
-  }
-
-  if (force) {
-    const last =
-      forceThrottle.get(user.id) || 0;
-
-    if (Date.now() - last < 2000) {
-      return {
-        ok: false,
-        channels: chans.map((c) => ({
-          chat: c,
-          joined: false
-        })),
-        throttled: true
-      };
     }
 
-    forceThrottle.set(
-      user.id,
-      Date.now()
-    );
-  }
+    if(!r.ok){
 
-  const channels = await Promise.all(
-    chans.map(async (c) => {
-      const r = await tg(
-        'getChatMember',
+      throw Object.assign(
+        new Error(j.error || 'server'),
         {
-          chat_id: c,
-          user_id: user.id
+          code:j.error,
+          data:j
         }
       );
 
-      let joined = false;
-
-      if (r.ok) {
-        const st = r.result.status;
-
-        joined =
-          st === 'restricted'
-            ? !!r.result.is_member
-            : [
-                'member',
-                'administrator',
-                'creator'
-              ].includes(st);
-      }
-
-      return {
-        chat: c,
-        joined,
-        error: r.ok
-          ? null
-          : r.description
-      };
-    })
-  );
-
-  const ok = channels.every(
-    (x) => x.joined
-  );
-
-  await q(
-    `UPDATE users
-     SET gate_ok_until=$2,
-         gate_passed =
-           gate_passed OR $3
-     WHERE id=$1`,
-    [
-      user.id,
-      ok
-        ? new Date(
-            Date.now() +
-              (S.gate_cache_min || 10) *
-                60000
-          )
-        : null,
-      ok
-    ]
-  );
-
-  return {
-    ok,
-    channels
-  };
-}
-
-const needGate = ah(
-  async (req, res, next) => {
-    const g = await checkGate(
-      req.user,
-      false
-    );
-
-    if (!g.ok) {
-      return fail(
-        res,
-        403,
-        'gate'
-      );
     }
 
-    next();
+    return j;
+
+  }catch(e){
+
+    if(e.name === 'AbortError'){
+
+      throw Object.assign(
+        new Error('timeout'),
+        {code:'timeout'}
+      );
+
+    }
+
+    throw e;
+
+  }finally{
+
+    clearTimeout(to);
+
+  }
+
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let tt;
+
+function toast(msg){
+
+  const t = $('#toast');
+
+  if(!t) return;
+
+  t.textContent = msg;
+
+  t.classList.add('show');
+
+  clearTimeout(tt);
+
+  tt = setTimeout(
+    () => t.classList.remove('show'),
+    2600
+  );
+
+}
+
+/* =========================================================
+   FATAL
+========================================================= */
+
+function fatal(msg){
+
+  $('#fatal .in').innerHTML = `
+
+    <div class="gate-icon">
+      ${ic('shield')}
+    </div>
+
+    <h1>Can't load the app</h1>
+
+    <p
+      class="muted"
+      style="margin:10px 0 20px"
+    >
+      ${esc(msg)}
+    </p>
+
+    <button
+      class="btn"
+      onclick="location.reload()"
+    >
+      ${ic('refresh')}
+      Try again
+    </button>
+
+  `;
+
+  $('#fatal').style.display = 'block';
+
+}
+
+/* =========================================================
+   HAPTIC
+========================================================= */
+
+function haptic(type){
+
+  try{
+
+    if(
+      tg &&
+      tg.HapticFeedback
+    ){
+
+      tg.HapticFeedback.notificationOccurred(
+        type || 'success'
+      );
+
+    }
+
+  }catch(e){}
+
+}
+
+/* =========================================================
+   CHANNEL URL
+========================================================= */
+
+function channelUrl(chat){
+
+  if(!chat) return '#';
+
+  let s = String(chat).trim();
+
+  if(/^https?:\/\//i.test(s)){
+
+    return s;
+
+  }
+
+  s = s.replace(/^@/,'').trim();
+
+  return 'https://t.me/' + s;
+
+}
+
+/* =========================================================
+   GATEKEEPER
+========================================================= */
+
+async function loadGate(force){
+
+  return await api(
+    '/api/gate' +
+    (
+      force
+        ? '?force=1'
+        : ''
+    )
+  );
+
+}
+
+function openGate(){
+
+  if(!gateOpen){
+
+    gateOpen = true;
+
+    $('#gate').style.display = 'block';
+
+    $('#nav').style.display = 'none';
+
+  }
+
+  renderGateLoading();
+
+  loadGate(true)
+    .then((g)=>{
+
+      GATE = g;
+
+      renderGate();
+
+      startGateAutoCheck();
+
+    })
+    .catch((e)=>{
+
+      toast(errMsg(e));
+
+      renderGateError();
+
+    });
+
+}
+
+/* =========================================================
+   GATE LOADING
+========================================================= */
+
+function renderGateLoading(){
+
+  $('#gate .in').innerHTML = `
+
+    <div class="loading-wrap">
+
+      <div class="spinner"></div>
+
+      <div class="loading-title">
+        Checking channels
+      </div>
+
+      <div class="loading-text">
+        Please wait while we verify your membership.
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+/* =========================================================
+   GATE ERROR
+========================================================= */
+
+function renderGateError(){
+
+  $('#gate .in').innerHTML = `
+
+    <div class="gate-icon">
+      ${ic('refresh')}
+    </div>
+
+    <h1>
+      Channel check failed
+    </h1>
+
+    <p
+      class="muted"
+      style="margin:8px 0 20px"
+    >
+      We could not check the required channels.
+      Please try again.
+    </p>
+
+    <button
+      class="btn"
+      onclick="showInterstitialAd();recheckGate()"
+    >
+      ${ic('refresh')}
+      Check again
+    </button>
+
+  `;
+
+}
+
+/* =========================================================
+   GATE RENDER
+========================================================= */
+
+function renderGate(){
+
+  if(!GATE || !Array.isArray(GATE.channels)){
+
+    renderGateError();
+
+    return;
+
+  }
+
+  const done =
+    GATE.channels.filter(
+      (c) => c.joined
+    ).length;
+
+  const total =
+    GATE.channels.length;
+
+  const percent =
+    total
+      ? Math.round((done / total) * 100)
+      : 100;
+
+  $('#gate .in').innerHTML = `
+
+    <div class="gate-top">
+
+      <div class="gate-icon">
+        ${ic('lock')}
+      </div>
+
+      <h1>
+        Join required channels
+      </h1>
+
+      <p
+        class="muted"
+        style="margin:8px 0 18px"
+      >
+        Join all required channels.
+        Membership is checked automatically.
+      </p>
+
+      <div class="bar">
+        <i style="width:${percent}%"></i>
+      </div>
+
+      <div
+        class="row between muted"
+        style="margin-top:6px"
+      >
+        <span>
+          ${done} of ${total} joined
+        </span>
+
+        <span>
+          ${percent}%
+        </span>
+      </div>
+
+    </div>
+
+    <div class="channel-card">
+
+      ${
+        GATE.channels.map(
+          (c,i)=>{
+
+            const joined =
+              !!c.joined;
+
+            const chat =
+              String(
+                c.chat || ''
+              );
+
+            const url =
+              c.url ||
+              channelUrl(chat);
+
+            return `
+
+              <div class="item">
+
+                <div class="grow">
+
+                  <div
+                    class="row"
+                    style="gap:9px"
+                  >
+
+                    ${
+                      joined
+                        ? `
+                          <span
+                            style="
+                              width:30px;
+                              height:30px;
+                              border-radius:10px;
+                              display:grid;
+                              place-items:center;
+                              background:rgba(53,212,154,.12);
+                              color:var(--ok);
+                            "
+                          >
+                            ${ic('check','sm')}
+                          </span>
+                        `
+                        : `
+                          <span
+                            style="
+                              width:30px;
+                              height:30px;
+                              border-radius:10px;
+                              display:grid;
+                              place-items:center;
+                              background:rgba(245,189,85,.10);
+                              color:var(--gold2);
+                            "
+                          >
+                            ${ic('link','sm')}
+                          </span>
+                        `
+                    }
+
+                    <div
+                      class="grow channel-name"
+                    >
+                      <div class="t">
+                        ${esc(chat)}
+                      </div>
+
+                      <div class="muted">
+                        ${
+                          joined
+                            ? 'Membership verified'
+                            : 'Membership required'
+                        }
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                ${
+                  joined
+
+                    ? `
+                      <span class="pill ok row">
+                        ${ic('check','sm')}
+                        Joined
+                      </span>
+                    `
+
+                    : `
+                      <button
+                        class="btn sm"
+                        onclick="showInterstitialAd();joinCh(${i})"
+                      >
+                        ${ic('link','sm')}
+                        Join
+                      </button>
+                    `
+                }
+
+              </div>
+
+            `;
+
+          }
+        ).join('')
+      }
+
+    </div>
+
+    ${
+      GATE.ok
+
+        ? `
+
+          <div
+            class="card"
+            style="
+              border-color:rgba(53,212,154,.35);
+              background:rgba(53,212,154,.05);
+            "
+          >
+
+            <div
+              class="row"
+              style="color:var(--ok)"
+            >
+              ${ic('check')}
+
+              <div>
+                <b>All channels verified</b>
+
+                <div class="muted">
+                  You can enter the dashboard.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <button
+            class="btn"
+            onclick="showInterstitialAd();enterApp()"
+          >
+            ${ic('home')}
+            Enter dashboard
+          </button>
+
+        `
+
+        : `
+
+          <div
+            class="channel-loading"
+            id="gate-auto-status"
+          >
+            <span class="mini-spinner"></span>
+            Checking membership automatically...
+          </div>
+
+          <button
+            class="btn ghost"
+            style="margin-top:8px"
+            onclick="showInterstitialAd();recheckGate()"
+          >
+            ${ic('refresh')}
+            Check now
+          </button>
+
+          <button
+            class="btn"
+            style="margin-top:10px"
+            disabled
+          >
+            ${ic('lock')}
+            Join all channels first
+          </button>
+
+        `
+    }
+
+  `;
+
+}
+
+/* =========================================================
+   JOIN CHANNEL
+========================================================= */
+
+function joinCh(i){
+
+  if(
+    !GATE ||
+    !GATE.channels ||
+    !GATE.channels[i]
+  ) return;
+
+  const c =
+    GATE.channels[i];
+
+  const url =
+    c.url ||
+    channelUrl(c.chat);
+
+  if(
+    tg &&
+    tg.openTelegramLink
+  ){
+
+    tg.openTelegramLink(url);
+
+  }else{
+
+    window.open(
+      url,
+      '_blank'
+    );
+
+  }
+
+  /*
+    Check shortly after opening.
+  */
+
+  setTimeout(
+    () => recheckGate(),
+    1800
+  );
+
+}
+
+/* =========================================================
+   AUTO GATE CHECK
+========================================================= */
+
+function startGateAutoCheck(){
+
+  stopGateAutoCheck();
+
+  /*
+    Check every 3 seconds while
+    user is on the gate screen.
+  */
+
+  gateTimer =
+    setInterval(
+      async ()=>{
+
+        if(
+          !gateOpen ||
+          gateChecking
+        ) return;
+
+        await silentGateCheck();
+
+      },
+      3000
+    );
+
+}
+
+function stopGateAutoCheck(){
+
+  if(gateTimer){
+
+    clearInterval(gateTimer);
+
+    gateTimer = null;
+
+  }
+
+}
+
+async function silentGateCheck(){
+
+  if(gateChecking) return;
+
+  gateChecking = true;
+
+  try{
+
+    const g =
+      await loadGate(true);
+
+    GATE = g;
+
+    renderGate();
+
+    if(g.ok){
+
+      haptic();
+
+      stopGateAutoCheck();
+
+    }
+
+  }catch(e){
+
+    /*
+      Do not replace the whole screen
+      for temporary network errors.
+    */
+
+  }finally{
+
+    gateChecking = false;
+
+  }
+
+}
+
+/* =========================================================
+   MANUAL GATE CHECK
+========================================================= */
+
+async function recheckGate(){
+
+  if(gateChecking) return;
+
+  gateChecking = true;
+
+  renderGateLoading();
+
+  try{
+
+    GATE =
+      await loadGate(true);
+
+    renderGate();
+
+    if(GATE.ok){
+
+      haptic();
+
+    }
+
+  }catch(e){
+
+    toast(errMsg(e));
+
+    renderGateError();
+
+  }finally{
+
+    gateChecking = false;
+
+  }
+
+}
+
+/* =========================================================
+   ENTER APP
+========================================================= */
+
+async function enterApp(){
+
+  if(!GATE || !GATE.ok){
+
+    await recheckGate();
+
+    if(!GATE || !GATE.ok){
+
+      return;
+
+    }
+
+  }
+
+  stopGateAutoCheck();
+
+  $('#gate').style.display = 'none';
+
+  gateOpen = false;
+
+  await boot();
+
+}
+
+/* =========================================================
+   VISIBILITY
+========================================================= */
+
+document.addEventListener(
+  'visibilitychange',
+  async ()=>{
+
+    if(
+      document.visibilityState !== 'visible'
+    ) return;
+
+    try{
+
+      if(gateOpen){
+
+        await silentGateCheck();
+
+      }else if(ME){
+
+        const g =
+          await loadGate(false);
+
+        if(!g.ok){
+
+          GATE = g;
+
+          openGate();
+
+        }
+
+      }
+
+    }catch(e){}
+
   }
 );
 
-/* ---------- admin ---------- */
+/* =========================================================
+   BOOT
+========================================================= */
 
-const adminOnly = (
-  req,
-  res,
-  next
-) =>
-  isAdmin(req.user.id)
-    ? next()
-    : fail(res, 403, 'admin');
+async function loadMe(){
 
-/* ---------- referrals ---------- */
+  ME =
+    await api('/api/me');
 
-async function processReferrals(uid) {
-  const S = await settings();
+  CAL =
+    (
+      await api('/api/checkin-calendar')
+        .catch(() => ({days:[]}))
+    ).days || [];
 
-  const r = await q(
-    `UPDATE users u
-     SET referral_paid=true
-     WHERE u.referred_by=$1
-       AND u.referral_paid=false
-       AND u.gate_passed
-       AND NOT u.flagged
-       AND (
-         SELECT COUNT(
-           DISTINCT (
-             a.started_at
-             AT TIME ZONE 'UTC'
-           )::date
-         )
-         FROM ad_views a
-         WHERE a.user_id=u.id
-           AND a.completed
-       ) >= 2
-     RETURNING u.id`,
-    [uid]
-  );
+}
 
-  if (r.rowCount) {
-    const amt =
-      r.rowCount *
-      (S.referral_reward || 0);
+async function boot(){
 
-    await q(
-      `UPDATE users
-       SET coins=coins+$2,
-           invite_coins=invite_coins+$2,
-           daily_ads =
-             CASE WHEN daily_earn_day=CURRENT_DATE
-               THEN daily_ads ELSE 0 END,
-           daily_task =
-             CASE WHEN daily_earn_day=CURRENT_DATE
-               THEN daily_task ELSE 0 END,
-           daily_invite =
-             CASE WHEN daily_earn_day=CURRENT_DATE
-               THEN daily_invite+$2 ELSE $2 END,
-           daily_earn_day=CURRENT_DATE
-       WHERE id=$1`,
-      [uid, amt]
+  if(
+    !tg ||
+    !tg.initData
+  ){
+
+    fatal(
+      'Open this app from the Telegram bot.'
     );
+
+    return;
+
   }
+
+  try{
+
+    /*
+      First verify all required channels.
+    */
+
+    const g =
+      await loadGate(false);
+
+    GATE = g;
+
+    if(!g.ok){
+
+      openGate();
+
+      return;
+
+    }
+
+    /*
+      Then load user data.
+    */
+
+    await loadMe();
+
+    $('#nav').style.display =
+      'block';
+
+    go(TAB);
+
+    /*
+      Optional ad SDK.
+    */
+
+    if(
+      typeof show_11849985 === 'function' &&
+      !window.__inapp
+    ){
+
+      window.__inapp = true;
+
+      try{
+
+        show_11849985({
+          type:'inApp',
+
+          inAppSettings:{
+            frequency:2,
+            capping:0.1,
+            interval:30,
+            timeout:5,
+            everyPage:false
+          }
+
+        });
+
+      }catch(e){}
+
+    }
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      fatal(
+        errMsg(e)
+      );
+
+    }
+
+  }
+
 }
 
-/* ---------- VIP (unlimited ads) ---------- */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-async function vipStatus(user) {
-  const S = await settings();
+function drawNav(){
 
-  if (
-    user.vip_unlimited_until &&
-    new Date(user.vip_unlimited_until) >
-      new Date()
-  ) {
-    return true;
+  const NAV_EMOJI = {
+    home:'🏠',
+    tasks:'📺',
+    spin:'🎡',
+    users:'👥',
+    wallet:'💰',
+    shield:'🛠️'
+  };
+
+  const tabs = [
+
+    ['home','home',t('tab_home')],
+    ['earn','tasks',t('tab_earn')],
+    ['spin','spin',t('tab_spin')],
+    ['invite','users',t('tab_invite')],
+    ['wallet','wallet',t('tab_wallet')]
+
+  ];
+
+  if(
+    ME &&
+    ME.is_admin
+  ){
+
+    tabs.push([
+      'admin',
+      'shield',
+      t('tab_admin')
+    ]);
+
   }
 
-  const need = Number(
-    S.vip_invites_unlimited || 0
-  );
+  $('#navin').innerHTML =
+    tabs.map(
+      ([id,i,l]) => `
 
-  if (!need) return false;
+        <button
+          class="${TAB === id ? 'on' : ''}"
+          onclick="go('${id}')"
+        >
+          <span class="navemoji">${NAV_EMOJI[i] || '•'}</span>
+          <span>${l}</span>
+        </button>
 
-  const refs = (
-    await q(
-      `SELECT COUNT(*)::int AS c
-       FROM users
-       WHERE referred_by=$1
-         AND referral_paid`,
-      [user.id]
-    )
-  ).rows[0].c;
+      `
+    ).join('');
 
-  return refs >= need;
 }
 
-/* ---------- utilities ---------- */
+async function go(tab){
 
-function pick(table) {
-  /*
-   * FIX: defend against a missing/empty prize table so a
-   * spin never crashes with a 500 (it now just pays 0
-   * instead of throwing).
-   */
-  if (!Array.isArray(table) || !table.length) {
-    return 0;
-  }
+  TAB = tab;
 
-  const total = table.reduce(
-    (a, r) => a + Number(r[1]),
+  drawNav();
+
+  window.scrollTo(
+    0,
     0
   );
 
-  let x =
-    crypto.randomInt(
-      Math.max(
-        1,
-        Math.round(total * 100)
-      )
-    ) / 100;
+  try{
 
-  for (const [prize, w] of table) {
-    x -= Number(w);
+    if(tab === 'earn'){
 
-    if (x < 0) {
-      return Number(prize);
-    }
-  }
-
-  return Number(table[0][0]);
-}
-
-async function finishTask(id) {
-  const r = await q(
-    `UPDATE tasks
-     SET active=false
-     WHERE id=$1
-       AND active
-       AND max_users IS NOT NULL
-       AND (
-         SELECT COUNT(*)
-         FROM task_subs
-         WHERE task_id=$1
-           AND status IN ('pending','approved')
-       ) >= max_users
-     RETURNING id`,
-    [id]
-  );
-
-  if (r.rowCount) {
-    await deleteTaskBroadcast(id);
-  }
-}
-
-/*
- * Deletes every broadcast message that was sent
- * for this task (once its slots are full) and
- * clears the tracking rows.
- */
-async function deleteTaskBroadcast(taskId) {
-  const { rows } = await q(
-    `SELECT chat_id, message_id
-     FROM task_broadcasts
-     WHERE task_id=$1`,
-    [taskId]
-  );
-
-  for (const m of rows) {
-    await tg('deleteMessage', {
-      chat_id: m.chat_id,
-      message_id: m.message_id
-    }).catch(() => {});
-  }
-
-  await q(
-    `DELETE FROM task_broadcasts
-     WHERE task_id=$1`,
-    [taskId]
-  );
-}
-
-const chatUrl = (c) =>
-  'https://t.me/' +
-  String(c).replace(/^@/, '');
-
-/*
- * Builds the exact proof-channel caption for a paid
- * withdrawal, in the format for each of the 3 methods.
- */
-function buildProofCaption(w, feePercent) {
-  const fee =
-    Math.round(
-      w.etb * feePercent
-    ) / 100;
-
-  const final =
-    Math.round(
-      (w.etb - fee) * 100
-    ) / 100;
-
-  const user =
-    '@' + (w.username || w.first_name || 'user');
-
-  const footer =
-    `\n-------------------------------\n\n` +
-    `🤖 Bot: ${BOT_USERNAME ? '@' + BOT_USERNAME : '-'}`;
-
-  if (w.method === 'telebirr') {
-    return (
-      `💸 New Withdrawal approve \n` +
-      `----------------\n` +
-      `👤 User: ${user}\n` +
-      `📱 Telebirr Number: ${w.account}\n` +
-      `💵 Requested Amount:${w.etb.toFixed(2)} Birr\n` +
-      `📉 ${feePercent}% Service Fee: ${fee.toFixed(2)} Birr\n` +
-      `💰 Final Amount: ${final.toFixed(2)} Birr\n` +
-      `🔍 Status: Paid ` +
-      footer
-    );
-  }
-
-  if (w.method === 'mpesa') {
-    return (
-      `💸 New Withdrawal Approved \n` +
-      `----------------\n` +
-      `👤 User: ${user}\n` +
-      `📱 Mepeas Number: ${w.account}\n` +
-      `💵 Requested Amount:${w.etb.toFixed(2)} Birr\n` +
-      `📉 ${feePercent}% Service Fee: ${fee.toFixed(2)} Birr\n` +
-      `💰 Final Amount: ${final.toFixed(2)} Birr\n` +
-      `🔍 Status: Paid ` +
-      footer
-    );
-  }
-
-  /* cbe */
-  return (
-    `💸 New Withdrawal approve \n` +
-    `----------------\n` +
-    `👤 User: ${user}\n` +
-    `📱 Cbe Number: ${w.account}\n` +
-    `💵 Requested Amount:${w.etb.toFixed(2)} Birr\n` +
-    `📉 ${feePercent}% Service Fee: ${fee.toFixed(2)} Birr\n` +
-    `💰 Final Amount: ${final.toFixed(2)} Birr\n` +
-    `🔍 Status: Paid ` +
-    footer
-  );
-}
-
-/* ---------- basics ---------- */
-
-app.get(
-  '/health',
-  ah(async (req, res) => {
-    await q('SELECT 1');
-
-    res.json({
-      ok: true,
-      service: 'Adewa',
-      status: 'online',
-      database: 'connected'
-    });
-  })
-);
-
-/* ---------- gate endpoint ---------- */
-
-app.get(
-  '/api/gate',
-  auth,
-  ah(async (req, res) => {
-    const g = await checkGate(
-      req.user,
-      req.query.force === '1'
-    );
-
-    res.json({
-      ok: g.ok,
-      channels: g.channels.map(
-        (c) => ({
-          chat: c.chat,
-          joined: c.joined,
-          url: chatUrl(c.chat)
-        })
-      )
-    });
-  })
-);
-
-/* ---------- me ---------- */
-
-app.get(
-  '/api/me',
-  auth,
-  ah(async (req, res) => {
-    const S = await settings();
-
-    await processReferrals(
-      req.user.id
-    );
-
-    const u = (
-      await q(
-        `SELECT *,
-          last_checkin::text AS last_checkin_s,
-          free_spins_day::text AS fsd
-         FROM users
-         WHERE id=$1`,
-        [req.user.id]
-      )
-    ).rows[0];
-
-    const t = todayStr();
-
-    const limits =
-      S.ads_per_level || [
-        10,
-        15,
-        20
-      ];
-
-    const adsToday = (
-      await q(
-        `SELECT COUNT(*)::int AS c
-         FROM ad_views
-         WHERE user_id=$1
-           AND completed
-           AND (
-             started_at
-             AT TIME ZONE 'UTC'
-           )::date=$2::date`,
-        [u.id, t]
-      )
-    ).rows[0].c;
-
-    const refs = (
-      await q(
-        `SELECT COUNT(*)::int AS c
-         FROM users
-         WHERE referred_by=$1
-           AND referral_paid`,
-        [u.id]
-      )
-    ).rows[0].c;
-
-    const invited = (
-      await q(
-        `SELECT COUNT(*)::int AS c
-         FROM users
-         WHERE referred_by=$1`,
-        [u.id]
-      )
-    ).rows[0].c;
-
-    const vip = await vipStatus(u);
-
-    let state = 'new';
-
-    if (u.last_checkin_s) {
-      const d = dayDiff(
-        t,
-        u.last_checkin_s
-      );
-
-      state =
-        d === 0
-          ? 'done'
-          : d === 1
-          ? 'ready'
-          : d === 2 &&
-            u.streak > 0
-          ? 'recoverable'
-          : 'lost';
-    }
-
-    const freeUsed =
-      u.fsd === t
-        ? u.free_spins_used
-        : 0;
-
-    const nextAt =
-      u.last_withdraw_at
-        ? new Date(
-            new Date(
-              u.last_withdraw_at
-            ).getTime() +
-              (S.withdraw_interval_hours ||
-                48) *
-                3600000
-          )
-        : null;
-
-    const total = (tb) =>
-      tb.reduce(
-        (a, r) =>
-          a + Number(r[1]),
-        0
-      );
-
-    res.json({
-      user: {
-        id: u.id,
-        name: u.first_name,
-        coins: Number(u.coins),
-        ads_coins: Number(u.ads_coins || 0),
-        invite_coins: Number(u.invite_coins || 0),
-        level: u.level,
-        streak: u.streak,
-        best: u.best_streak,
-        state,
-        flagged: u.flagged
-      },
-
-      cfg: {
-        coin_per_etb:
-          S.coin_per_etb,
-
-        ad_reward:
-          S.ad_reward,
-
-        ads_today:
-          adsToday,
-
-        ads_limit:
-          vip
-            ? null
-            : limits[u.level - 1] ||
-              limits[
-                limits.length - 1
-              ],
-
-        vip,
-
-        levels: limits,
-
-        freeze_price:
-          S.freeze_price,
-
-        milestone_bonus:
-          S.milestone_bonus,
-
-        referral_reward:
-          S.referral_reward,
-
-        gate_channels:
-          S.gate_channels ||
-          DEFAULT_GATE_CHANNELS,
-
-        spin: {
-          free_left: Math.max(
-            0,
-            (S.free_spins || 0) -
-              freeUsed
-          ),
-
-          cost:
-            S.spin_cost,
-
-          free_prizes: [
-            ...new Set(
-              (S.free_table || [])
-                .map((r) =>
-                  Number(r[0])
-                )
-            )
-          ].sort(
-            (a, b) => a - b
-          ),
-
-          paid_odds:
-            (S.paid_table || [])
-              .map((r) => [
-                Number(r[0]),
-                Math.round(
-                  (Number(r[1]) /
-                    total(
-                      S.paid_table
-                    )) *
-                    1000
-                ) / 10
-              ])
-        },
-
-        withdraw: {
-          open:
-            S.withdrawals_open !==
-            false,
-
-          min_etb:
-            S.min_withdraw_etb,
-
-          refs_required:
-            S.withdraw_referrals_required,
-
-          refs_have:
-            refs,
-
-          next_at:
-            nextAt &&
-            nextAt > new Date()
-              ? nextAt.toISOString()
-              : null,
-
-          interval_h:
-            S.withdraw_interval_hours,
-
-          methods: Object.keys(
-            WITHDRAW_METHODS
-          ),
-
-          ads_enabled:
-            S.ads_payment_enabled !== false,
-
-          invite_enabled:
-            S.invite_payment_enabled !== false,
-
-          fee_percent:
-            Number(S.withdraw_fee_percent || 0),
-
-          max_coins: Math.max(
-            0,
-            Math.floor(
-              (S.ads_payment_enabled !== false
-                ? Number(u.ads_coins || 0)
-                : 0) +
-              (S.invite_payment_enabled !== false
-                ? Number(u.invite_coins || 0)
-                : 0)
-            )
-          )
-        }
-      },
-
-      invited,
-
-      lang: u.lang || 'en',
-
-      ref_link:
-        `https://t.me/${await botName()}?start=ref_${u.id}`,
-
-      is_admin:
-        isAdmin(u.id)
-    });
-  })
-);
-
-/* ---------- language ---------- */
-
-app.post(
-  '/api/lang',
-  auth,
-  ah(async (req, res) => {
-    const lang = 'en';
-
-    await q(
-      `UPDATE users
-       SET lang=$2
-       WHERE id=$1`,
-      [req.user.id, lang]
-    );
-
-    res.json({ ok: true, lang });
-  })
-);
-
-/* ---------- bot name ---------- */
-
-let _bot = '';
-
-async function botName() {
-  if (_bot) return _bot;
-
-  const r = await tg(
-    'getMe',
-    {}
-  );
-
-  _bot = r.ok
-    ? r.result.username
-    : '';
-
-  return _bot;
-}
-
-/* ---------- streak ---------- */
-
-app.post(
-  '/api/checkin',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const u = req.user;
-    const S = await settings();
-    const t = todayStr();
-
-    const diff =
-      u.last_checkin_s
-        ? dayDiff(
-            t,
-            u.last_checkin_s
-          )
-        : null;
-
-    if (diff === 0) {
-      return fail(
-        res,
-        409,
-        'already'
-      );
-    }
-
-    if (
-      diff === 2 &&
-      u.streak > 0 &&
-      !req.body.restart
-    ) {
-      return fail(
-        res,
-        409,
-        'recoverable'
-      );
-    }
-
-    const streak =
-      diff === 1
-        ? u.streak + 1
-        : 1;
-
-    const maxLevel =
-      (
-        S.ads_per_level || [
-          10,
-          15,
-          20
-        ]
-      ).length;
-
-    const newLevel = Math.min(
-      maxLevel,
-      1 +
-        Math.floor(
-          streak / 7
-        )
-    );
-
-    let level = u.level;
-    let bonus = 0;
-
-    if (newLevel > u.level) {
-      level = newLevel;
-      bonus = Number(
-        S.milestone_bonus || 0
-      );
-    }
-
-    await q(
-      `UPDATE users
-       SET streak=$2,
-           best_streak=GREATEST(best_streak,$2),
-           last_checkin=$3::date,
-           level=$4,
-           coins=coins+$5
-       WHERE id=$1`,
-      [
-        u.id,
-        streak,
-        t,
-        level,
-        bonus
-      ]
-    );
-
-    res.json({
-      ok: true,
-      streak,
-      level,
-      bonus
-    });
-  })
-);
-
-app.post(
-  '/api/streak/freeze',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const u = req.user;
-    const S = await settings();
-    const t = todayStr();
-
-    if (
-      !(
-        u.last_checkin_s &&
-        dayDiff(
-          t,
-          u.last_checkin_s
-        ) === 2 &&
-        u.streak > 0
-      )
-    ) {
-      return fail(
-        res,
-        409,
-        'not_recoverable'
-      );
-    }
-
-    const r = await q(
-      `UPDATE users
-       SET coins=coins-$2,
-           last_checkin=($3::date - 1)
-       WHERE id=$1
-         AND coins>=$2`,
-      [
-        u.id,
-        S.freeze_price,
-        t
-      ]
-    );
-
-    if (!r.rowCount) {
-      return fail(
-        res,
-        402,
-        'no_coins'
-      );
-    }
-
-    res.json({
-      ok: true
-    });
-  })
-);
-
-/* ---------- ads ---------- */
-
-app.post(
-  '/api/ad/start',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const u = req.user;
-    const S = await settings();
-    const t = todayStr();
-
-    const limits =
-      S.ads_per_level || [
-        10,
-        15,
-        20
-      ];
-
-    const limit =
-      limits[u.level - 1] ||
-      limits[
-        limits.length - 1
-      ];
-
-    const vip = await vipStatus(u);
-
-    if (!vip) {
-      const cnt = (
-        await q(
-          `SELECT COUNT(*)::int AS c
-           FROM ad_views
-           WHERE user_id=$1
-             AND completed
-             AND (
-               started_at
-               AT TIME ZONE 'UTC'
-             )::date=$2::date`,
-          [u.id, t]
-        )
-      ).rows[0].c;
-
-      if (cnt >= limit) {
-        return fail(
-          res,
-          429,
-          'quota'
-        );
-      }
-    }
-
-    const last = (
-      await q(
-        `SELECT EXTRACT(
-           EPOCH FROM
-           (now()-started_at)
-         ) AS s
-         FROM ad_views
-         WHERE user_id=$1
-         ORDER BY id DESC
-         LIMIT 1`,
-        [u.id]
-      )
-    ).rows[0];
-
-    const cd =
-      S.ad_cooldown || 30;
-
-    if (
-      last &&
-      Number(last.s) < cd
-    ) {
-      return fail(
-        res,
-        429,
-        'cooldown',
-        {
-          wait: Math.ceil(
-            cd -
-              Number(last.s)
-          )
-        }
-      );
-    }
-
-    const nonce =
-      crypto.randomBytes(16)
-        .toString('hex');
-
-    await q(
-      `INSERT INTO ad_views(
-        user_id,
-        nonce
-      )
-      VALUES($1,$2)`,
-      [
-        u.id,
-        nonce
-      ]
-    );
-
-    res.json({
-      nonce
-    });
-  })
-);
-
-app.post(
-  '/api/ad/complete',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const u = req.user;
-    const S = await settings();
-
-    const nonce = String(
-      (req.body || {}).nonce ||
-        ''
-    );
-
-    const reward = Number(
-      S.ad_reward || 0
-    );
-
-    const r = await q(
-      `UPDATE ad_views
-       SET completed=true,
-           reward=$3
-       WHERE nonce=$1
-         AND user_id=$2
-         AND completed=false
-         AND started_at <=
-           now() -
-           ($4::int *
-           interval '1 second')
-       RETURNING id`,
-      [
-        nonce,
-        u.id,
-        reward,
-        S.ad_min_seconds || 10
-      ]
-    );
-
-    if (!r.rowCount) {
-      return fail(
-        res,
-        400,
-        'invalid_view'
-      );
-    }
-
-    const c = await q(
-      `UPDATE users
-       SET coins=coins+$2,
-           ads_coins=ads_coins+$2,
-           daily_invite =
-             CASE WHEN daily_earn_day=CURRENT_DATE
-               THEN daily_invite ELSE 0 END,
-           daily_task =
-             CASE WHEN daily_earn_day=CURRENT_DATE
-               THEN daily_task ELSE 0 END,
-           daily_ads =
-             CASE WHEN daily_earn_day=CURRENT_DATE
-               THEN daily_ads+$2 ELSE $2 END,
-           daily_earn_day=CURRENT_DATE
-       WHERE id=$1
-       RETURNING coins`,
-      [
-        u.id,
-        reward
-      ]
-    );
-
-    res.json({
-      ok: true,
-      reward,
-      coins: Number(
-        c.rows[0].coins
-      )
-    });
-  })
-);
-
-/* ---------- spin ---------- */
-
-app.post(
-  '/api/spin',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const u = req.user;
-    const S = await settings();
-    const t = todayStr();
-
-    const kind =
-      (req.body || {}).kind ===
-      'paid'
-        ? 'paid'
-        : 'free';
-
-    let cost = 0;
-
-    if (kind === 'free') {
-      const r = await q(
-        `UPDATE users
-         SET free_spins_day=$2::date,
-             free_spins_used =
-               CASE
-                 WHEN free_spins_day=$2::date
-                 THEN free_spins_used+1
-                 ELSE 1
-               END
-         WHERE id=$1
-           AND (
-             free_spins_day
-               IS DISTINCT FROM $2::date
-             OR free_spins_used < $3
-           )
-         RETURNING free_spins_used`,
-        [
-          u.id,
-          t,
-          S.free_spins || 0
-        ]
-      );
-
-      if (!r.rowCount) {
-        return fail(
-          res,
-          409,
-          'no_spins'
-        );
-      }
-    } else {
-      cost = Number(
-        S.spin_cost || 0
-      );
-
-      const r = await q(
-        `UPDATE users
-         SET coins=coins-$2
-         WHERE id=$1
-           AND coins>=$2
-         RETURNING coins`,
-        [
-          u.id,
-          cost
-        ]
-      );
-
-      if (!r.rowCount) {
-        return fail(
-          res,
-          402,
-          'no_coins'
-        );
-      }
-    }
-
-    const prize = pick(
-      kind === 'free'
-        ? S.free_table
-        : S.paid_table
-    );
-
-    const c = await q(
-      `UPDATE users
-       SET coins=coins+$2
-       WHERE id=$1
-       RETURNING coins,
-                 free_spins_used,
-                 free_spins_day::text AS fsd`,
-      [
-        u.id,
-        prize
-      ]
-    );
-
-    await q(
-      `INSERT INTO spins(
-        user_id,
-        kind,
-        cost,
-        prize
-      )
-      VALUES($1,$2,$3,$4)`,
-      [
-        u.id,
-        kind,
-        cost,
-        prize
-      ]
-    );
-
-    const used =
-      c.rows[0].fsd === t
-        ? c.rows[0]
-            .free_spins_used
-        : 0;
-
-    res.json({
-      prize,
-      coins: Number(
-        c.rows[0].coins
-      ),
-      free_left: Math.max(
-        0,
-        (S.free_spins || 0) -
-          used
-      )
-    });
-  })
-);
-
-app.get(
-  '/api/winners',
-  auth,
-  ah(async (req, res) => {
-    const { rows } = await q(
-      `SELECT
-        u.first_name AS name,
-        s.prize
-       FROM spins s
-       JOIN users u
-         ON u.id=s.user_id
-       WHERE s.prize >= 10
-       ORDER BY s.id DESC
-       LIMIT 10`
-    );
-
-    res.json({
-      winners: rows
-    });
-  })
-);
-
-/* ---------- tasks ---------- */
-
-app.get(
-  '/api/tasks',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const { rows } = await q(
-      `SELECT
-        t.id,
-        t.title,
-        t.type,
-        t.url,
-        t.reward,
-        t.max_users,
-        s.status AS my_status,
+      TASKS =
         (
-          SELECT COUNT(*)::int
-          FROM task_subs x
-          WHERE x.task_id=t.id
-            AND x.status IN (
-              'pending',
-              'approved'
-            )
-        ) AS taken
-       FROM tasks t
-       LEFT JOIN task_subs s
-         ON s.task_id=t.id
-        AND s.user_id=$1
-       WHERE t.active
-         AND (
-           s.status IS NULL
-           OR s.status <> 'approved'
-         )
-       ORDER BY t.id DESC`,
-      [req.user.id]
+          await api('/api/tasks')
+        ).tasks;
+
+    }
+
+    if(tab === 'spin'){
+
+      WINNERS =
+        (
+          await api('/api/winners')
+        ).winners;
+
+    }
+
+    if(tab === 'invite'){
+
+      const lb =
+        await api('/api/leaderboard');
+
+      TOP = lb.top;
+      INVITERS = lb.inviters || [];
+      EARNERS = lb.earners || [];
+
+    }
+
+    if(tab === 'wallet'){
+
+      WDS =
+        (
+          await api('/api/withdrawals')
+        ).items;
+
+    }
+
+    if(tab === 'admin'){
+
+      ADMIN =
+        await api('/api/admin/overview');
+
+    }
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
+    }
+
+  }
+
+  render();
+
+}
+
+function render(){
+
+  const views = {
+
+    home:vHome,
+    earn:vEarn,
+    spin:vSpin,
+    invite:vInvite,
+    wallet:vWallet,
+    admin:vAdmin
+
+  };
+
+  $('#app').innerHTML =
+    views[TAB]();
+
+  if(TAB === 'spin'){
+
+    buildWheel(
+      wheelKind
     );
 
-    res.json({
-      tasks: rows.filter(
-        (t) =>
-          !t.max_users ||
-          t.taken < t.max_users ||
-          t.my_status
-      )
-    });
-  })
-);
+  }
 
-app.post(
-  '/api/tasks/:id/verify',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const t = (
-      await q(
-        `SELECT *
-         FROM tasks
-         WHERE id=$1
-           AND active
-           AND type='channel'`,
-        [req.params.id]
-      )
-    ).rows[0];
+}
 
-    if (!t) {
-      return fail(
-        res,
-        404,
-        'not_found'
-      );
-    }
+const etb =
+  (c) =>
+    (
+      c /
+      ME.cfg.coin_per_etb
+    ).toFixed(2);
 
-    const prev = (
-      await q(
-        `SELECT status
-         FROM task_subs
-         WHERE task_id=$1
-           AND user_id=$2`,
-        [
-          t.id,
-          req.user.id
-        ]
-      )
-    ).rows[0];
+/* =========================================================
+   HOME
+========================================================= */
 
-    if (
-      prev &&
-      prev.status === 'approved'
-    ) {
-      return fail(
-        res,
-        409,
-        'already'
-      );
-    }
+function vHome(){
 
-    if (!prev && t.max_users) {
-      const n = (
-        await q(
-          `SELECT COUNT(*)::int AS c
-           FROM task_subs
-           WHERE task_id=$1
-             AND status IN (
-               'pending',
-               'approved'
-             )`,
-          [t.id]
-        )
-      ).rows[0].c;
+  const u = ME.user;
+  const c = ME.cfg;
+  const st = u.state;
 
-      if (n >= t.max_users) {
-        return fail(
-          res,
-          409,
-          'limit'
-        );
-      }
-    }
-
-    const r = await tg(
-      'getChatMember',
-      {
-        chat_id: t.chat,
-        user_id: req.user.id
-      }
+  const pct =
+    Math.min(
+      100,
+      ((u.streak % 7) / 7) * 100 ||
+      (u.streak > 0 && u.streak % 7 === 0 ? 100 : 0)
     );
 
-    const st = r.ok
-      ? r.result.status
-      : null;
-
-    const joined =
-      st === 'restricted'
-        ? !!r.result.is_member
-        : [
-            'member',
-            'administrator',
-            'creator'
-          ].includes(st);
-
-    if (!joined) {
-      return fail(
-        res,
-        400,
-        'not_joined'
-      );
-    }
-
-    const up = await q(
-      `INSERT INTO task_subs(
-        task_id,
-        user_id,
-        status
-      )
-      VALUES($1,$2,'approved')
-      ON CONFLICT (
-        task_id,
-        user_id
-      )
-      DO UPDATE SET
-        status='approved'
-      WHERE task_subs.status <> 'approved'
-      RETURNING id`,
-      [
-        t.id,
-        req.user.id
-      ]
-    );
-
-    if (up.rowCount) {
-      await q(
-        `UPDATE users
-         SET coins=coins+$2,
-             daily_ads =
-               CASE WHEN daily_earn_day=CURRENT_DATE
-                 THEN daily_ads ELSE 0 END,
-             daily_invite =
-               CASE WHEN daily_earn_day=CURRENT_DATE
-                 THEN daily_invite ELSE 0 END,
-             daily_task =
-               CASE WHEN daily_earn_day=CURRENT_DATE
-                 THEN daily_task+$2 ELSE $2 END,
-             daily_earn_day=CURRENT_DATE
-         WHERE id=$1`,
-        [
-          req.user.id,
-          t.reward
-        ]
-      );
-
-      await finishTask(t.id);
-    }
-
-    res.json({
-      ok: true,
-      reward: Number(
-        t.reward
-      )
-    });
-  })
-);
-
-app.post(
-  '/api/tasks/:id/start',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const t = (
-      await q(
-        `SELECT *
-         FROM tasks
-         WHERE id=$1
-           AND active
-           AND type='social'`,
-        [req.params.id]
-      )
-    ).rows[0];
-
-    if (!t) {
-      return fail(
-        res,
-        404,
-        'not_found'
-      );
-    }
-
-    const prev = (
-      await q(
-        `SELECT status
-         FROM task_subs
-         WHERE task_id=$1
-           AND user_id=$2`,
-        [
-          t.id,
-          req.user.id
-        ]
-      )
-    ).rows[0];
-
-    if (
-      prev &&
-      (
-        prev.status === 'pending' ||
-        prev.status === 'approved'
-      )
-    ) {
-      return fail(
-        res,
-        409,
-        'already'
-      );
-    }
-
-    if (!prev && t.max_users) {
-      const n = (
-        await q(
-          `SELECT COUNT(*)::int AS c
-           FROM task_subs
-           WHERE task_id=$1
-             AND status IN (
-               'pending',
-               'approved'
-             )`,
-          [t.id]
-        )
-      ).rows[0].c;
-
-      if (n >= t.max_users) {
-        return fail(
-          res,
-          409,
-          'limit'
-        );
-      }
-    }
-
-    await q(
-      `INSERT INTO task_subs(
-        task_id,
-        user_id,
-        status
-      )
-      VALUES($1,$2,'awaiting')
-      ON CONFLICT (
-        task_id,
-        user_id
-      )
-      DO UPDATE SET
-        status='awaiting'`,
-      [
-        t.id,
-        req.user.id
-      ]
-    );
-
-    res.json({
-      ok: true,
-      bot:
-        `https://t.me/${await botName()}`
-    });
-  })
-);
-
-/* ---------- promo ---------- */
-
-app.post(
-  '/api/promo',
-  auth,
-  needGate,
-  ah(async (req, res) => {
-    const code = String(
-      (req.body || {}).code || ''
-    )
-      .trim()
-      .toUpperCase()
-      .slice(0, 32);
-
-    const p = (
-      await q(
-        `SELECT *
-         FROM promos
-         WHERE code=$1
-           AND active`,
-        [code]
-      )
-    ).rows[0];
-
-    if (!p) {
-      return fail(
-        res,
-        404,
-        'invalid_code'
-      );
-    }
-
-    const use = await q(
-      `INSERT INTO promo_uses(
-        code,
-        user_id
-      )
-      VALUES($1,$2)
-      ON CONFLICT DO NOTHING
-      RETURNING code`,
-      [
-        code,
-        req.user.id
-      ]
-    );
-
-    if (!use.rowCount) {
-      return fail(
-        res,
-        409,
-        'already'
-      );
-    }
-
-    const ok = await q(
-      `UPDATE promos
-       SET uses=uses+1
-       WHERE code=$1
-         AND (
-           max_uses IS NULL
-           OR uses < max_uses
-         )
-       RETURNING uses`,
-      [code]
-    );
-
-    if (!ok.rowCount) {
-      await q(
-        `DELETE FROM promo_uses
-         WHERE code=$1
-           AND user_id=$2`,
-        [
-          code,
-          req.user.id
-        ]
-      );
-
-      return fail(
-        res,
-        409,
-        'code_full'
-      );
-    }
-
-    await q(
-      `UPDATE users
-       SET coins=coins+$2
-       WHERE id=$1`,
-      [
-        req.user.id,
-        p.reward
-      ]
-    );
-
-    res.json({
-      ok: true,
-      reward: Number(
-        p.reward
-      )
-    });
-  })
-);
-
-/* ---------- leaderboard ---------- */
-
-app.get(
-  '/api/leaderboard',
-  auth,
-  ah(async (req, res) => {
-    const S = await settings();
-
-    const top = (
-      await q(
-        `SELECT
-          u.first_name AS name,
-          COUNT(*)::int AS ads
-         FROM ad_views a
-         JOIN users u
-           ON u.id=a.user_id
-         WHERE a.completed
-           AND a.started_at >
-             now() - interval '7 days'
-         GROUP BY u.id
-         ORDER BY ads DESC
-         LIMIT 55`
-      )
-    ).rows;
-
-    const inviters = (
-      await q(
-        `SELECT
-          u.first_name AS name,
-          COUNT(*)::int AS invites
-         FROM users ref
-         JOIN users u
-           ON u.id=ref.referred_by
-         WHERE ref.referral_paid
-           AND ref.created_at >
-             now() - interval '7 days'
-         GROUP BY u.id
-         ORDER BY invites DESC
-         LIMIT 55`
-      )
-    ).rows;
-
-    const coinPerEtb = Number(
-      S.coin_per_etb || 1
-    ) || 1;
-
-    const earners = (
-      await q(
-        `SELECT
-          u.first_name AS name,
-          ROUND(u.coins / $1, 2) AS pending_etb,
-          COALESCE(w.paid, 0) AS paid_etb,
-          ROUND(
-            u.coins / $1
-              + COALESCE(w.paid, 0)
-              + COALESCE(w.pending, 0),
-            2
-          ) AS total_earned_etb
-         FROM users u
-         LEFT JOIN (
-           SELECT
-             user_id,
-             SUM(etb)
-               FILTER (
-                 WHERE status='paid'
-               ) AS paid,
-             SUM(etb)
-               FILTER (
-                 WHERE status='pending'
-               ) AS pending
-           FROM withdrawals
-           GROUP BY user_id
-         ) w
-           ON w.user_id=u.id
-         ORDER BY total_earned_etb DESC
-         LIMIT 55`,
-        [coinPerEtb]
-      )
-    ).rows;
-
-    res.json({
-      top,
-      inviters,
-      earners
-    });
-  })
-);
-
-/* ---------- withdrawals ---------- */
-
-app.get(
-  '/api/withdrawals',
-  auth,
-  ah(async (req, res) => {
-    const { rows } = await q(
-      `SELECT
-        id,
-        etb,
-        method,
-        status,
-        created_at
-       FROM withdrawals
-       WHERE user_id=$1
-       ORDER BY id DESC
-       LIMIT 10`,
-      [req.user.id]
-    );
-
-    res.json({
-      items: rows
-    });
-  })
-);
-
-app.post(
-  '/api/withdraw',
-  auth,
-  ah(async (req, res) => {
-    const u = req.user;
-    const S = await settings();
-
-    const g = await checkGate(
-      u,
-      true
-    );
-
-    if (!g.ok) {
-      return fail(
-        res,
-        403,
-        'gate'
-      );
-    }
-
-    if (
-      S.withdrawals_open ===
-      false
-    ) {
-      return fail(
-        res,
-        423,
-        'closed'
-      );
-    }
-
-    if (u.flagged) {
-      return fail(
-        res,
-        403,
-        'under_review'
-      );
-    }
-
-    const b = req.body || {};
-
-    const etb =
-      Math.round(
-        Number(b.etb) * 100
-      ) / 100;
-
-    const method = String(
-      b.method || ''
-    )
-      .trim()
-      .toLowerCase();
-
-    const account = String(
-      b.account || ''
-    )
-      .trim()
-      .slice(0, 32);
-
-    const holderName = String(
-      b.holder_name || ''
-    )
-      .trim()
-      .slice(0, 64);
-
-    if (
-      !(etb > 0) ||
-      !WITHDRAW_METHODS[method]
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_input'
-      );
-    }
-
-    if (
-      !WITHDRAW_METHODS[method].test(
-        account
-      )
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_phone'
-      );
-    }
-
-    if (holderName.length < 3) {
-      return fail(
-        res,
-        400,
-        'bad_name'
-      );
-    }
-
-    if (
-      !S.ads_payment_enabled &&
-      !S.invite_payment_enabled
-    ) {
-      return fail(
-        res,
-        423,
-        'no_payment_source'
-      );
-    }
-
-    if (
-      etb <
-      Number(
-        S.min_withdraw_etb || 0
-      )
-    ) {
-      return fail(
-        res,
-        400,
-        'min',
-        {
-          min:
-            S.min_withdraw_etb
-        }
-      );
-    }
-
-    if (
-      u.last_withdraw_at &&
-      Date.now() -
-        new Date(
-          u.last_withdraw_at
-        ).getTime() <
-        (S.withdraw_interval_hours ||
-          48) *
-          3600000
-    ) {
-      return fail(
-        res,
-        429,
-        'interval'
-      );
-    }
-
-    const refs = (
-      await q(
-        `SELECT COUNT(*)::int AS c
-         FROM users
-         WHERE referred_by=$1
-           AND referral_paid`,
-        [u.id]
-      )
-    ).rows[0].c;
-
-    if (
-      refs <
-      (
-        S.withdraw_referrals_required ||
-        0
-      )
-    ) {
-      return fail(
-        res,
-        403,
-        'referrals'
-      );
-    }
-
-    const cap = (
-      await q(
-        `SELECT
-          COALESCE(
-            SUM(etb),
-            0
-          ) AS s
-         FROM withdrawals
-         WHERE status IN (
-           'pending',
-           'paid'
-         )
-           AND (
-             created_at
-             AT TIME ZONE 'UTC'
-           )::date=$1::date`,
-        [todayStr()]
-      )
-    ).rows[0].s;
-
-    if (
-      Number(cap) + etb >
-      Number(
-        S.global_daily_cap_etb ||
-          1e9
-      )
-    ) {
-      return fail(
-        res,
-        429,
-        'cap'
-      );
-    }
-
-    const coins = Math.round(
-      etb * S.coin_per_etb
-    );
-
-    /*
-     * Only the enabled source(s) count toward what can
-     * actually be withdrawn right now.
-     */
-    const availAds = S.ads_payment_enabled
-      ? Number(u.ads_coins || 0)
-      : 0;
-
-    const availInvite = S.invite_payment_enabled
-      ? Number(u.invite_coins || 0)
-      : 0;
-
-    if (coins > availAds + availInvite) {
-      return fail(
-        res,
-        402,
-        'no_coins'
-      );
-    }
-
-    /*
-     * Spend from ads_coins first, then invite_coins,
-     * whichever of the two is currently enabled.
-     */
-    const fromAds = Math.min(
-      coins,
-      availAds
-    );
-
-    const fromInvite =
-      coins - fromAds;
-
-    const d = await q(
-      `UPDATE users
-       SET coins=coins-$2,
-           ads_coins=GREATEST(0, ads_coins-$3),
-           invite_coins=GREATEST(0, invite_coins-$4),
-           last_withdraw_at=now()
-       WHERE id=$1
-         AND coins>=$2
-       RETURNING coins`,
-      [
-        u.id,
-        coins,
-        fromAds,
-        fromInvite
-      ]
-    );
-
-    if (!d.rowCount) {
-      return fail(
-        res,
-        402,
-        'no_coins'
-      );
-    }
-
-    const w = (
-      await q(
-        `INSERT INTO withdrawals(
-          user_id,
-          coins,
-          etb,
-          method,
-          account,
-          holder_name,
-          from_ads,
-          from_invite
-        )
-        VALUES($1,$2,$3,$4,$5,$6,$7,$8)
-        RETURNING id`,
-        [
-          u.id,
-          coins,
-          etb,
-          method,
-          account,
-          holderName,
-          fromAds,
-          fromInvite
-        ]
-      )
-    ).rows[0];
-
-    const text =
-      `Withdrawal #${w.id}\n` +
-      `User: ${u.first_name} (ID: ${u.id}) @${u.username || '-'}\n` +
-      `Amount: ${etb} ETB\n` +
-      `Method: ${method}\n` +
-      `Account: ${account}\n` +
-      `Holder name: ${holderName}`;
-
-    /*
-     * Send withdrawal request
-     * to every configured admin.
-     */
-    for (const adminId of ADMIN_IDS) {
-      await tg(
-        'sendMessage',
-        {
-          chat_id: adminId,
-          text,
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: '✅ Paid',
-                  callback_data:
-                    `w:a:${w.id}`
-                },
-                {
-                  text: '❌ Reject',
-                  callback_data:
-                    `w:r:${w.id}`
-                }
-              ]
-            ]
-          }
-        }
-      );
-    }
-
-    if (WITHDRAW_CHANNEL) {
-      await tg(
-        'sendMessage',
-        {
-          chat_id:
-            WITHDRAW_CHANNEL,
-          text
-        }
-      );
-    }
-
-    res.json({
-      ok: true,
-      id: w.id,
-      coins: Number(
-        d.rows[0].coins
-      )
-    });
-  })
-);
-
-/* ---------- admin overview ---------- */
-
-app.get(
-  '/api/admin/overview',
-  auth,
-  adminOnly,
-  ah(async (req, res) => {
-    const S = await settings();
-
-    const stats = (
-      await q(
-        `SELECT
-          (
-            SELECT COUNT(*)::int
-            FROM users
-          ) AS users,
-
-          (
-            SELECT COUNT(*)::int
-            FROM users
-            WHERE created_at >
-              now() - interval '1 day'
-          ) AS new_today,
-
-          (
-            SELECT COUNT(*)::int
-            FROM users
-            WHERE flagged
-          ) AS flagged,
-
-          (
-            SELECT COUNT(*)::int
-            FROM task_subs
-            WHERE status='pending'
-          ) AS pending_tasks,
-
-          (
-            SELECT
-              COALESCE(
-                SUM(coins),
-                0
-              )::bigint
-            FROM users
-          ) AS coins_owed`
-      )
-    ).rows[0];
-
-    const pending = (
-      await q(
-        `SELECT
-          w.id,
-          w.etb,
-          w.method,
-          w.account,
-          u.first_name
-         FROM withdrawals w
-         JOIN users u
-           ON u.id=w.user_id
-         WHERE w.status='pending'
-         ORDER BY w.id`
-      )
-    ).rows;
-
-    const tasks = (
-      await q(
-        `SELECT
-          t.*,
-          (
-            SELECT COUNT(*)::int
-            FROM task_subs s
-            WHERE s.task_id=t.id
-              AND s.status IN (
-                'pending',
-                'approved'
-              )
-          ) AS taken
-         FROM tasks t
-         ORDER BY id DESC
-         LIMIT 50`
-      )
-    ).rows;
-
-    const promos = (
-      await q(
-        'SELECT * FROM promos ORDER BY code'
-      )
-    ).rows;
-
-    const s = {};
-
-    SETTING_KEYS.forEach(
-      (k) => {
-        s[k] = S[k];
-      }
-    );
-
-    res.json({
-      stats,
-      pending,
-      tasks,
-      promos,
-      settings: s,
-      admins: ADMIN_IDS
-    });
-  })
-);
-
-/* ---------- admin settings ---------- */
-
-app.post(
-  '/api/admin/setting',
-  auth,
-  adminOnly,
-  ah(async (req, res) => {
-    const {
+  let action;
+
+  if(st === 'done'){
+    action = `
+      <button class="btn ghost" disabled>
+        ${ic('check')}
+        ${t('checked_in_today')}
+      </button>`;
+  }else if(st === 'recoverable'){
+    action = `
+      <p class="muted" style="margin-bottom:10px">
+        You missed a day. Save your ${u.streak}-day streak
+        for ${c.freeze_price} coins, or start over.
+      </p>
+      <div class="grid2" style="gap:10px">
+        <button class="btn" onclick="showInterstitialAd();freeze()">
+          ${ic('shield')} Save streak
+        </button>
+        <button class="btn ghost" onclick="showInterstitialAd();checkin(true)">
+          Start over
+        </button>
+      </div>`;
+  }else{
+    action = `
+      <button class="btn" onclick="showInterstitialAd();checkin()">
+        ${ic('flame')}
+        ${st === 'lost' || st === 'new' ? t('start_streak') : t('check_in')}
+      </button>`;
+  }
+
+  const days = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date();
+    d.setDate(d.getDate()-i);
+    const key = d.toISOString().slice(0,10);
+    days.push({
       key,
-      value
-    } = req.body || {};
+      label:d.toLocaleDateString(undefined,{weekday:'short'}).slice(0,3),
+      day:d.getDate(),
+      done:CAL.includes(key)
+    });
+  }
 
-    if (
-      !SETTING_KEYS.includes(key)
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_key'
+  return `
+    <div class="card hero">
+      <div class="row between">
+        <div class="muted">${t('balance')}</div>
+      </div>
+
+      <div class="amt">${fmt(u.coins)}<small>coins</small></div>
+      <div class="etb">${etb(u.coins)} ETB · 100 coins = 1 ETB</div>
+
+      <div class="grid2" style="margin-top:14px">
+        <div>
+          <div class="muted">Invite coins</div>
+          <b>${fmt(u.invite_coins || 0)}</b>
+        </div>
+        <div>
+          <div class="muted">Ad coins</div>
+          <b>${fmt(u.ad_coins || 0)}</b>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:10px">
+        <div>
+          <div class="muted">Task coins</div>
+          <b>${fmt(u.task_coins || 0)}</b>
+        </div>
+        <div>
+          <div class="muted">Other coins</div>
+          <b>${fmt(u.bonus_coins || 0)}</b>
+        </div>
+      </div>
+
+      ${c.vip ? `
+        <span class="badge b3" style="margin-top:10px;display:inline-block">
+          ${t('vip_unlimited')}
+        </span>` : ''}
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-bottom:4px">
+        <div class="flame">${ic('flame')}</div>
+        <div class="grow">
+          <div style="font-weight:700;font-size:17px">${u.streak}-day streak</div>
+          <div class="muted">Best: ${u.best} days</div>
+        </div>
+        <span class="badge b${u.level}">${LEVELS[u.level - 1] || 'Gold'}</span>
+      </div>
+
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <p class="muted" style="margin-bottom:14px">
+        ${u.level >= c.levels.length
+          ? 'Top level reached.'
+          : `Check in 7 days in a row to reach ${LEVELS[u.level]} and earn ${c.milestone_bonus} bonus coins.`}
+      </p>
+      ${action}
+
+      <div style="margin-top:18px">
+        <div class="row between">
+          <b>Daily check-in</b>
+          <span class="muted">${u.streak} days</span>
+        </div>
+        <div class="grid2" style="grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px">
+          ${days.map(x=>`
+            <div style="text-align:center;padding:7px 2px;border-radius:12px;border:1px solid var(--line);background:${x.done?'rgba(53,212,154,.12)':'rgba(255,255,255,.03)'}">
+              <div class="muted" style="font-size:10px">${x.label}</div>
+              <b style="font-size:13px">${x.day}</b>
+              <div style="font-size:11px">${x.done?'✓':'·'}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card" onclick="go('earn')">
+        <div class="row muted">${ic('play')}${t('ads_today')}</div>
+        <div style="font-size:24px;font-weight:750;margin-top:6px">
+          ${c.ads_limit === null ? c.ads_today + '/∞' : c.ads_today + '/' + c.ads_limit}
+        </div>
+      </div>
+      <div class="card" onclick="go('spin')">
+        <div class="row muted">${ic('spin')}${t('free_spins')}</div>
+        <div style="font-size:24px;font-weight:750;margin-top:6px">${c.spin.free_left}</div>
+      </div>
+    </div>
+  `;
+}
+
+/* =========================================================
+   CHECKIN
+========================================================= */
+
+async function checkin(restart){
+
+  if(busy) return;
+
+  busy = true;
+
+  try{
+
+    const r =
+      await api(
+        '/api/checkin',
+        {
+          restart:!!restart
+        }
       );
+
+    haptic();
+
+    toast(
+      r.bonus
+        ? `Level up! +${r.bonus} coins`
+        : `Streak: ${r.streak} days`
+    );
+
+    await loadMe();
+
+    render();
+
+  }catch(e){
+
+    if(
+      e.code === 'recoverable'
+    ){
+
+      await loadMe();
+
+      render();
+
+    }else if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
     }
 
-    if (
-      /_table$/.test(key) &&
-      !(
-        Array.isArray(value) &&
-        value.length &&
-        value.every(
-          (r) =>
-            Array.isArray(r) &&
-            r.length === 2 &&
-            r.every((n) =>
-              Number.isFinite(
-                Number(n)
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   FREEZE
+========================================================= */
+
+async function freeze(){
+
+  if(busy) return;
+
+  busy = true;
+
+  try{
+
+    await api(
+      '/api/streak/freeze',
+      {}
+    );
+
+    await api(
+      '/api/checkin',
+      {}
+    );
+
+    haptic();
+
+    toast(
+      'Streak saved'
+    );
+
+    await loadMe();
+
+    render();
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
+    }
+
+    await loadMe()
+      .catch(()=>{});
+
+    render();
+
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   EARN
+========================================================= */
+
+function vEarn(){
+
+  const c =
+    ME.cfg;
+
+  const tasks =
+    TASKS.length
+
+      ? TASKS.map(
+          (t)=>{
+
+            let btn;
+
+            if(
+              t.type === 'channel'
+            ){
+
+              btn = `
+
+                <button
+                  class="btn ghost sm"
+                  onclick="openUrl('${esc(t.url)}')"
+                >
+                  ${ic('link','sm')}
+                  Join
+                </button>
+
+                <button
+                  class="btn sm"
+                  onclick="verifyTask(${t.id},this)"
+                >
+                  ${ic('check','sm')}
+                  Verify
+                </button>
+
+              `;
+
+            }else if(
+              t.my_status === 'pending'
+            ){
+
+              btn = `
+                <span class="pill">
+                  In review
+                </span>
+              `;
+
+            }else{
+
+              btn = `
+
+                <button
+                  class="btn ghost sm"
+                  onclick="openUrl('${esc(t.url)}')"
+                >
+                  ${ic('link','sm')}
+                  Open
+                </button>
+
+                <button
+                  class="btn sm"
+                  onclick="startTask(${t.id})"
+                >
+                  ${
+                    t.my_status === 'awaiting'
+                      ? 'Send proof'
+                      : 'Submit'
+                  }
+                </button>
+
+              `;
+
+            }
+
+            return `
+
+              <div class="item">
+
+                <div class="grow">
+
+                  <div class="t">
+                    ${esc(t.title)}
+                  </div>
+
+                  <div class="muted">
+                    +${t.reward} coins
+                    ${
+                      t.max_users
+                        ? ` · ${Math.max(
+                            0,
+                            t.max_users - t.taken
+                          )} spots left`
+                        : ''
+                    }
+                  </div>
+
+                  ${
+                    t.my_status === 'rejected'
+                      ? `
+                        <div
+                          class="error-text"
+                          style="font-size:12px"
+                        >
+                          Rejected. Try again.
+                        </div>
+                      `
+                      : ''
+                  }
+
+                </div>
+
+                <div
+                  class="row"
+                  style="gap:8px"
+                >
+                  ${btn}
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        ).join('')
+
+      : `
+        <div class="empty">
+          No tasks right now.
+          New tasks appear here.
+        </div>
+      `;
+
+  return `
+
+    <div class="card">
+
+      <div
+        class="row between"
+      >
+
+        <div>
+
+          <div
+            style="
+              font-weight:700;
+              font-size:17px
+            "
+          >
+            ${t('watch_an_ad')}
+          </div>
+
+          <div class="muted">
+            +${c.ad_reward} coins per ad
+          </div>
+
+        </div>
+
+        <span class="pill">
+          ${c.ads_limit === null ? c.ads_today + '/∞' : c.ads_today + '/' + c.ads_limit}
+        </span>
+
+      </div>
+
+      <button
+        class="btn"
+        style="margin-top:14px"
+        id="adbtn"
+        onclick="watchAd(this)"
+        ${
+          c.ads_limit !== null &&
+          c.ads_today >= c.ads_limit
+            ? 'disabled'
+            : ''
+        }
+      >
+
+        ${ic('play')}
+
+        ${
+          c.ads_limit !== null &&
+          c.ads_today >= c.ads_limit
+            ? t('limit_reached')
+            : t('watch_ad')
+        }
+
+      </button>
+
+    </div>
+
+    <h2>
+      ${t('tasks')}
+    </h2>
+
+    <div class="card">
+      ${tasks}
+    </div>
+
+  `;
+
+}
+
+/* =========================================================
+   OPEN URL
+========================================================= */
+
+function openUrl(u){
+
+  if(
+    !u
+  ) return;
+
+  if(
+    tg &&
+    /t\.me\//i.test(u) &&
+    tg.openTelegramLink
+  ){
+
+    tg.openTelegramLink(u);
+
+  }else if(
+    tg &&
+    tg.openLink
+  ){
+
+    tg.openLink(u);
+
+  }else{
+
+    window.open(
+      u,
+      '_blank'
+    );
+
+  }
+
+}
+
+/* =========================================================
+   WATCH AD
+========================================================= */
+
+async function watchAd(btn){
+
+  if(busy) return;
+
+  busy = true;
+
+  btn.disabled = true;
+
+  try{
+
+    const s =
+      await api(
+        '/api/ad/start',
+        {}
+      );
+
+    /*
+      Waterfall: try a fresh AdsGram
+      rewarded ad first, fall back to
+      Monetag if AdsGram isn't available
+      or has nothing to show. The coin
+      reward is only ever granted by the
+      backend after /api/ad/complete
+      verifies this nonce, so neither
+      SDK can be spoofed into paying out.
+    */
+
+    let shown = false;
+
+    if(adsgram){
+
+      try{
+
+        await adsgram.show();
+
+        shown = true;
+
+      }catch(e){
+
+        shown = false;
+
+      }
+
+    }
+
+    if(
+      !shown &&
+      typeof show_11849985 ===
+      'function'
+    ){
+
+      try{
+
+        await show_11849985();
+
+        shown = true;
+
+      }catch(e){
+
+        shown = false;
+
+      }
+
+    }
+
+    if(!shown){
+
+      throw Object.assign(
+        new Error('ads_unavailable'),
+        {
+          code:'ads_unavailable'
+        }
+      );
+
+    }
+
+    const r =
+      await api(
+        '/api/ad/complete',
+        {
+          nonce:s.nonce
+        }
+      );
+
+    haptic();
+
+    toast(
+      `+${r.reward} coins`
+    );
+
+    await loadMe();
+
+    render();
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
+    }
+
+    btn.disabled = false;
+
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   VERIFY TASK
+========================================================= */
+
+async function verifyTask(
+  id,
+  btn
+){
+
+  if(busy) return;
+
+  busy = true;
+
+  btn.disabled = true;
+
+  try{
+
+    const r =
+      await api(
+        `/api/tasks/${id}/verify`,
+        {}
+      );
+
+    haptic();
+
+    toast(
+      `+${r.reward} coins`
+    );
+
+    TASKS =
+      (
+        await api('/api/tasks')
+      ).tasks;
+
+    await loadMe();
+
+    render();
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
+    }
+
+    btn.disabled = false;
+
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   START TASK
+========================================================= */
+
+async function startTask(id){
+
+  if(busy) return;
+
+  busy = true;
+
+  try{
+
+    const r =
+      await api(
+        `/api/tasks/${id}/start`,
+        {}
+      );
+
+    toast(
+      'Send your screenshot to the bot chat'
+    );
+
+    setTimeout(
+      ()=>{
+        if(
+          tg &&
+          tg.openTelegramLink
+        ){
+
+          tg.openTelegramLink(
+            r.bot
+          );
+
+        }else{
+
+          window.open(
+            r.bot,
+            '_blank'
+          );
+
+        }
+      },
+      500
+    );
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
+    }
+
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   SPIN
+========================================================= */
+
+function vSpin(){
+
+  const s =
+    ME.cfg.spin;
+
+  /*
+   * FIX: guard against a spin config that hasn't been
+   * saved on the backend yet, so the wheel/buttons never
+   * show "undefined" — they just show 0 until the admin
+   * panel saves real values.
+   */
+  if(!Array.isArray(s.free_prizes) || !s.free_prizes.length) s.free_prizes = [0];
+  if(!Array.isArray(s.paid_odds)) s.paid_odds = [];
+  if(s.cost === undefined || s.cost === null) s.cost = 0;
+  if(s.free_left === undefined || s.free_left === null) s.free_left = 0;
+
+  const win =
+    WINNERS.length
+
+      ? WINNERS.map(
+          (w)=>
+            `${esc(w.name || 'Someone')} won ${w.prize} coins`
+        ).join('   |   ')
+
+      : 'Big wins show up here';
+
+  return `
+
+    <div class="ticker">
+      <span>
+        ${win}
+      </span>
+    </div>
+
+    <div class="wheelbox">
+
+      <div class="pointer"></div>
+
+      <div id="wheel"></div>
+
+    </div>
+
+    <div class="card">
+
+      <button
+        class="btn"
+        id="fbtn"
+        onclick="showInterstitialAd();doSpin('free')"
+        ${
+          s.free_left
+            ? ''
+            : 'disabled'
+        }
+      >
+
+        ${ic('spin')}
+
+        Free spin
+        (${s.free_left} left)
+
+      </button>
+
+      <button
+        class="btn ghost"
+        style="margin-top:10px"
+        id="pbtn"
+        onclick="showInterstitialAd();doSpin('paid')"
+        ${
+          ME.user.coins >= s.cost
+            ? ''
+            : 'disabled'
+        }
+      >
+
+        ${ic('spin')}
+
+        Spin for
+        ${s.cost}
+        coins
+
+      </button>
+
+      <p
+        class="muted"
+        style="margin-top:12px"
+      >
+        Free spins reset every day.
+        Paid spins use your coins.
+      </p>
+
+      <div class="odds">
+
+        ${
+          s.paid_odds.map(
+            ([p,o])=>
+              `
+                <div>
+                  <b>${p}</b>
+                  ${o}%
+                </div>
+              `
+          ).join('')
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+function segs(kind){
+
+  const s =
+    ME.cfg.spin;
+
+  const list =
+    kind === 'free'
+
+      ? s.free_prizes
+
+      : [
+          ...new Set(
+            s.paid_odds.map(
+              (r)=>r[0]
+            )
+          )
+        ].sort(
+          (a,b)=>a-b
+        );
+
+  const out = [];
+
+  for(
+    let i=0;
+    i<8;
+    i++
+  ){
+
+    out.push(
+      list[i % list.length]
+    );
+
+  }
+
+  return out;
+
+}
+
+function buildWheel(kind){
+
+  wheelKind =
+    kind;
+
+  const arr =
+    segs(kind);
+
+  const R = 96;
+
+  const cols = [
+    '#18304e',
+    '#254a78',
+    '#3a2a12',
+    '#5a4216'
+  ];
+
+  const pt =
+    (a)=>[
+      100 + R * Math.sin(a),
+      100 - R * Math.cos(a)
+    ];
+
+  let svg =
+    `
+      <svg viewBox="0 0 200 200">
+
+        <circle
+          cx="100"
+          cy="100"
+          r="99"
+          fill="#08111f"
+          stroke="#16c777"
+          stroke-width="2"
+        />
+    `;
+
+  arr.forEach(
+    (p,i)=>{
+
+      const a1 =
+        (i * 45) *
+        Math.PI /
+        180;
+
+      const a2 =
+        ((i + 1) * 45) *
+        Math.PI /
+        180;
+
+      const [
+        x1,
+        y1
+      ] = pt(a1);
+
+      const [
+        x2,
+        y2
+      ] = pt(a2);
+
+      svg += `
+
+        <path
+          d="
+            M100,100
+            L${x1},${y1}
+            A${R},${R}
+            0 0 1
+            ${x2},${y2}
+            Z
+          "
+          fill="${
+            p === 0
+              ? cols[0]
+              : (
+                i % 2
+                  ? cols[1]
+                  : cols[3]
               )
+          }"
+          stroke="#08111f"
+          stroke-width="1"
+        />
+
+        <text
+          x="100"
+          y="34"
+          transform="
+            rotate(
+              ${i * 45 + 22.5}
+              100
+              100
             )
-        )
-      )
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_table'
+          "
+          text-anchor="middle"
+          font-size="14"
+          font-weight="700"
+          fill="${
+            p === 0
+              ? '#8fa3bf'
+              : '#4bffa0'
+          }"
+        >
+          ${p}
+        </text>
+
+      `;
+
+    }
+  );
+
+  svg += `
+      <circle
+        cx="100"
+        cy="100"
+        r="10"
+        fill="#16c777"
+      />
+
+      </svg>
+  `;
+
+  const w =
+    $('#wheel');
+
+  if(!w) return;
+
+  w.style.transition =
+    'none';
+
+  w.style.transform =
+    'rotate(0deg)';
+
+  rot = 0;
+
+  w.innerHTML =
+    svg;
+
+}
+
+async function doSpin(kind){
+
+  if(busy) return;
+
+  busy = true;
+
+  $('#fbtn').disabled =
+    true;
+
+  $('#pbtn').disabled =
+    true;
+
+  try{
+
+    const r =
+      await api(
+        '/api/spin',
+        {kind}
       );
+
+    buildWheel(kind);
+
+    const arr =
+      segs(kind);
+
+    const idxs =
+      arr
+        .map(
+          (p,i)=>
+            p === r.prize
+              ? i
+              : -1
+        )
+        .filter(
+          (i)=>i >= 0
+        );
+
+    const idx =
+      idxs.length
+        ? idxs[
+            Math.floor(
+              Math.random() *
+              idxs.length
+            )
+          ]
+        : 0;
+
+    const w =
+      $('#wheel');
+
+    void w.offsetWidth;
+
+    const target =
+      360 * 5 +
+      (
+        (
+          360 -
+          (
+            idx * 45 +
+            22.5
+          )
+        ) % 360
+      );
+
+    w.style.transition =
+      '';
+
+    w.style.transform =
+      `rotate(${target}deg)`;
+
+    await sleep(4200);
+
+    ME.user.coins =
+      r.coins;
+
+    ME.cfg.spin.free_left =
+      r.free_left;
+
+    if(r.prize > 0){
+
+      haptic();
+
+      toast(
+        `You won ${r.prize} coins`
+      );
+
+    }else{
+
+      toast(
+        'No prize this time'
+      );
+
     }
 
-    if (
-      key === 'gate_channels' &&
-      !(
-        Array.isArray(value) &&
-        value.every(
-          (c) =>
-            /^@\w{4,}$/.test(
-              String(c)
-            )
-        )
-      )
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_channels'
+    const t =
+      $('#fbtn');
+
+    const p =
+      $('#pbtn');
+
+    t.disabled =
+      !r.free_left;
+
+    t.innerHTML =
+      `${ic('spin')}
+       Free spin (${r.free_left} left)`;
+
+    p.disabled =
+      r.coins <
+      ME.cfg.spin.cost;
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
       );
+
     }
 
-    await q(
-      `INSERT INTO settings(
+    const t =
+      $('#fbtn');
+
+    if(t){
+
+      t.disabled =
+        !ME.cfg.spin.free_left;
+
+      $('#pbtn').disabled =
+        ME.user.coins <
+        ME.cfg.spin.cost;
+
+    }
+
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   INVITE
+========================================================= */
+
+function vInvite(){
+
+  const c =
+    ME.cfg;
+
+  const w =
+    c.withdraw;
+
+  return `
+
+    <div class="card">
+
+      <div
+        style="
+          font-weight:700;
+          font-size:17px
+        "
+      >
+        ${t('invite_friends')}
+      </div>
+
+      <p
+        class="muted"
+        style="margin:6px 0 14px"
+      >
+        A friend counts when they join
+        the channels and watch ads on
+        2 different days.
+        You earn ${c.referral_reward}
+        coins for each one.
+      </p>
+
+      <div
+        class="row between"
+      >
+        <span>
+          Qualified referrals
+        </span>
+
+        <b>
+          ${w.refs_have}/${w.refs_required}
+        </b>
+      </div>
+
+      <div class="bar">
+        <i
+          style="
+            width:${
+              Math.min(
+                100,
+                (
+                  w.refs_have /
+                  Math.max(
+                    1,
+                    w.refs_required
+                  )
+                ) * 100
+              )
+            }%
+          "
+        ></i>
+      </div>
+
+      <p
+        class="muted"
+        style="margin-bottom:14px"
+      >
+        ${ME.invited}
+        invited so far
+      </p>
+
+      <button
+        class="btn"
+        onclick="showInterstitialAd();copyRef()"
+      >
+        ${ic('copy')}
+        ${t('copy_invite_link')}
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <div
+        class="row"
+        style="margin-bottom:6px"
+      >
+        ${ic('gift')}
+        <b>${t('promo_code')}</b>
+      </div>
+
+      <div class="row">
+
+        <input
+          id="promo"
+          placeholder="Enter code"
+          autocapitalize="characters"
+          style="margin:0"
+        >
+
+        <button
+          class="btn sm"
+          onclick="showInterstitialAd();redeem()"
+        >
+          ${t('redeem')}
+        </button>
+
+      </div>
+
+    </div>
+
+    <h2>
+      Top ad watchers this week
+    </h2>
+
+    <div class="card">
+
+      ${
+        TOP.length
+
+          ? TOP.map(
+              (t,i)=>
+                `
+                  <div class="item">
+
+                    <span
+                      class="pill ${
+                        i === 0
+                          ? ''
+                          : 'ok'
+                      }"
+                      style="
+                        min-width:30px;
+                        text-align:center
+                      "
+                    >
+                      ${i + 1}
+                    </span>
+
+                    <div class="grow">
+                      ${esc(
+                        t.name ||
+                        'User'
+                      )}
+                    </div>
+
+                    <b>
+                      ${t.ads} ads
+                    </b>
+
+                  </div>
+                `
+            ).join('')
+
+          : `
+              <div class="empty">
+                No activity yet this week.
+              </div>
+            `
+      }
+
+      <p
+        class="muted"
+        style="margin-top:12px"
+      >
+        ${ic('trophy')}
+        Top watcher gets unlimited ads
+        for the next 7 days.
+      </p>
+
+    </div>
+
+    <h2>
+      Top inviters this week
+    </h2>
+
+    <div class="card">
+
+      ${
+        INVITERS.length
+
+          ? INVITERS.map(
+              (t,i)=>
+                `
+                  <div class="item">
+
+                    <span
+                      class="pill ${
+                        i === 0
+                          ? ''
+                          : 'ok'
+                      }"
+                      style="
+                        min-width:30px;
+                        text-align:center
+                      "
+                    >
+                      ${i + 1}
+                    </span>
+
+                    <div class="grow">
+                      ${esc(
+                        t.name ||
+                        'User'
+                      )}
+                    </div>
+
+                    <b>
+                      ${t.invites} invites
+                    </b>
+
+                  </div>
+                `
+            ).join('')
+
+          : `
+              <div class="empty">
+                No invites yet this week.
+              </div>
+            `
+      }
+
+      <p
+        class="muted"
+        style="margin-top:12px"
+      >
+        ${ic('trophy')}
+        200+ invites in a week gets
+        the top inviter a cash bonus.
+      </p>
+
+    </div>
+
+    <h2>
+      Leaderboard · top earners
+    </h2>
+
+    <div class="card">
+
+      ${
+        EARNERS.length
+
+          ? EARNERS.map(
+              (t,i)=>
+                `
+                  <div class="item">
+
+                    <span
+                      class="pill ${
+                        i === 0
+                          ? ''
+                          : 'ok'
+                      }"
+                      style="
+                        min-width:30px;
+                        text-align:center
+                      "
+                    >
+                      ${i + 1}
+                    </span>
+
+                    <div class="grow">
+                      <div class="t">
+                        ${esc(
+                          t.name ||
+                          'User'
+                        )}
+                      </div>
+                      <div class="muted">
+                        Paid ${t.paid_etb} ·
+                        Pending ${t.pending_etb} ETB
+                      </div>
+                    </div>
+
+                    <b>
+                      ${t.total_earned_etb} ETB
+                    </b>
+
+                  </div>
+                `
+            ).join('')
+
+          : `
+              <div class="empty">
+                No earners yet.
+              </div>
+            `
+      }
+
+    </div>
+
+  `;
+
+}
+
+async function copyRef(){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      ME.ref_link
+    );
+
+    toast(
+      'Link copied'
+    );
+
+  }catch(e){
+
+    if(
+      tg &&
+      tg.openTelegramLink
+    ){
+
+      tg.openTelegramLink(
+        'https://t.me/share/url?url=' +
+        encodeURIComponent(
+          ME.ref_link
+        )
+      );
+
+    }else{
+
+      toast(
+        ME.ref_link
+      );
+
+    }
+
+  }
+
+}
+
+async function redeem(){
+
+  const code =
+    $('#promo').value.trim();
+
+  if(
+    !code ||
+    busy
+  ) return;
+
+  busy = true;
+
+  try{
+
+    const r =
+      await api(
+        '/api/promo',
+        {code}
+      );
+
+    haptic();
+
+    toast(
+      `+${r.reward} coins`
+    );
+
+    await loadMe();
+
+    render();
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
+    }
+
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   WALLET
+========================================================= */
+
+function vWallet(){
+
+  const w = ME.cfg.withdraw;
+  const u = ME.user;
+  const wait = w.next_at ? new Date(w.next_at) : null;
+
+  const blocked =
+    !w.open ? 'Withdrawals are closed right now.'
+    : u.flagged ? 'Your account is under review.'
+    : wait ? `Next withdrawal: ${wait.toLocaleString()}`
+    : w.refs_have < w.refs_required
+      ? `You need ${w.refs_required - w.refs_have} more qualified referrals.`
+      : '';
+
+  const withdrawable =
+    (w.ads_payment_enabled ? Number(u.ad_coins || 0) : 0) +
+    (w.invite_payment_enabled ? Number(u.invite_coins || 0) : 0);
+
+  return `
+    <div class="card hero">
+      <div class="muted">Available</div>
+      <div class="amt">${etb(u.coins)}<small>ETB</small></div>
+      <div class="etb">${fmt(u.coins)} total coins</div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:700;font-size:17px">Withdraw</div>
+      <p class="muted" style="margin:6px 0 4px">
+        ${w.min_etb} ETB minimum · one withdrawal every ${Math.round(w.interval_h/24)} days.
+      </p>
+
+      <div class="grid2" style="margin-top:12px">
+        <div>
+          <div class="muted">Ad withdrawable</div>
+          <b>${fmt(w.ads_payment_enabled ? u.ad_coins : 0)} coins</b>
+        </div>
+        <div>
+          <div class="muted">Invite withdrawable</div>
+          <b>${fmt(w.invite_payment_enabled ? u.invite_coins : 0)} coins</b>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:10px">
+        Payment sources:
+        ${w.ads_payment_enabled ? 'Ads ON' : 'Ads OFF'}
+        ·
+        ${w.invite_payment_enabled ? 'Invite ON' : 'Invite OFF'}
+      </p>
+
+      ${blocked ? `<p class="warning-text" style="margin:10px 0">${esc(blocked)}</p>` : ''}
+
+      <label>
+        Amount (ETB)
+        <input id="wamt" type="number" inputmode="decimal"
+          min="${w.min_etb}" step="0.01" placeholder="${w.min_etb}">
+      </label>
+
+      <label>
+        Payment method
+        <select id="wmeth" onchange="withdrawMethodChanged()">
+          <option value="Telebirr">Telebirr</option>
+          <option value="CBE">CBE</option>
+          <option value="Mpesa">Mpesa</option>
+        </select>
+      </label>
+
+      <label>
+        Account / phone number
+        <input id="wacc" inputmode="numeric" placeholder="09XXXXXXXX">
+      </label>
+
+      <label>
+        Account owner name
+        <input id="wowner" autocomplete="name" placeholder="Full name">
+      </label>
+
+      <p id="whelp" class="muted" style="margin-top:8px">
+        Telebirr: 10 digits, starts with 09.
+      </p>
+
+      <button class="btn" style="margin-top:16px" onclick="showInterstitialAd();withdraw()" ${blocked ? 'disabled':''}>
+        ${ic('send')} Request withdrawal
+      </button>
+    </div>
+
+    <h2>History</h2>
+    <div class="card">
+      ${WDS.length ? WDS.map(x=>`
+        <div class="item">
+          <div class="grow">
+            <div class="t">${x.etb} ETB · ${esc(x.method)}</div>
+            <div class="muted">
+              ${esc(x.account || '')} · ${new Date(x.created_at).toLocaleDateString()}
+            </div>
+          </div>
+          <span class="pill ${x.status==='paid'?'ok':x.status==='rejected'?'bad':''}">
+            ${x.status==='paid'?'Paid':x.status==='rejected'?'Rejected':'Pending'}
+          </span>
+        </div>
+      `).join('') : `<div class="empty">No withdrawals yet.</div>`}
+    </div>
+  `;
+}
+
+function withdrawMethodChanged(){
+  const m = $('#wmeth') && $('#wmeth').value;
+  const input = $('#wacc');
+  const help = $('#whelp');
+  if(!input || !help) return;
+
+  if(m === 'Telebirr'){
+    input.placeholder = '09XXXXXXXX';
+    help.textContent = 'Telebirr: exactly 10 digits, starts with 09.';
+  }else if(m === 'Mpesa'){
+    input.placeholder = '07XXXXXXXX';
+    help.textContent = 'Mpesa: exactly 10 digits, starts with 07.';
+  }else{
+    input.placeholder = '1000XXXXXXXXX';
+    help.textContent = 'CBE: exactly 13 digits, starts with 1000 or 10000.';
+  }
+}
+
+async function withdraw(){
+
+  if(busy) return;
+
+  busy = true;
+
+  try{
+
+    await api(
+      '/api/withdraw',
+      {
+        etb:$('#wamt').value,
+        method:$('#wmeth').value,
+        account:$('#wacc').value,
+        owner_name:$('#wowner').value
+      }
+    );
+
+    haptic();
+
+    toast(
+      'Request sent successfully.'
+    );
+
+    await loadMe();
+
+    WDS =
+      (
+        await api(
+          '/api/withdrawals'
+        )
+      ).items;
+
+    render();
+
+  }catch(e){
+
+    if(
+      e.code !== 'gate'
+    ){
+
+      toast(
+        errMsg(e)
+      );
+
+    }
+
+  }
+
+  busy = false;
+
+}
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+const SET_LABELS = {
+
+  ad_reward:
+    'Coins per ad',
+
+  ad_cooldown:
+    'Seconds between ads',
+
+  ads_per_level:
+    'Ads per day by level (JSON list)',
+
+  referral_reward:
+    'Referral reward (coins)',
+
+  milestone_bonus:
+    'Level-up bonus (coins)',
+
+  freeze_price:
+    'Streak save price (coins)',
+
+  free_spins:
+    'Free spins per day',
+
+  spin_cost:
+    'Paid spin cost (coins)',
+
+  free_table:
+    'Free spin prizes [[prize, weight], ...]',
+
+  paid_table:
+    'Paid spin prizes [[prize, weight], ...]',
+
+  coin_per_etb:
+    'Coins per 1 ETB (100 = 1 ETB)',
+
+  ads_payment_enabled:
+    'Ads payment enabled (true/false)',
+
+  invite_payment_enabled:
+    'Invite payment enabled (true/false)',
+
+  withdrawal_fee_percent:
+    'Withdrawal service fee percent',
+
+  min_withdraw_etb:
+    'Minimum withdrawal (ETB)',
+
+  withdraw_referrals_required:
+    'Referrals required to withdraw',
+
+  withdraw_interval_hours:
+    'Hours between withdrawals',
+
+  global_daily_cap_etb:
+    'Daily payout cap (ETB)',
+
+  gate_channels:
+    'Required channels (JSON list)',
+
+  vip_invites_unlimited:
+    'Paid invites needed for unlimited ads (VIP)',
+
+  weekly_top_inviter_min:
+    'Min invites/week for top-inviter bonus',
+
+  weekly_top_inviter_bonus_etb:
+    'Top-inviter weekly bonus (ETB)',
+
+  anticheat_ip_check:
+    'Flag accounts sharing an IP (true/false)'
+
+};
+
+function vAdmin(){
+
+  if(!ADMIN){
+
+    return `
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-text">
+          Loading admin panel...
+        </div>
+      </div>
+    `;
+
+  }
+
+  const s =
+    ADMIN.stats;
+
+  return `
+
+    <div class="grid2">
+
+      <div class="card">
+
+        <div class="muted">
+          Users
+        </div>
+
+        <b
+          style="font-size:22px"
+        >
+          ${s.users}
+        </b>
+
+        <div class="muted">
+          +${s.new_today} today
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="muted">
+          Coins owed
+        </div>
+
+        <b
+          style="font-size:22px"
+        >
+          ${fmt(s.coins_owed)}
+        </b>
+
+        <div class="muted">
+          ${
+            (
+              s.coins_owed /
+              ME.cfg.coin_per_etb
+            ).toFixed(0)
+          }
+          ETB
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="card"
+      style="margin-top:12px"
+    >
+
+      <div
+        class="row between"
+      >
+
+        <b>
+          Withdrawals
+        </b>
+
+        <label
+          class="row"
+          style="
+            margin:0;
+            gap:8px;
+            color:var(--text)
+          "
+        >
+
+          <input
+            type="checkbox"
+            style="
+              width:auto;
+              margin:0
+            "
+            ${
+              ADMIN.settings.withdrawals_open !== false
+                ? 'checked'
+                : ''
+            }
+            onchange="
+              setSetting(
+                'withdrawals_open',
+                this.checked
+              )
+            "
+          >
+
+          Open
+
+        </label>
+
+      </div>
+
+      ${
+        ADMIN.pending.length
+
+          ? ADMIN.pending.map(
+              (w)=>
+                `
+
+                  <div class="item">
+
+                    <div class="grow">
+
+                      <div class="t">
+                        #${w.id}
+                        ${esc(w.first_name)}
+                        ·
+                        ${w.etb} ETB
+                      </div>
+
+                      <div class="muted">
+                        ${esc(w.method)}
+                        ${esc(w.account)}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                `
+            ).join('') +
+
+            `
+              <p
+                class="muted"
+                style="margin-top:8px"
+              >
+                Approve or reject in the bot chat.
+              </p>
+            `
+
+          : `
+              <p
+                class="muted"
+                style="margin-top:8px"
+              >
+                No pending withdrawals.
+              </p>
+            `
+      }
+
+      <p
+        class="muted"
+        style="margin-top:8px"
+      >
+        Flagged accounts:
+        ${s.flagged}
+
+        ·
+
+        Task proofs waiting:
+        ${s.pending_tasks}
+      </p>
+
+    </div>
+
+    <h2>
+      New task
+    </h2>
+
+    <div class="card">
+
+      <label>
+        Type
+
+        <select
+          id="ttype"
+          onchange="taskType()"
+        >
+
+          <option value="channel">
+            Join a Telegram channel
+          </option>
+
+          <option value="social">
+            Social task with screenshot
+          </option>
+
+        </select>
+
+      </label>
+
+      <label>
+        Title
+
+        <input
+          id="ttitle"
+          placeholder="Subscribe to our YouTube"
+        >
+      </label>
+
+      <label id="lchat">
+        Channel (@username)
+
+        <input
+          id="tchat"
+          placeholder="@channel"
+        >
+      </label>
+
+      <label
+        id="lurl"
+        style="display:none"
+      >
+        Link
+
+        <input
+          id="turl"
+          placeholder="https://..."
+        >
+      </label>
+
+      <label>
+        Reward (coins)
+
+        <input
+          id="trew"
+          type="number"
+          value="10"
+        >
+      </label>
+
+      <label>
+        Max users
+
+        <input
+          id="tmax"
+          type="number"
+          placeholder="500"
+        >
+      </label>
+
+      <label
+        class="row"
+        style="gap:8px;margin-top:12px;color:var(--text)"
+      >
+
+        <input
+          type="checkbox"
+          id="tbroadcast"
+          style="width:auto;margin:0"
+        >
+        Broadcast to all users with a
+        Start button
+
+      </label>
+
+      <button
+        class="btn"
+        style="margin-top:14px"
+        onclick="addTask()"
+      >
+        Add task
+      </button>
+
+    </div>
+
+    <h2>
+      All tasks
+    </h2>
+
+    <div class="card">
+
+      ${
+        ADMIN.tasks.length
+
+          ? ADMIN.tasks.map(
+              (t)=>
+                `
+
+                  <div class="item">
+
+                    <div class="grow">
+
+                      <div class="t">
+                        ${esc(t.title)}
+                      </div>
+
+                      <div class="muted">
+                        ${t.type}
+                        ·
+                        ${t.reward} coins
+                        ·
+                        ${t.taken}
+                        ${
+                          t.max_users
+                            ? '/' + t.max_users
+                            : ''
+                        }
+                        done
+                      </div>
+
+                    </div>
+
+                    <button
+                      class="btn ghost sm"
+                      onclick="toggleTask(${t.id})"
+                    >
+                      ${
+                        t.active
+                          ? 'Stop'
+                          : 'Start'
+                      }
+                    </button>
+
+                  </div>
+
+                `
+            ).join('')
+
+          : `
+              <div class="empty">
+                No tasks yet.
+              </div>
+            `
+      }
+
+    </div>
+
+    <h2>
+      Promo codes
+    </h2>
+
+    <div class="card">
+
+      ${
+        ADMIN.promos.map(
+          (p)=>
+            `
+
+              <div class="item">
+
+                <div class="grow">
+
+                  <b>
+                    ${esc(p.code)}
+                  </b>
+
+                  <div class="muted">
+                    ${p.reward} coins
+                    ·
+                    ${p.uses}
+                    ${
+                      p.max_uses
+                        ? '/' + p.max_uses
+                        : ''
+                    }
+                    used
+                  </div>
+
+                </div>
+
+              </div>
+
+            `
+        ).join('')
+      }
+
+      <label>
+        Code
+
+        <input
+          id="pcode"
+          placeholder="WELCOME"
+        >
+      </label>
+
+      <label>
+        Reward (coins)
+
+        <input
+          id="prew"
+          type="number"
+          value="20"
+        >
+      </label>
+
+      <label>
+        Max uses
+
+        <input
+          id="pmax"
+          type="number"
+          placeholder="100"
+        >
+      </label>
+
+      <button
+        class="btn"
+        style="margin-top:14px"
+        onclick="addPromo()"
+      >
+        Save code
+      </button>
+
+    </div>
+
+    <h2>Daily leaderboard</h2>
+    <div class="card">
+      <p class="muted">
+        Top 7 earners today: Ads · Invite · Task · Total.
+      </p>
+      <button class="btn" style="margin-top:12px" onclick="postDailyLeaderboard()">
+        ${ic('trophy')} Post to proof channel
+      </button>
+    </div>
+
+    <h2>Broadcast message</h2>
+    <div class="card">
+      <p class="muted">Send a message directly to all non-banned users.</p>
+      <textarea id="broadcast_msg" rows="5" placeholder="Write your message..."></textarea>
+      <button class="btn" style="margin-top:12px" onclick="sendBroadcast()">
+        Send broadcast
+      </button>
+    </div>
+
+    <h2>
+      Settings
+    </h2>
+
+    <div class="card">
+
+      ${
+        Object.keys(
+          SET_LABELS
+        ).map(
+          (k)=>
+            `
+
+              <label>
+                ${SET_LABELS[k]}
+
+                <input
+                  id="s_${k}"
+                  value='${esc(
+                    JSON.stringify(
+                      ADMIN.settings[k]
+                    )
+                  )}'
+                >
+              </label>
+
+              <button
+                class="btn ghost sm"
+                style="margin-top:8px"
+                onclick="saveSetting('${k}')"
+              >
+                Save
+              </button>
+
+            `
+        ).join('')
+      }
+
+    </div>
+
+  `;
+
+}
+
+async function sendBroadcast(){
+  const message = ($('#broadcast_msg') || {}).value || '';
+  if(!message.trim()) return toast('Write a message first.');
+  await adm('/api/admin/broadcast',{message},'Broadcast sent');
+}
+
+async function postDailyLeaderboard(){
+  await adm('/api/admin/daily-leaderboard/post',{},'Leaderboard posted to proof channel');
+}
+
+function taskType(){
+
+  const c =
+    $('#ttype').value === 'channel';
+
+  $('#lchat').style.display =
+    c ? '' : 'none';
+
+  $('#lurl').style.display =
+    c ? 'none' : '';
+
+}
+
+async function adm(
+  path,
+  body,
+  okMsg
+){
+
+  try{
+
+    await api(
+      path,
+      body || {}
+    );
+
+    toast(
+      okMsg || 'Saved'
+    );
+
+    ADMIN =
+      await api(
+        '/api/admin/overview'
+      );
+
+    render();
+
+  }catch(e){
+
+    toast(
+      errMsg(e)
+    );
+
+  }
+
+}
+
+const addTask =
+  () =>
+    adm(
+      '/api/admin/task',
+      {
+        type:$('#ttype').value,
+        title:$('#ttitle').value,
+        chat:$('#tchat').value,
+        url:$('#turl').value,
+        reward:$('#trew').value,
+        max_users:$('#tmax').value,
+        broadcast:$('#tbroadcast').checked
+      },
+      'Task added'
+    );
+
+const toggleTask =
+  (id) =>
+    adm(
+      `/api/admin/task/${id}/toggle`
+    );
+
+const addPromo =
+  () =>
+    adm(
+      '/api/admin/promo',
+      {
+        code:$('#pcode').value,
+        reward:$('#prew').value,
+        max_uses:$('#pmax').value
+      }
+    );
+
+const setSetting =
+  (key,value) =>
+    adm(
+      '/api/admin/setting',
+      {
         key,
         value
-      )
-      VALUES($1,$2)
-      ON CONFLICT(key)
-      DO UPDATE SET
-        value=$2`,
-      [
-        key,
-        JSON.stringify(value)
-      ]
-    );
-
-    sCache.t = 0;
-
-    res.json({
-      ok: true
-    });
-  })
-);
-
-/* ---------- admin tasks ---------- */
-
-app.post(
-  '/api/admin/task',
-  auth,
-  adminOnly,
-  ah(async (req, res) => {
-    const b = req.body || {};
-
-    const type =
-      b.type === 'channel'
-        ? 'channel'
-        : 'social';
-
-    const title = String(
-      b.title || ''
-    )
-      .trim()
-      .slice(0, 80);
-
-    const chat = String(
-      b.chat || ''
-    ).trim();
-
-    let url = String(
-      b.url || ''
-    ).trim();
-
-    if (type === 'channel') {
-      if (
-        !/^@\w{4,}$/.test(chat)
-      ) {
-        return fail(
-          res,
-          400,
-          'bad_channel'
-        );
       }
-
-      url = chatUrl(chat);
-    }
-
-    if (
-      !title ||
-      !/^https?:\/\//.test(url)
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_input'
-      );
-    }
-
-    const max =
-      Number(b.max_users) > 0
-        ? Math.floor(
-            Number(
-              b.max_users
-            )
-          )
-        : null;
-
-    const reward = Math.max(
-      0,
-      Math.floor(
-        Number(b.reward) || 0
-      )
     );
 
-    const sponsor = String(
-      b.sponsor || ''
-    )
-      .trim()
-      .slice(0, 60);
+function saveSetting(k){
 
-    const ins = await q(
-      `INSERT INTO tasks(
-        title,
-        type,
-        url,
-        chat,
-        reward,
-        max_users,
-        sponsor
-      )
-      VALUES($1,$2,$3,$4,$5,$6,$7)
-      RETURNING id`,
-      [
-        title,
-        type,
-        url,
-        type === 'channel'
-          ? chat
-          : '',
-        reward,
-        max,
-        sponsor || null
-      ]
+  let v;
+
+  try{
+
+    v =
+      JSON.parse(
+        $('#s_' + k).value
+      );
+
+  }catch(e){
+
+    return toast(
+      'Invalid format'
     );
 
-    const taskId = ins.rows[0].id;
+  }
 
-    if (b.broadcast) {
-      /*
-       * Fire off in the background so the request
-       * doesn't hang waiting on every user — for a
-       * very large user base, move this to a proper
-       * job queue instead.
-       */
-      broadcastTask(
-        taskId,
-        title,
-        reward,
-        sponsor
-      ).catch((e) =>
-        console.error(
-          'broadcastTask',
-          e
-        )
-      );
-    }
-
-    res.json({
-      ok: true,
-      id: taskId
-    });
-  })
-);
-
-/*
- * Sends the new task to every non-banned user with a
- * single "✅ Start" inline button that opens the mini
- * app. Tracks each message so it can be deleted once
- * the task's slots fill up (see deleteTaskBroadcast).
- */
-async function broadcastTask(taskId, title, reward, sponsor) {
-  const { rows } = await q(
-    'SELECT id FROM users WHERE NOT banned'
+  return setSetting(
+    k,
+    v
   );
 
-  for (const u of rows) {
-    const r = await tg(
-      'sendMessage',
-      {
-        chat_id: u.id,
-        text:
-          `🆕 New task: ${title}\n` +
-          (sponsor
-            ? `📣 Sponsored by: ${sponsor}\n`
-            : '') +
-          `Reward: ${reward} coins`,
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: '✅ Start',
-                web_app: {
-                  url: MINI_APP_URL
-                }
-              }
-            ]
-          ]
-        }
-      }
-    );
-
-    if (r.ok) {
-      await q(
-        `INSERT INTO task_broadcasts(
-          task_id,
-          chat_id,
-          message_id
-        )
-        VALUES($1,$2,$3)`,
-        [
-          taskId,
-          u.id,
-          r.result.message_id
-        ]
-      );
-    }
-
-    /*
-     * Stay under Telegram's ~30 msg/sec limit.
-     */
-    await new Promise((r2) =>
-      setTimeout(r2, 40)
-    );
-  }
 }
 
-app.post(
-  '/api/admin/task/:id/toggle',
-  auth,
-  adminOnly,
-  ah(async (req, res) => {
-    await q(
-      `UPDATE tasks
-       SET active = NOT active
-       WHERE id=$1`,
-      [req.params.id]
-    );
+/* =========================================================
+   START
+========================================================= */
 
-    res.json({
-      ok: true
-    });
-  })
-);
+boot();
 
-/* ---------- admin promo ---------- */
+</script>
 
-app.post(
-  '/api/admin/promo',
-  auth,
-  adminOnly,
-  ah(async (req, res) => {
-    const b = req.body || {};
-
-    const code = String(
-      b.code || ''
-    )
-      .trim()
-      .toUpperCase()
-      .slice(0, 32);
-
-    if (
-      !/^[A-Z0-9_]{3,32}$/.test(
-        code
-      )
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_input'
-      );
-    }
-
-    await q(
-      `INSERT INTO promos(
-        code,
-        reward,
-        max_uses
-      )
-      VALUES($1,$2,$3)
-      ON CONFLICT(code)
-      DO UPDATE SET
-        reward=$2,
-        max_uses=$3,
-        active=true`,
-      [
-        code,
-        Math.max(
-          0,
-          Math.floor(
-            Number(
-              b.reward
-            ) || 0
-          )
-        ),
-        Number(b.max_uses) > 0
-          ? Math.floor(
-              Number(
-                b.max_uses
-              )
-            )
-          : null
-      ]
-    );
-
-    res.json({
-      ok: true
-    });
-  })
-);
-
-/* ---------- admin broadcast ---------- */
-
-async function broadcastAll(text) {
-  const { rows } = await q(
-    'SELECT id FROM users WHERE NOT banned'
-  );
-
-  let sent = 0;
-
-  for (const u of rows) {
-    const r = await tg('sendMessage', {
-      chat_id: u.id,
-      text
-    });
-
-    if (r.ok) sent++;
-
-    await new Promise((r2) =>
-      setTimeout(r2, 40)
-    );
-  }
-
-  return sent;
-}
-
-app.post(
-  '/api/admin/broadcast',
-  auth,
-  adminOnly,
-  ah(async (req, res) => {
-    const text = String(
-      (req.body || {}).text || ''
-    )
-      .trim()
-      .slice(0, 2000);
-
-    if (!text) {
-      return fail(res, 400, 'bad_input');
-    }
-
-    /*
-     * Fire in the background — don't make the admin
-     * panel wait for every user to be messaged.
-     */
-    broadcastAll(text)
-      .then((sent) =>
-        console.log('broadcast sent to', sent)
-      )
-      .catch((e) =>
-        console.error('broadcastAll', e)
-      );
-
-    res.json({ ok: true });
-  })
-);
-
-/* ---------- admin user ---------- */
-
-app.post(
-  '/api/admin/user',
-  auth,
-  adminOnly,
-  ah(async (req, res) => {
-    const {
-      id,
-      action
-    } = req.body || {};
-
-    if (
-      !/^\d+$/.test(
-        String(id)
-      )
-    ) {
-      return fail(
-        res,
-        400,
-        'bad_input'
-      );
-    }
-
-    const sql = {
-      unflag:
-        'UPDATE users SET flagged=false WHERE id=$1',
-
-      ban:
-        'UPDATE users SET banned=true WHERE id=$1',
-
-      unban:
-        'UPDATE users SET banned=false WHERE id=$1'
-    }[action];
-
-    if (!sql) {
-      return fail(
-        res,
-        400,
-        'bad_input'
-      );
-    }
-
-    await q(sql, [id]);
-
-    res.json({
-      ok: true
-    });
-  })
-);
-
-/* ---------- Telegram bot webhook ---------- */
-
-async function handleUpdate(u) {
-  if (u.message) {
-    const m = u.message;
-    const from = m.from;
-
-    /* ---------- /start ---------- */
-
-    if (
-      m.text &&
-      m.text.startsWith('/start')
-    ) {
-      const r =
-        /^ref_(\d+)$/.exec(
-          m.text.split(' ')[1] ||
-            ''
-        );
-
-      await ensureUser(
-        from,
-        r ? r[1] : null
-      );
-
-      await tg(
-        'sendMessage',
-        {
-          chat_id: m.chat.id,
-          text: r
-            ? 'Welcome to Adewa! You were invited by a friend — tap the button below to open the app.'
-            : 'Welcome to Adewa. Tap the button to open the app.',
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text:
-                    '✅ Open Adewa',
-                  web_app: {
-                    url:
-                      MINI_APP_URL
-                  }
-                }
-              ]
-            ]
-          }
-        }
-      );
-
-      return;
-    }
-
-    /* ---------- /skip ---------- */
-
-    if (
-      m.text === '/skip' &&
-      isAdmin(from.id)
-    ) {
-      await q(
-        `DELETE FROM settings
-         WHERE key='awaiting_proof'`
-      );
-
-      await tg(
-        'sendMessage',
-        {
-          chat_id: from.id,
-          text: 'Skipped.'
-        }
-      );
-
-      return;
-    }
-
-    /* ---------- /topearners ---------- */
-
-    if (
-      m.text === '/topearners' &&
-      isAdmin(from.id)
-    ) {
-      const { rows } = await q(
-        `SELECT
-          username,
-          first_name,
-          daily_ads,
-          daily_invite,
-          daily_task
-         FROM users
-         WHERE daily_earn_day=CURRENT_DATE
-           AND (daily_ads+daily_invite+daily_task) > 0
-         ORDER BY (daily_ads+daily_invite+daily_task) DESC
-         LIMIT 7`
-      );
-
-      if (!rows.length) {
-        await tg('sendMessage', {
-          chat_id: from.id,
-          text: 'No earnings recorded yet today.'
-        });
-
-        return;
-      }
-
-      let text =
-        "Today's top earners — Ads · Invite · Task · Total\n";
-
-      rows.forEach((r, i) => {
-        const name =
-          '@' + (r.username || r.first_name || 'user');
-
-        const total =
-          Number(r.daily_ads) +
-          Number(r.daily_invite) +
-          Number(r.daily_task);
-
-        text +=
-          `${i + 1} ${name}        ${r.daily_ads}        ${r.daily_invite}       ${r.daily_task}         ${total} Birr \n`;
-      });
-
-      text += '\nWork fast, earn fast!';
-
-      await tg('sendMessage', {
-        chat_id: PROOF_CHANNEL,
-        text
-      });
-
-      await tg('sendMessage', {
-        chat_id: from.id,
-        text: 'Posted to the proof channel.'
-      });
-
-      return;
-    }
-
-    /* ---------- /broadcast ---------- */
-
-    if (
-      m.text &&
-      m.text.startsWith('/broadcast ') &&
-      isAdmin(from.id)
-    ) {
-      const text = m.text
-        .slice('/broadcast '.length)
-        .trim();
-
-      if (text) {
-        broadcastAll(text).catch((e) =>
-          console.error('broadcastAll', e)
-        );
-
-        await tg('sendMessage', {
-          chat_id: from.id,
-          text: 'Broadcast started.'
-        });
-      }
-
-      return;
-    }
-
-    /* ---------- /setfaq (NEW, admin) ---------- */
-
-    if (
-      m.text &&
-      m.text.startsWith('/setfaq ') &&
-      isAdmin(from.id)
-    ) {
-      const text = m.text
-        .slice('/setfaq '.length)
-        .trim();
-
-      if (text) {
-        await q(
-          `INSERT INTO settings(key, value)
-           VALUES('faq_knowledge', $1)
-           ON CONFLICT(key)
-           DO UPDATE SET value=$1`,
-          [JSON.stringify(text)]
-        );
-
-        sCache.t = 0;
-
-        await tg('sendMessage', {
-          chat_id: from.id,
-          text: 'FAQ knowledge updated.'
-        });
-      }
-
-      return;
-    }
-
-    /* ---------- /faqon /faqoff (NEW, admin) ---------- */
-
-    if (
-      (m.text === '/faqon' ||
-        m.text === '/faqoff') &&
-      isAdmin(from.id)
-    ) {
-      const enabled = m.text === '/faqon';
-
-      await q(
-        `INSERT INTO settings(key, value)
-         VALUES('faq_bot_enabled', $1)
-         ON CONFLICT(key)
-         DO UPDATE SET value=$1`,
-        [JSON.stringify(enabled)]
-      );
-
-      sCache.t = 0;
-
-      await tg('sendMessage', {
-        chat_id: from.id,
-        text: enabled
-          ? 'AI FAQ auto-reply is ON.'
-          : 'AI FAQ auto-reply is OFF.'
-      });
-
-      return;
-    }
-
-    /* ---------- AI FAQ auto-reply (NEW) ----------
-     * Any plain text message that isn't a command and
-     * wasn't matched by anything above gets an instant
-     * AI-generated answer, acting like a second admin.
-     */
-
-    if (
-      m.text &&
-      !m.text.startsWith('/')
-    ) {
-      const S = await settings();
-
-      if (S.faq_bot_enabled === false) {
-        return;
-      }
-
-      await tg('sendChatAction', {
-        chat_id: m.chat.id,
-        action: 'typing'
-      });
-
-      const knowledge =
-        S.faq_knowledge || DEFAULT_FAQ_KNOWLEDGE;
-
-      const answer = await askFAQAI(
-        m.text,
-        knowledge
-      );
-
-      await tg('sendMessage', {
-        chat_id: m.chat.id,
-        text:
-          answer ||
-          'Thanks for your message — an admin will reply soon. / አመሰግናለሁ፣ አድሚን በቅርቡ ይመልስልዎታል።'
-      });
-
-      if (!answer) {
-        for (const adminId of ADMIN_IDS) {
-          await tg('sendMessage', {
-            chat_id: adminId,
-            text:
-              `❓ Unanswered question from ${from.first_name || 'user'} (ID: ${from.id}):\n${m.text}`
-          });
-        }
-      }
-
-      return;
-    }
-
-    /* ---------- photo ---------- */
-
-    if (m.photo) {
-      const fileId =
-        m.photo[
-          m.photo.length - 1
-        ].file_id;
-
-      /* Payment proof from admin */
-
-      if (isAdmin(from.id)) {
-        const a = (
-          await q(
-            `SELECT value
-             FROM settings
-             WHERE key='awaiting_proof'`
-          )
-        ).rows[0];
-
-        if (
-          a &&
-          a.value &&
-          a.value.wid
-        ) {
-          const w = (
-            await q(
-              `SELECT
-                w.etb,
-                w.method,
-                w.account,
-                u.first_name,
-                u.username
-               FROM withdrawals w
-               JOIN users u
-                 ON u.id=w.user_id
-               WHERE w.id=$1`,
-              [a.value.wid]
-            )
-          ).rows[0];
-
-          if (w) {
-            const S = await settings();
-
-            await tg(
-              'sendPhoto',
-              {
-                chat_id:
-                  PROOF_CHANNEL,
-                photo: fileId,
-                caption: buildProofCaption(
-                  {
-                    ...w,
-                    etb: Number(w.etb)
-                  },
-                  Number(
-                    S.withdraw_fee_percent || 3
-                  )
-                )
-              }
-            );
-          }
-
-          await q(
-            `DELETE FROM settings
-             WHERE key='awaiting_proof'`
-          );
-
-          await tg(
-            'sendMessage',
-            {
-              chat_id: from.id,
-              text:
-                'Posted to the proof channel.'
-            }
-          );
-
-          return;
-        }
-      }
-
-      /* ---------- task proof ---------- */
-
-      const s = (
-        await q(
-          `SELECT
-            s.id,
-            t.title,
-            t.reward
-           FROM task_subs s
-           JOIN tasks t
-             ON t.id=s.task_id
-           WHERE s.user_id=$1
-             AND s.status='awaiting'
-           ORDER BY s.id DESC
-           LIMIT 1`,
-          [from.id]
-        )
-      ).rows[0];
-
-      if (!s) {
-        await tg(
-          'sendMessage',
-          {
-            chat_id: from.id,
-            text:
-              'Open the app, choose a task, then send your screenshot here.'
-          }
-        );
-
-        return;
-      }
-
-      await q(
-        `UPDATE task_subs
-         SET status='pending'
-         WHERE id=$1`,
-        [s.id]
-      );
-
-      /*
-       * Send task proof to ALL admins.
-       */
-      for (const adminId of ADMIN_IDS) {
-        await tg(
-          'sendPhoto',
-          {
-            chat_id: adminId,
-            photo: fileId,
-            caption:
-              `New task proof\n` +
-              `User: ${from.first_name} (ID: ${from.id})\n` +
-              `Task: ${s.title} (${s.reward} coins)`,
-            reply_markup: {
-              inline_keyboard: [
-                [
-                  {
-                    text: '✅ Approve',
-                    callback_data:
-                      `t:a:${s.id}`
-                  },
-                  {
-                    text: '❌ Reject',
-                    callback_data:
-                      `t:r:${s.id}`
-                  }
-                ]
-              ]
-            }
-          }
-        );
-      }
-
-      await tg(
-        'sendMessage',
-        {
-          chat_id: from.id,
-          text:
-            'Screenshot received. An admin will review it soon.'
-        }
-      );
-    }
-
-    return;
-  }
-
-  /* ---------- callback query ---------- */
-
-  if (u.callback_query) {
-    const cq =
-      u.callback_query;
-
-    /*
-     * Multiple admin support.
-     */
-    if (!isAdmin(cq.from.id)) {
-      await tg(
-        'answerCallbackQuery',
-        {
-          callback_query_id:
-            cq.id
-        }
-      );
-
-      return;
-    }
-
-    const [
-      kind,
-      act,
-      id
-    ] = String(
-      cq.data
-    ).split(':');
-
-    let note = 'Done';
-
-    /* ---------- task ---------- */
-
-    if (kind === 't') {
-      if (act === 'a') {
-        const r = await q(
-          `UPDATE task_subs
-           SET status='approved'
-           WHERE id=$1
-             AND status='pending'
-           RETURNING
-             task_id,
-             user_id`,
-          [id]
-        );
-
-        if (r.rowCount) {
-          const tk = (
-            await q(
-              `SELECT
-                reward,
-                title
-               FROM tasks
-               WHERE id=$1`,
-              [
-                r.rows[0]
-                  .task_id
-              ]
-            )
-          ).rows[0];
-
-          await q(
-            `UPDATE users
-             SET coins=coins+$2,
-                 daily_ads =
-                   CASE WHEN daily_earn_day=CURRENT_DATE
-                     THEN daily_ads ELSE 0 END,
-                 daily_invite =
-                   CASE WHEN daily_earn_day=CURRENT_DATE
-                     THEN daily_invite ELSE 0 END,
-                 daily_task =
-                   CASE WHEN daily_earn_day=CURRENT_DATE
-                     THEN daily_task+$2 ELSE $2 END,
-                 daily_earn_day=CURRENT_DATE
-             WHERE id=$1`,
-            [
-              r.rows[0].user_id,
-              tk.reward
-            ]
-          );
-
-          await finishTask(
-            r.rows[0].task_id
-          );
-
-          await tg(
-            'sendMessage',
-            {
-              chat_id:
-                r.rows[0].user_id,
-              text:
-                `Task approved: ${tk.title}. You earned ${tk.reward} coins.`
-            }
-          );
-
-          note = '✅ Approved';
-        } else {
-          note =
-            'Already handled';
-        }
-      } else {
-        const r = await q(
-          `UPDATE task_subs
-           SET status='rejected'
-           WHERE id=$1
-             AND status='pending'
-           RETURNING user_id`,
-          [id]
-        );
-
-        if (r.rowCount) {
-          await tg(
-            'sendMessage',
-            {
-              chat_id:
-                r.rows[0].user_id,
-              text:
-                'Your task proof was rejected. Open the app to try again.'
-            }
-          );
-
-          note = '❌ Rejected';
-        } else {
-          note =
-            'Already handled';
-        }
-      }
-    }
-
-    /* ---------- withdrawal ---------- */
-
-    else if (kind === 'w') {
-      if (act === 'a') {
-        const r = await q(
-          `UPDATE withdrawals
-           SET status='paid',
-               decided_at=now()
-           WHERE id=$1
-             AND status='pending'
-           RETURNING
-             user_id,
-             etb`,
-          [id]
-        );
-
-        if (r.rowCount) {
-          await q(
-            `INSERT INTO settings(
-              key,
-              value
-            )
-            VALUES(
-              'awaiting_proof',
-              $1
-            )
-            ON CONFLICT(key)
-            DO UPDATE SET
-              value=$1`,
-            [
-              JSON.stringify({
-                wid: Number(id)
-              })
-            ]
-          );
-
-          await tg(
-            'sendMessage',
-            {
-              chat_id:
-                r.rows[0].user_id,
-              text:
-                `💸 New Withdrawal requests accepted \n` +
-                `----------------\n` +
-                `💵 Amount: ${Number(r.rows[0].etb).toFixed(2)} Birr\n` +
-                `🔍 Status: Paid \n` +
-                `-------------------------------\n\n` +
-                `🤖 Proof channel: ${PROOF_CHANNEL}`
-            }
-          );
-
-          /*
-           * Tell the admin who clicked.
-           */
-          await tg(
-            'sendMessage',
-            {
-              chat_id:
-                cq.from.id,
-              text:
-                'Send the payment screenshot now to post it in the proof channel, or send /skip.'
-            }
-          );
-
-          note =
-            '✅ Marked as paid';
-        } else {
-          note =
-            'Already handled';
-        }
-      } else {
-        const r = await q(
-          `UPDATE withdrawals
-           SET status='rejected',
-               decided_at=now()
-           WHERE id=$1
-             AND status='pending'
-           RETURNING
-             user_id,
-             coins,
-             etb,
-             method,
-             from_ads,
-             from_invite`,
-          [id]
-        );
-
-        if (r.rowCount) {
-          await q(
-            `UPDATE users
-             SET coins=coins+$2,
-                 ads_coins=ads_coins+$3,
-                 invite_coins=invite_coins+$4,
-                 last_withdraw_at=NULL
-             WHERE id=$1`,
-            [
-              r.rows[0].user_id,
-              r.rows[0].coins,
-              r.rows[0].from_ads,
-              r.rows[0].from_invite
-            ]
-          );
-
-          await tg(
-            'sendMessage',
-            {
-              chat_id:
-                r.rows[0].user_id,
-              text:
-                `💸 New Withdrawal requests rejected \n` +
-                `----------------\n` +
-                `💵 Requested Amount: ${Number(r.rows[0].etb).toFixed(2)} Birr\n` +
-                `        Reback to Your balance \n` +
-                `🔍 Status: Rejected`
-            }
-          );
-
-          note =
-            '❌ Rejected and refunded';
-        } else {
-          note =
-            'Already handled';
-        }
-      }
-    }
-
-    await tg(
-      'answerCallbackQuery',
-      {
-        callback_query_id:
-          cq.id,
-        text: note
-      }
-    );
-
-    if (cq.message) {
-      await tg(
-        'editMessageReplyMarkup',
-        {
-          chat_id:
-            cq.message.chat.id,
-          message_id:
-            cq.message.message_id,
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: note,
-                  callback_data:
-                    'noop'
-                }
-              ]
-            ]
-          }
-        }
-      );
-    }
-  }
-}
-
-/* ---------- cron: daily streak reminder ---------- */
-
-const cronAuth = (req, res, next) =>
-  CRON_SECRET &&
-  req.headers['x-cron-key'] === CRON_SECRET
-    ? next()
-    : fail(res, 403, 'cron_forbidden');
-
-/*
- * Call this once a day (evening, local time) from
- * Vercel Cron. Warns anyone who checked in yesterday
- * but not yet today that their streak will be lost.
- */
-app.all(
-  '/api/cron/streak-reminder',
-  cronAuth,
-  ah(async (req, res) => {
-    const t = todayStr();
-
-    const { rows } = await q(
-      `SELECT id, lang, streak
-       FROM users
-       WHERE NOT banned
-         AND streak > 0
-         AND last_checkin::text <> $1
-         AND last_checkin::text =
-           (
-             $1::date - 1
-           )::text`,
-      [t]
-    );
-
-    for (const u of rows) {
-      await tg('sendMessage', {
-        chat_id: u.id,
-        text: `🔥 Your ${u.streak}-day streak will be lost if you don't check in today! Open the app now.`
-      }).catch(() => {});
-
-      await new Promise((r) =>
-        setTimeout(r, 40)
-      );
-    }
-
-    res.json({
-      ok: true,
-      notified: rows.length
-    });
-  })
-);
-
-/* ---------- cron: weekly rewards ---------- */
-
-/*
- * Call this once a week (e.g. Sunday night) from
- * Vercel Cron. Pays the top inviter (if they cleared
- * the minimum invite count) and gives the top
- * ad-watcher of the week unlimited ads for 7 days.
- */
-app.all(
-  '/api/cron/weekly-rewards',
-  cronAuth,
-  ah(async (req, res) => {
-    const S = await settings();
-
-    const result = {
-      top_inviter: null,
-      top_ad_watcher: null
-    };
-
-    /* ---- top inviter ---- */
-
-    const minInvites = Number(
-      S.weekly_top_inviter_min || 200
-    );
-
-    const bonusEtb = Number(
-      S.weekly_top_inviter_bonus_etb || 0
-    );
-
-    const inviter = (
-      await q(
-        `SELECT
-          u.id,
-          COUNT(*)::int AS invites
-         FROM users ref
-         JOIN users u
-           ON u.id=ref.referred_by
-         WHERE ref.referral_paid
-           AND ref.created_at >
-             now() - interval '7 days'
-         GROUP BY u.id
-         HAVING COUNT(*) >= $1
-         ORDER BY invites DESC
-         LIMIT 1`,
-        [minInvites]
-      )
-    ).rows[0];
-
-    if (inviter && bonusEtb > 0) {
-      const bonusCoins = Math.round(
-        bonusEtb *
-          Number(S.coin_per_etb || 1)
-      );
-
-      await q(
-        `UPDATE users
-         SET coins=coins+$2
-         WHERE id=$1`,
-        [inviter.id, bonusCoins]
-      );
-
-      await tg('sendMessage', {
-        chat_id: inviter.id,
-        text:
-          `🏆 You were this week's top inviter (${inviter.invites} invites)! ` +
-          `Bonus: ${bonusEtb} ETB (${bonusCoins} coins) has been added to your balance.`
-      }).catch(() => {});
-
-      result.top_inviter = inviter;
-    }
-
-    /* ---- top ad watcher ---- */
-
-    const watcher = (
-      await q(
-        `SELECT
-          u.id,
-          COUNT(*)::int AS ads
-         FROM ad_views a
-         JOIN users u
-           ON u.id=a.user_id
-         WHERE a.completed
-           AND a.started_at >
-             now() - interval '7 days'
-         GROUP BY u.id
-         ORDER BY ads DESC
-         LIMIT 1`
-      )
-    ).rows[0];
-
-    if (watcher) {
-      await q(
-        `UPDATE users
-         SET vip_unlimited_until=
-           now() + interval '7 days'
-         WHERE id=$1`,
-        [watcher.id]
-      );
-
-      await tg('sendMessage', {
-        chat_id: watcher.id,
-        text:
-          `🏆 You watched the most ads this week (${watcher.ads})! ` +
-          `You now have unlimited ads for the next 7 days.`
-      }).catch(() => {});
-
-      result.top_ad_watcher = watcher;
-    }
-
-    res.json({
-      ok: true,
-      ...result
-    });
-  })
-);
-
-/* ---------- webhook ---------- */
-
-app.post(
-  '/api/webhook',
-  async (req, res) => {
-    if (
-      WEBHOOK_SECRET &&
-      req.headers[
-        'x-telegram-bot-api-secret-token'
-      ] !== WEBHOOK_SECRET
-    ) {
-      return res.sendStatus(403);
-    }
-
-    try {
-      await handleUpdate(
-        req.body || {}
-      );
-    } catch (e) {
-      console.error(
-        'webhook',
-        e
-      );
-    }
-
-    res.sendStatus(200);
-  }
-);
-
-/* ---------- export ---------- */
-
-module.exports = app;
-
-if (require.main === module) {
-  app.listen(
-    process.env.PORT || 3000,
-    () => {
-      console.log(
-        `Adewa server running on port ${
-          process.env.PORT || 3000
-        }`
-      );
-    }
-  );
-        }
+</body>
+  </html>
