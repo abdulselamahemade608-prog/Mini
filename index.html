@@ -4781,7 +4781,8 @@ broadcast:$('#tbroadcast').checked
 const toggleTask =
 (id) =>
 adm(
-/api/admin/task/${id}/toggle
+`/api/admin/task/${id}/toggle`,
+{}
 );
 
 const addPromo =
