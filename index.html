@@ -2483,7 +2483,7 @@ function vHome(){
         </div>  
         <div>  
           <div class="muted">Ad coins</div>  
-          <b>${fmt(u.ads_coins || 0)}</b>  
+          <b>${fmt(u.ad_coins || 0)}</b>  
         </div>  
       </div>  
   
@@ -3988,8 +3988,8 @@ function vWallet(){
       : '';  
   
   const withdrawable =  
-    (w.ads_enabled ? Number(u.ads_coins || 0) : 0) +  
-    (w.invite_enabled ? Number(u.invite_coins || 0) : 0);  
+    (w.ads_payment_enabled ? Number(u.ad_coins || 0) : 0) +  
+    (w.invite_payment_enabled ? Number(u.invite_coins || 0) : 0);  
   
   return `  
     <div class="card hero">  
@@ -4007,19 +4007,19 @@ function vWallet(){
       <div class="grid2" style="margin-top:12px">  
         <div>  
           <div class="muted">Ad withdrawable</div>  
-          <b>${fmt(w.ads_enabled ? u.ads_coins : 0)} coins</b>  
+          <b>${fmt(w.ads_payment_enabled ? u.ad_coins : 0)} coins</b>  
         </div>  
         <div>  
           <div class="muted">Invite withdrawable</div>  
-          <b>${fmt(w.invite_enabled ? u.invite_coins : 0)} coins</b>  
+          <b>${fmt(w.invite_payment_enabled ? u.invite_coins : 0)} coins</b>  
         </div>  
       </div>  
   
       <p class="muted" style="margin-top:10px">  
         Payment sources:  
-        ${w.ads_enabled ? 'Ads ON' : 'Ads OFF'}  
+        ${w.ads_payment_enabled ? 'Ads ON' : 'Ads OFF'}  
         ·  
-        ${w.invite_enabled ? 'Invite ON' : 'Invite OFF'}  
+        ${w.invite_payment_enabled ? 'Invite ON' : 'Invite OFF'}  
       </p>  
   
       ${blocked ? `<p class="warning-text" style="margin:10px 0">${esc(blocked)}</p>` : ''}  
@@ -4109,7 +4109,7 @@ async function withdraw(){
         etb:$('#wamt').value,  
         method:$('#wmeth').value,  
         account:$('#wacc').value,  
-        holder_name:$("#wowner").value.trim()  
+        owner_name:$('#wowner').value  
       }  
     );  
   
