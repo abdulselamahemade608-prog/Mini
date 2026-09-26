@@ -4225,7 +4225,28 @@ const SET_LABELS = {
     'Top-inviter weekly bonus (ETB)',  
   
   anticheat_ip_check:  
-    'Flag accounts sharing an IP (true/false)'  
+    'Flag accounts sharing an IP (true/false)',  
+
+  channel_rewards:  
+    'Per-channel referral reward, e.g. {"@chan1":20,"@chan2":10}',  
+
+  referral_min_hold_hours:  
+    'Hours invitee must stay in a channel before it pays out',  
+
+  referral_clawback_hours:  
+    'Hours after payout to claw coins back if invitee leaves',  
+
+  referral_daily_cap:  
+    'Max paid channel-joins per referrer per day (0 = no cap)',  
+
+  referral_require_activity:  
+    'Require 1 ad or check-in before payout (true/false)',  
+
+  referral_full_bonus:  
+    'Bonus coins once invitee is paid for every channel',  
+
+  support_bot_username:  
+    'Support bot username, no @ (shown in /start)'  
   
 };  
   
@@ -4659,8 +4680,11 @@ function vAdmin(){
   
     <h2>Broadcast message</h2>  
     <div class="card">  
-      <p class="muted">Send a message directly to all non-banned users.</p>  
-      <textarea id="broadcast_msg" rows="5" placeholder="Write your message..."></textarea>  <button class="btn" style="margin-top:12px" onclick="sendBroadcast()">  
+      <p class="muted">Send a message directly to all non-banned users. The button below is optional.</p>  
+      <textarea id="broadcast_msg" rows="5" placeholder="Write your message..."></textarea>  
+      <input id="broadcast_btn_text" placeholder="Button text (optional)" maxlength="30" style="margin-top:8px">
+      <input id="broadcast_btn_url" placeholder="Button URL, e.g. https://t.me/yourchannel (optional)" style="margin-top:8px">
+      <button class="btn" style="margin-top:12px" onclick="sendBroadcast()">  
     Send broadcast  
   </button>  
 </div>  
@@ -4712,7 +4736,11 @@ function vAdmin(){
 async function sendBroadcast(){
 const message = ($('#broadcast_msg') || {}).value || '';
 if(!message.trim()) return toast('Write a message first.');
-await adm('/api/admin/broadcast',{message},'Broadcast sent');
+const button_text = ($('#broadcast_btn_text') || {}).value || '';
+const button_url = ($('#broadcast_btn_url') || {}).value || '';
+if(button_text.trim() && !button_url.trim()) return toast('Add a button URL too, or clear the button text.');
+if(button_url.trim() && !/^https?:\/\//.test(button_url.trim())) return toast('Button URL must start with http:// or https://');
+await adm('/api/admin/broadcast',{message,button_text,button_url},'Broadcast sent');
 }
 
 async function postDailyLeaderboard(){
