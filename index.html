@@ -10,18 +10,18 @@
   Monetag zone above unchanged.  
 -->  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>  <style>  
 :root{  
-  --bg:#05090f;  
-  --surface:#101a2c;  
-  --surface2:#152238;  
-  --raised:#1c2d47;  
-  --line:rgba(148,180,222,.16);  
+  --bg:#070716;  
+  --surface:#12122c;  
+  --surface2:#1a1a3d;  
+  --raised:#25264f;  
+  --line:rgba(170,160,255,.17);  
   
   --text:#f5f8fc;  
-  --muted:#8ea0bc;  
+  --muted:#9c9dc6;  
   
-  --gold:#16c777;  
-  --gold2:#4bffa0;  
-  --gold-ink:#04150b;  
+  --gold:#8b5cf6;  
+  --gold2:#22d3ee;  
+  --gold-ink:#ffffff;  
   
   --blue:#4f9cff;  
   --blue2:#7bb8ff;  
@@ -52,9 +52,9 @@
 html,  
 body{  
   background:  
-    radial-gradient(circle at 15% -8%,rgba(75,255,160,.14) 0%,transparent 40%),  
-    radial-gradient(circle at 85% 0%,rgba(22,199,119,.12) 0%,transparent 42%),  
-    radial-gradient(circle at 50% 105%,rgba(75,255,160,.06) 0%,transparent 45%),  
+    radial-gradient(circle at 15% -8%,rgba(34,211,238,.14) 0%,transparent 40%),  
+    radial-gradient(circle at 85% 0%,rgba(139,92,246,.12) 0%,transparent 42%),  
+    radial-gradient(circle at 50% 105%,rgba(34,211,238,.06) 0%,transparent 45%),  
     var(--bg);  
   background-attachment:fixed;  
   color:var(--text);  
@@ -186,12 +186,12 @@ p.muted,
   background:  
     radial-gradient(  
       circle at 88% -10%,  
-      rgba(75,255,160,.22),  
+      rgba(34,211,238,.22),  
       transparent 42%  
     ),  
     radial-gradient(  
       circle at 0% 110%,  
-      rgba(22,199,119,.14),  
+      rgba(139,92,246,.14),  
       transparent 45%  
     ),  
     linear-gradient(  
@@ -201,7 +201,7 @@ p.muted,
       #0a120d 100%  
     );  
   
-  border-color:rgba(75,255,160,.28);  
+  border-color:rgba(34,211,238,.28);  
 }  
   
 .hero .amt{  
@@ -246,7 +246,7 @@ p.muted,
   color:var(--gold-ink);  
   
   box-shadow:  
-    0 8px 20px rgba(245,189,85,.15);  
+    0 8px 20px rgba(139,92,246,.15);  
 }  
   
 .flame .ic{  
@@ -281,7 +281,7 @@ p.muted,
 .bar{  
   height:8px;  
   border-radius:99px;  
-  background:#0a1525;  
+  background:#0c0c26;  
   overflow:hidden;  
   margin:12px 0 6px;  
 }  
@@ -326,7 +326,7 @@ p.muted,
   font-weight:750;  
   
   box-shadow:  
-    0 10px 24px rgba(245,189,85,.22),  
+    0 10px 24px rgba(139,92,246,.22),  
     inset 0 1px 0 rgba(255,255,255,.35);  
   
   transition:  
@@ -339,7 +339,7 @@ p.muted,
 .btn:hover{  
   filter:brightness(1.06);  
   box-shadow:  
-    0 12px 28px rgba(245,189,85,.3),  
+    0 12px 28px rgba(139,92,246,.3),  
     inset 0 1px 0 rgba(255,255,255,.35);  
 }  
   
@@ -377,7 +377,7 @@ textarea{
   
   border-radius:13px;  
   
-  background:#091524;  
+  background:#0c0c26;  
   color:var(--text);  
   
   border:1px solid var(--line);  
@@ -395,7 +395,7 @@ input:focus,
 select:focus,  
 textarea:focus{  
   border-color:var(--gold);  
-  box-shadow:0 0 0 3px rgba(245,189,85,.08);  
+  box-shadow:0 0 0 3px rgba(139,92,246,.08);  
 }  
   
 label{  
@@ -426,6 +426,7 @@ label{
   padding-bottom:0;  
 }  
   
+.item .muted{word-break:break-word}
 .item .t{  
   font-weight:650;  
 }  
@@ -438,7 +439,7 @@ label{
   
   border-radius:99px;  
   
-  background:rgba(245,189,85,.12);  
+  background:rgba(139,92,246,.12);  
   color:var(--gold2);  
 }  
   
@@ -480,7 +481,7 @@ nav div{
   max-width:480px;  
   pointer-events:auto;  
   
-  background:rgba(14,22,38,.82);  
+  background:rgba(16,16,40,.86);  
   
   backdrop-filter:blur(20px);  
   -webkit-backdrop-filter:blur(20px);  
@@ -528,7 +529,7 @@ nav button.on{
       var(--gold2),  
       var(--gold)  
     );  
-  box-shadow:0 6px 16px rgba(245,189,85,.28);  
+  box-shadow:0 6px 16px rgba(139,92,246,.28);  
 }  
   
 nav button:active{  
@@ -704,12 +705,12 @@ nav button:active{
   background:  
     radial-gradient(  
       circle at 50% 0%,  
-      rgba(75,255,160,.12) 0%,  
+      rgba(34,211,238,.12) 0%,  
       transparent 42%  
     ),  
     radial-gradient(  
       circle at 100% 100%,  
-      rgba(22,199,119,.1) 0%,  
+      rgba(139,92,246,.1) 0%,  
       transparent 45%  
     ),  
     var(--bg);  
@@ -765,17 +766,17 @@ nav button:active{
   background:  
     linear-gradient(  
       150deg,  
-      #4bffa0,  
-      #16c777  
+      #22d3ee,  
+      #8b5cf6  
     );  
   
   font-size:44px;  
   font-weight:800;  
-  color:#05130b;  
+  color:#ffffff;  
   
   box-shadow:  
-    0 0 0 1px rgba(76,255,160,.25),  
-    0 0 60px 14px rgba(46,224,132,.35);  
+    0 0 0 1px rgba(34,211,238,.25),  
+    0 0 60px 14px rgba(139,92,246,.35);  
   
   margin-bottom:18px;  
   
@@ -786,13 +787,13 @@ nav button:active{
 @keyframes bootPulse{  
   0%,100%{  
     box-shadow:  
-      0 0 0 1px rgba(76,255,160,.25),  
-      0 0 60px 14px rgba(46,224,132,.35);  
+      0 0 0 1px rgba(34,211,238,.25),  
+      0 0 60px 14px rgba(139,92,246,.35);  
   }  
   50%{  
     box-shadow:  
-      0 0 0 1px rgba(76,255,160,.35),  
-      0 0 78px 22px rgba(46,224,132,.5);  
+      0 0 0 1px rgba(34,211,238,.35),  
+      0 0 78px 22px rgba(139,92,246,.5);  
   }  
 }  
   
@@ -800,8 +801,8 @@ nav button:active{
   width:34px;  
   height:34px;  
   
-  border:3px solid rgba(46,224,132,.18);  
-  border-top-color:#2ee084;  
+  border:3px solid rgba(139,92,246,.18);  
+  border-top-color:#22d3ee;  
   
   border-radius:50%;  
   
@@ -847,7 +848,7 @@ nav button:active{
   height:17px;  
   
   border:2px solid var(--line);  
-  border-top-color:#2ee084;  
+  border-top-color:#22d3ee;  
   
   border-radius:50%;  
   
@@ -881,7 +882,7 @@ nav button:active{
   margin-bottom:18px;  
   
   box-shadow:  
-    0 10px 25px rgba(245,189,85,.15);  
+    0 10px 25px rgba(139,92,246,.15);  
 }  
   
 .gate-icon .ic{  
@@ -920,7 +921,7 @@ nav button:active{
     translateX(-50%)  
     translateY(20px);  
   
-  background:#172a45;  
+  background:#25264f;  
   
   border:1px solid var(--line);  
   
@@ -958,7 +959,7 @@ nav button:active{
 }  
   
 .odds div{  
-  background:#091524;  
+  background:#0c0c26;  
   border-radius:11px;  
   padding:8px;  
   text-align:center;  
@@ -1005,7 +1006,420 @@ nav button:active{
     font-size:12px;  
   }  
 }  
-</style>  </head>  <body>  <!-- ================= SVG ICON SYSTEM ================= -->  <svg width="0" height="0" style="position:absolute" aria-hidden="true">  <symbol id="i-home" viewBox="0 0 24 24">  
+
+/* =====================================================
+   THEME 2  -  violet / cyan, new buttons, welcome screen
+   ===================================================== */
+
+:root{
+  --grad:linear-gradient(135deg,#22d3ee 0%,#8b5cf6 55%,#ec4899 100%);
+  --grad-soft:linear-gradient(135deg,rgba(34,211,238,.18),rgba(139,92,246,.18),rgba(236,72,153,.14));
+  --pink:#ec4899;
+  --radius:24px;
+}
+
+html,body{
+  background:
+    radial-gradient(circle at 12% -6%,rgba(139,92,246,.32) 0%,transparent 42%),
+    radial-gradient(circle at 92% 2%,rgba(34,211,238,.20) 0%,transparent 40%),
+    radial-gradient(circle at 50% 108%,rgba(236,72,153,.16) 0%,transparent 46%),
+    var(--bg);
+  background-attachment:fixed;
+}
+
+h2{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:17px;
+}
+h2::before{
+  content:"";
+  width:5px;
+  height:18px;
+  border-radius:4px;
+  background:var(--grad);
+}
+
+.card{
+  border-radius:24px;
+  border:1px solid rgba(190,180,255,.16);
+  background:
+    linear-gradient(150deg,rgba(255,255,255,.07),rgba(255,255,255,0) 55%),
+    var(--surface);
+  box-shadow:0 16px 38px rgba(2,2,20,.5),inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+.hero{
+  border-color:rgba(167,139,250,.4);
+  background:
+    radial-gradient(circle at 90% -10%,rgba(34,211,238,.32),transparent 44%),
+    radial-gradient(circle at 0% 115%,rgba(236,72,153,.26),transparent 48%),
+    linear-gradient(150deg,#2f2377 0%,#1a1650 58%,#100e33 100%);
+}
+.hero .amt{
+  background:linear-gradient(90deg,#ffffff,#c4b5fd 60%,#67e8f9);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hero .amt small{
+  -webkit-text-fill-color:#67e8f9;
+}
+
+/* ---------- BUTTONS ---------- */
+
+.btn{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  border-radius:999px;
+  padding:15px 22px;
+  font-weight:800;
+  letter-spacing:.2px;
+  color:#fff;
+  text-shadow:0 1px 2px rgba(20,10,60,.35);
+  background:linear-gradient(120deg,#22d3ee,#8b5cf6 52%,#ec4899);
+  background-size:180% 100%;
+  background-position:0% 50%;
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:
+    0 12px 28px rgba(139,92,246,.45),
+    0 2px 0 rgba(255,255,255,.28) inset,
+    0 -3px 8px rgba(30,10,90,.28) inset;
+  transition:transform .16s ease,box-shadow .2s ease,background-position .5s ease,filter .2s ease;
+}
+.btn::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:-60%;
+  width:45%;
+  transform:skewX(-22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent);
+  animation:btnShine 3.6s ease-in-out infinite;
+  z-index:-1;
+}
+@keyframes btnShine{
+  0%,55%{left:-60%}
+  100%{left:130%}
+}
+.btn:hover{
+  background-position:100% 50%;
+  filter:brightness(1.07);
+  box-shadow:0 16px 34px rgba(139,92,246,.55),0 2px 0 rgba(255,255,255,.3) inset,0 -3px 8px rgba(30,10,90,.28) inset;
+}
+.btn:active:not([disabled]){
+  transform:translateY(2px) scale(.975);
+  box-shadow:0 5px 14px rgba(139,92,246,.4),0 2px 0 rgba(255,255,255,.2) inset;
+}
+.btn .ic{
+  width:19px;
+  height:19px;
+}
+.btn.ghost{
+  color:var(--text);
+  text-shadow:none;
+  background:linear-gradient(150deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+  border:1px solid rgba(190,180,255,.32);
+  box-shadow:0 8px 20px rgba(2,2,20,.4),0 1px 0 rgba(255,255,255,.12) inset;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.btn.ghost::after{
+  display:none;
+}
+.btn.ghost:hover{
+  border-color:#22d3ee;
+  box-shadow:0 10px 24px rgba(34,211,238,.25),0 1px 0 rgba(255,255,255,.14) inset;
+}
+.btn.sm{
+  border-radius:999px;
+  padding:9px 16px;
+  font-size:13px;
+}
+.btn[disabled]{
+  opacity:.42;
+  filter:grayscale(.45);
+  box-shadow:none;
+}
+.btn[disabled]::after{
+  display:none;
+}
+
+/* ---------- inputs, pills, nav ---------- */
+
+input,select,textarea{
+  border-radius:16px;
+  background:#0c0c26;
+  border:1px solid rgba(190,180,255,.2);
+}
+input:focus,select:focus,textarea:focus{
+  border-color:#22d3ee;
+  box-shadow:0 0 0 4px rgba(34,211,238,.14);
+}
+
+.pill{
+  background:rgba(139,92,246,.18);
+  color:#c4b5fd;
+}
+.pill.ok{
+  background:rgba(53,212,154,.16);
+  color:#5eead4;
+}
+
+nav div{
+  border-radius:26px;
+  border:1px solid rgba(190,180,255,.2);
+  box-shadow:0 18px 40px rgba(2,2,20,.6),0 1px 0 rgba(255,255,255,.08) inset;
+}
+nav button{
+  border-radius:20px;
+}
+nav button.on{
+  background:linear-gradient(135deg,rgba(34,211,238,.28),rgba(139,92,246,.4));
+  color:#fff;
+  box-shadow:0 8px 20px rgba(139,92,246,.35),0 0 0 1px rgba(196,181,253,.4) inset;
+}
+nav button.on .navemoji{
+  transform:translateY(-2px) scale(1.12);
+}
+.navemoji{
+  transition:transform .22s cubic-bezier(.3,1.6,.5,1);
+}
+
+.bar i{
+  background:var(--grad);
+}
+.flame,
+.gate-icon{
+  background:var(--grad);
+  color:#fff;
+  box-shadow:0 10px 26px rgba(139,92,246,.4);
+}
+
+/* ---------- LOADING (uses logo.png) ---------- */
+
+.boot-logo{
+  position:relative;
+  width:104px;
+  height:104px;
+  padding:0;
+  border-radius:30px;
+  background:linear-gradient(150deg,#22d3ee,#8b5cf6 55%,#ec4899);
+  font-size:46px;
+  color:#fff;
+  overflow:visible;
+  box-shadow:0 0 0 1px rgba(255,255,255,.25),0 0 60px 12px rgba(139,92,246,.45);
+  animation:logoFloat 2.4s ease-in-out infinite;
+}
+.boot-logo img{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:100%;
+  border-radius:30px;
+  object-fit:cover;
+  display:block;
+}
+.boot-logo::before{
+  content:"";
+  position:absolute;
+  inset:-11px;
+  border-radius:38px;
+  background:conic-gradient(from 0deg,#22d3ee,#8b5cf6,#ec4899,#f59e0b,#22d3ee);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
+  animation:sp 2.2s linear infinite;
+}
+@keyframes logoFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-7px) scale(1.04)}
+}
+
+.spinner{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:50%;
+  background:conic-gradient(from 0deg,rgba(34,211,238,0),#22d3ee,#8b5cf6,#ec4899);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));
+  animation:sp .8s linear infinite;
+}
+.mini-spinner{
+  border-color:rgba(190,180,255,.25);
+  border-top-color:#22d3ee;
+}
+
+/* ---------- WELCOME SCREEN ---------- */
+
+#welcome{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(139,92,246,.38) 0%,transparent 48%),
+    radial-gradient(circle at 15% 90%,rgba(34,211,238,.24) 0%,transparent 44%),
+    radial-gradient(circle at 88% 82%,rgba(236,72,153,.24) 0%,transparent 44%),
+    #070716;
+  transition:opacity .6s ease,transform .6s ease,visibility .6s;
+}
+#welcome.out{
+  opacity:0;
+  transform:scale(1.08);
+  visibility:hidden;
+  pointer-events:none;
+}
+#welcome .orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(46px);
+  opacity:.55;
+  animation:orbMove 9s ease-in-out infinite alternate;
+}
+#welcome .o1{width:260px;height:260px;background:#8b5cf6;top:-60px;left:-70px}
+#welcome .o2{width:230px;height:230px;background:#22d3ee;bottom:-50px;right:-60px;animation-delay:-3s}
+#welcome .o3{width:190px;height:190px;background:#ec4899;top:52%;left:58%;animation-delay:-6s}
+@keyframes orbMove{
+  to{transform:translate(40px,-34px) scale(1.25)}
+}
+#welcome .stage{
+  position:relative;
+  width:190px;
+  height:190px;
+  display:grid;
+  place-items:center;
+}
+#welcome .ring{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:2px solid transparent;
+  background:conic-gradient(from 0deg,#22d3ee,#8b5cf6,#ec4899,#f59e0b,#22d3ee) border-box;
+  -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  animation:sp 3s linear infinite;
+}
+#welcome .ring.r2{
+  inset:16px;
+  animation-duration:4.2s;
+  animation-direction:reverse;
+  opacity:.7;
+}
+#welcome .pulse{
+  position:absolute;
+  inset:26px;
+  border-radius:50%;
+  border:2px solid rgba(196,181,253,.7);
+  animation:wPulse 2.2s ease-out infinite;
+}
+#welcome .pulse.p2{animation-delay:1.1s}
+@keyframes wPulse{
+  0%{transform:scale(.8);opacity:.9}
+  100%{transform:scale(1.55);opacity:0}
+}
+#welcome .logo{
+  position:relative;
+  z-index:2;
+  width:112px;
+  height:112px;
+  border-radius:32px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  font-size:52px;
+  font-weight:800;
+  color:#fff;
+  background:linear-gradient(150deg,#22d3ee,#8b5cf6 55%,#ec4899);
+  box-shadow:0 0 0 1px rgba(255,255,255,.3),0 0 70px 14px rgba(139,92,246,.55);
+  animation:logoIn 1s cubic-bezier(.2,1.4,.4,1) both,logoFloat 2.6s 1s ease-in-out infinite;
+}
+#welcome .logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+@keyframes logoIn{
+  0%{transform:scale(.2) rotate(-25deg);opacity:0}
+  100%{transform:scale(1) rotate(0);opacity:1}
+}
+#welcome h1{
+  position:relative;
+  margin-top:26px;
+  font-size:36px;
+  font-weight:800;
+  letter-spacing:-.8px;
+  background:linear-gradient(90deg,#ffffff,#c4b5fd 45%,#67e8f9 80%,#ffffff);
+  background-size:220% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:wTitle 1s .35s ease both,wSheen 3s 1.2s linear infinite;
+}
+@keyframes wTitle{
+  from{opacity:0;transform:translateY(16px);letter-spacing:6px}
+  to{opacity:1;transform:translateY(0);letter-spacing:-.8px}
+}
+@keyframes wSheen{
+  to{background-position:-220% 0}
+}
+#welcome .tag{
+  position:relative;
+  margin-top:8px;
+  color:#b6b7dd;
+  font-size:14px;
+  animation:wTitle 1s .6s ease both;
+}
+#welcome .wbar{
+  position:relative;
+  margin-top:34px;
+  width:190px;
+  height:6px;
+  border-radius:99px;
+  background:rgba(255,255,255,.12);
+  overflow:hidden;
+}
+#welcome .wbar i{
+  display:block;
+  height:100%;
+  width:40%;
+  border-radius:99px;
+  background:linear-gradient(90deg,#22d3ee,#8b5cf6,#ec4899);
+  animation:wLoad 1.4s ease-in-out infinite;
+}
+@keyframes wLoad{
+  0%{transform:translateX(-110%)}
+  100%{transform:translateX(280%)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .btn::after,#welcome .orb{animation:none}
+}
+</style>  </head>  <body>
+<div id="welcome" aria-hidden="true">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="stage">
+    <div class="ring"></div>
+    <div class="ring r2"></div>
+    <div class="pulse"></div>
+    <div class="pulse p2"></div>
+    <div class="logo"><img src="logo.png" alt="" onerror="var p=this.parentNode;this.remove();p.textContent='A'"></div>
+  </div>
+  <h1>Adewa</h1>
+  <div class="tag">Welcome &mdash; earn, invite, withdraw</div>
+  <div class="wbar"><i></i></div>
+</div>
+  <!-- ================= SVG ICON SYSTEM ================= -->  <svg width="0" height="0" style="position:absolute" aria-hidden="true">  <symbol id="i-home" viewBox="0 0 24 24">  
   <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>  
   <polyline points="9 22 9 12 15 12 15 22"/>  
 </symbol>  <symbol id="i-tasks" viewBox="0 0 24 24">  
@@ -1068,7 +1482,7 @@ nav button:active{
   <path d="M20 19v-4h-4"/>  
 </symbol>  </svg>  <!-- ================= APP ================= -->  <div id="app">  
   <div class="loading-wrap">  
-    <div class="boot-logo">A</div>  
+    <div class="boot-logo"><img src="logo.png" alt="" onload="this.parentNode.style.color='transparent'" onerror="this.remove()">A</div>  
     <div class="loading-title">Adewa</div>  
     <div class="loading-text">Loading your portal...</div>  
     <div class="spinner"></div>  
@@ -1108,12 +1522,12 @@ const API = 'https://fulus-backend.vercel.app';
   Ad waterfall config.  
   Replace with your real AdsGram block id.  
 */  
-const ADSGRAM_BLOCK_ID = '49251';  
+const ADSGRAM_BLOCK_ID = '50476';  
   
 const adsgram =  
   (  
     window.Adsgram &&  
-    ADSGRAM_BLOCK_ID !== '49251'  
+    ADSGRAM_BLOCK_ID  
   )  
     ? window.Adsgram.init({  
         blockId: ADSGRAM_BLOCK_ID  
@@ -1407,6 +1821,12 @@ const ERR = {
   bad_method:  
     'Choose Telebirr, CBE or Mpesa.',  
   
+  bad_address:
+    'Invalid wallet address for this network.',
+
+  crypto_off:
+    'Crypto payouts are not available right now.',
+
   bad_telebirr:  
     'Telebirr number must be 10 digits and start with 09.',  
   
@@ -4380,27 +4800,35 @@ function vWallet(){
       <label>  
         Amount (ETB)  
         <input id="wamt" type="number" inputmode="decimal"  
-          min="${w.min_etb}" step="0.01" placeholder="${w.min_etb}">  
-      </label>  
+          min="${w.min_etb}" step="0.01" placeholder="${w.min_etb}" oninput="withdrawQuote()">
+          <span id="wquote" class="muted" style="display:block;margin-top:6px"></span>
+        </label>  
   
       <label>  
         Payment method  
-        <select id="wmeth" onchange="withdrawMethodChanged()">  
-          <option value="Telebirr">Telebirr</option>  
-          <option value="CBE">CBE</option>  
-          <option value="Mpesa">Mpesa</option>  
-        </select>  
+        <select id="wmeth" onchange="withdrawMethodChanged()">
+            <optgroup label="Ethiopian Birr">
+              <option value="Telebirr">Telebirr</option>
+              <option value="CBE">CBE</option>
+              <option value="Mpesa">Mpesa</option>
+            </optgroup>
+            ${(w.methods || []).some(m => m === 'bep20' || m === 'ton') ? `
+            <optgroup label="Crypto (paid automatically)">
+              ${(w.methods || []).includes('bep20') ? '<option value="bep20">USDT &middot; BEP20</option>' : ''}
+              ${(w.methods || []).includes('ton') ? '<option value="ton">TON</option>' : ''}
+            </optgroup>` : ''}
+          </select>  
       </label>  
   
-      <label>  
-        Account / phone number  
-        <input id="wacc" inputmode="numeric" placeholder="09XXXXXXXX">  
+      <label>
+          <span id="wacclbl">Account / phone number</span>
+          <input id="wacc" inputmode="numeric" placeholder="09XXXXXXXX">  
       </label>  
   
-      <label>  
-        Account owner name  
-        <input id="wowner" autocomplete="name" placeholder="Full name">  
-      </label>  
+      <label id="wownerbox">
+          Account owner name
+          <input id="wowner" autocomplete="name" placeholder="Full name">
+        </label>  
   
       <p id="whelp" class="muted" style="margin-top:8px">  
         Telebirr: 10 digits, starts with 09.  
@@ -4416,10 +4844,17 @@ function vWallet(){
       ${WDS.length ? WDS.map(x=>`  
         <div class="item">  
           <div class="grow">  
-            <div class="t">${x.etb} ETB · ${esc(x.method)}</div>  
+            <div class="t">${x.etb} ETB · ${esc(methodLabel(x.method))}</div>  
             <div class="muted">  
               ${esc(x.account || '')} · ${new Date(x.created_at).toLocaleDateString()}  
-            </div>  
+            </div>
+              ${x.tx_hash ? `
+                <div class="muted" style="word-break:break-all;margin-top:3px">
+                  ${x.paid_amount ? esc(String(Number(x.paid_amount))) + ' ' + esc(x.paid_asset || '') + ' · ' : ''}
+                  <a href="#" style="color:#67e8f9" onclick="openExplorer('${explorerUrl(x.method, x.tx_hash)}');return false">
+                    Hash: ${esc(String(x.tx_hash).slice(0, 10))}…${esc(String(x.tx_hash).slice(-6))}
+                  </a>
+                </div>` : ''}  
           </div>  
           <span class="pill ${x.status==='paid'?'ok':x.status==='rejected'?'bad':''}">  
             ${x.status==='paid'?'Paid':x.status==='rejected'?'Rejected':'Pending'}  
@@ -4430,24 +4865,110 @@ function vWallet(){
   `;  
 }  
   
-function withdrawMethodChanged(){  
-  const m = $('#wmeth') && $('#wmeth').value;  
-  const input = $('#wacc');  
-  const help = $('#whelp');  
-  if(!input || !help) return;  
-  
-  if(m === 'Telebirr'){  
-    input.placeholder = '09XXXXXXXX';  
-    help.textContent = 'Telebirr: exactly 10 digits, starts with 09.';  
-  }else if(m === 'Mpesa'){  
-    input.placeholder = '07XXXXXXXX';  
-    help.textContent = 'Mpesa: exactly 10 digits, starts with 07.';  
-  }else{  
-    input.placeholder = '1000XXXXXXXXX';  
-    help.textContent = 'CBE: exactly 13 digits, starts with 1000 or 10000.';  
-  }  
-}  
-  
+function methodLabel(m){
+
+  m = String(m || '').toLowerCase();
+
+  if(m === 'bep20') return 'USDT · BEP20';
+  if(m === 'ton') return 'TON';
+
+  return m ? m.charAt(0).toUpperCase() + m.slice(1) : '';
+
+}
+
+function explorerUrl(method, hash){
+
+  if(!hash) return '';
+
+  return String(method).toLowerCase() === 'bep20'
+    ? 'https://bscscan.com/tx/' + hash
+    : 'https://tonviewer.com/transaction/' + hash;
+
+}
+
+function openExplorer(url){
+
+  if(!url) return;
+
+  if(tg && tg.openLink) tg.openLink(url);
+  else window.open(url, '_blank');
+
+}
+
+function withdrawQuote(){
+
+  const el = $('#wquote');
+  const m = String(($('#wmeth') || {}).value || '').toLowerCase();
+
+  if(!el) return;
+
+  if(m !== 'bep20' && m !== 'ton'){
+    el.textContent = '';
+    return;
+  }
+
+  const w = ME.cfg.withdraw;
+  const etbAmt = Number(($('#wamt') || {}).value);
+
+  if(!(etbAmt > 0) || !(w.etb_per_usd > 0)){
+    el.textContent = 'Paid automatically after admin approval.';
+    return;
+  }
+
+  const fee = Number(w.fee_percent || 0);
+  const usd = (etbAmt * (1 - fee / 100)) / w.etb_per_usd;
+
+  if(m === 'bep20'){
+    el.textContent = `You receive about ${usd.toFixed(2)} USDT (after ${fee}% fee).`;
+  }else if(w.ton_usd > 0){
+    el.textContent = `You receive about ${(usd / w.ton_usd).toFixed(3)} TON (after ${fee}% fee).`;
+  }else{
+    el.textContent = `About ${usd.toFixed(2)} USD, paid in TON at the live rate (after ${fee}% fee).`;
+  }
+
+}
+
+function withdrawMethodChanged(){
+
+  const m = String(($('#wmeth') || {}).value || '').toLowerCase();
+  const input = $('#wacc');
+  const help = $('#whelp');
+  const lbl = $('#wacclbl');
+  const owner = $('#wownerbox');
+
+  if(!input || !help) return;
+
+  const crypto = m === 'bep20' || m === 'ton';
+
+  if(owner) owner.style.display = crypto ? 'none' : '';
+
+  if(lbl){
+    lbl.textContent = crypto ? 'Wallet address' : 'Account / phone number';
+  }
+
+  input.setAttribute('inputmode', crypto ? 'text' : 'numeric');
+
+  if(m === 'bep20'){
+    input.placeholder = '0x...';
+    help.textContent = 'BEP20 (BNB Smart Chain) address only. USDT sent to a wrong network is lost.';
+  }else if(m === 'ton'){
+    input.placeholder = 'UQ... or EQ...';
+    help.textContent = 'TON wallet address. If your wallet needs a memo/tag, use a wallet that does not.';
+  }else if(m === 'telebirr'){
+    input.placeholder = '09XXXXXXXX';
+    help.textContent = 'Telebirr: exactly 10 digits, starts with 09.';
+  }else if(m === 'mpesa'){
+    input.placeholder = '07XXXXXXXX';
+    help.textContent = 'Mpesa: exactly 10 digits, starts with 07.';
+  }else{
+    input.placeholder = '1000XXXXXXXXX';
+    help.textContent = 'CBE: exactly 13 digits, starts with 1000 or 10000.';
+  }
+
+  withdrawQuote();
+
+}
+
 async function withdraw(){  
   
   if(busy) return;  
@@ -4505,7 +5026,14 @@ async function withdraw(){
    ADMIN  
 ========================================================= */  
   
-const SET_LABELS = {  
+const SET_LABELS = {
+
+  etb_per_usd:
+    'Birr per 1 USD (crypto payouts)',
+
+  ton_usd_price:
+    'TON price in USD (fallback if live price fails, 0 = none)',
+  
   
   ad_reward:  
     'Coins per ad',  
@@ -4546,7 +5074,7 @@ const SET_LABELS = {
   invite_payment_enabled:  
     'Invite payment enabled (true/false)',  
   
-  withdrawal_fee_percent:  
+  withdraw_fee_percent:  
     'Withdrawal service fee percent',  
   
   min_withdraw_etb:  
@@ -5190,18 +5718,33 @@ function saveSetting(k){
 
 let v;
 
+const raw = $('#s_' + k).value.trim();
+
 try{
 
-v =  
-  JSON.parse(  
-    $('#s_' + k).value  
-  );
+v = JSON.parse(raw);
 
 }catch(e){
 
-return toast(  
-  'Invalid format'  
-);
+/* plain text (e.g. a bot username) is saved as text */
+if(k === 'support_bot_username'){
+
+  v = raw.replace(/^@/, '');
+
+}else if(
+  raw &&
+  !/^[\[{]/.test(raw)
+){
+
+  v = raw;
+
+}else{
+
+  return toast(
+    'Invalid format'
+  );
+
+}
 
 }
 
@@ -5216,7 +5759,19 @@ v
 START
 ========================================================= */
 
-boot();
+/* welcome animation: shown for at least 2.4s, hidden once boot finished */
+function hideWelcome(){
+  const w = document.getElementById('welcome');
+  if(!w || w.classList.contains('out')) return;
+  w.classList.add('out');
+  setTimeout(() => { try{ w.remove(); }catch(e){} }, 800);
+}
+setTimeout(hideWelcome, 12000);
+Promise.all([
+  boot().catch(() => {}),
+  sleep(2400)
+]).then(hideWelcome);
+
 
 </script>  </body>  
   </html>  
