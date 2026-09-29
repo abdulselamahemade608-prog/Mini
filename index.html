@@ -1743,7 +1743,7 @@ function describeBan(reason){
   Returns { ok:true } when the account is verified,
   otherwise { screen:{...} } describing what to show.
 */
-async function verifyAccount(){
+async function verifyOnce(){
 
   const c = new AbortController();
   const to = setTimeout(() => c.abort(), 15000);
@@ -1786,6 +1786,7 @@ async function verifyAccount(){
   }catch(e){
 
     const timedOut = e && e.name === 'AbortError';
+    const detail = e && e.message ? ' (' + e.message + ')' : '';
 
     return {
       screen:{
@@ -1794,7 +1795,7 @@ async function verifyAccount(){
         title:timedOut ? 'Connection timed out' : 'Connection error',
         desc:timedOut
           ? 'The server took too long to respond.'
-          : 'Could not reach the server.',
+          : 'Could not reach the server' + detail + '.',
         retry:true
       }
     };
@@ -1807,6 +1808,24 @@ async function verifyAccount(){
 
 }
 
+
+
+async function verifyAccount(){
+
+  let r = await verifyOnce();
+
+  /* retry twice on network errors (Vercel cold start, weak signal) */
+  for(let i = 0; i < 2 && !r.ok && r.screen && r.screen.retry; i++){
+
+    await sleep(1500);
+
+    r = await verifyOnce();
+
+  }
+
+  return r;
+
+}
 
 /* =========================================================  
    HAPTIC  
