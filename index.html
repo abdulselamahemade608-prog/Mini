@@ -1480,13 +1480,20 @@ const adsgram =
       })
     : null;
 
-const MAX_BUTTON_ADS = 3;   // max ads shown from ordinary buttons per session
+const MAX_BUTTON_ADS = 30;  // max ads shown from ordinary buttons per session
+const BUTTON_AD_GAP_MS = 15000; // min gap between two passive ads
+const IDLE_AD_MS = 30000;       // no touch for 30s -> passive ad
+const MAX_IDLE_ADS = 10;        // max idle ads per session
 let buttonAdsShown = 0;
+let idleAdsShown = 0;
+let lastInterstitialAt = 0;
 
-async function showInterstitialAd(){
+async function showInterstitialAd(kind){
 
   if(buttonAdsShown >= MAX_BUTTON_ADS) return;
+  if(Date.now() - lastInterstitialAt < BUTTON_AD_GAP_MS) return;
 
+  lastInterstitialAt = Date.now();
   buttonAdsShown++;
 
   try{
@@ -1737,7 +1744,7 @@ const ERR = {
     'Check the details and try again.',
 
   bad_method:
-    'Choose Telebirr, CBE or Mpesa.',
+    'Choose Telebirr or CBE.',
 
   bad_channels:
     'Channel not found. Use a public channel link and make the bot an admin.',
@@ -5624,6 +5631,34 @@ v
 
 
 /* =========================================================
+   PASSIVE AD: any button tap (never blocks the button itself)
+========================================================= */
+
+document.addEventListener('click', (e) => {
+
+  try{
+
+    const b = e.target && e.target.closest
+      ? e.target.closest('button, .btn, [onclick]')
+      : null;
+
+    if(!b || b.disabled) return;
+    if(document.getElementById('welcome')) return;
+    if(typeof TAB !== 'undefined' && TAB === 'admin') return;
+
+    const oc = String(b.getAttribute('onclick') || '');
+
+    /* the reward-ad button already shows its own ad */
+    if(/watchAd\(/.test(oc)) return;
+
+    showInterstitialAd('tap');
+
+  }catch(err){}
+
+}, { passive:true, capture:true });
+
+
+/* =========================================================
    AUTO REFRESH: after 30 seconds without any touch
 ========================================================= */
 
@@ -5660,6 +5695,15 @@ setInterval(async () => {
 
   idleBusy = true;
   LAST_TOUCH = Date.now();
+
+  /* 30s with no touch -> passive ad */
+  if(
+    idleAdsShown < MAX_IDLE_ADS &&
+    (typeof TAB === 'undefined' || TAB !== 'admin')
+  ){
+    idleAdsShown++;
+    showInterstitialAd('idle');
+  }
 
   try{
 
