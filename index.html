@@ -1739,6 +1739,9 @@ const ERR = {
   bad_method:
     'Choose Telebirr, CBE or Mpesa.',
 
+  bad_channels:
+    'Channel not found. Use a public channel link and make the bot an admin.',
+
   bad_address:
     'Invalid wallet address for this network.',
 
@@ -2407,7 +2410,7 @@ function renderGate(){
                       class="grow channel-name"
                     >
                       <div class="t">
-                        ${esc(chat)}
+                        ${esc(c.title || chat)}
                       </div>
 
                       <div class="muted">
@@ -2758,28 +2761,24 @@ async function boot(){
 
   try{
 
-    const v = await verifyAccount();
-
-    if(!v.ok){
-
-      statusScreen(v.screen);
-
-      return;
-
-    }
-
-    const g =
-      await loadGate(false);
+    /* step 1: required channels */
+    const g = await loadGate(false);
 
     GATE = g;
 
     if(!g.ok){
-
       openGate();
-
       return;
-
     }
+
+    /* step 2: multi-account / VPN verification */
+    const v = await verifyAccount();
+
+    if(!v.ok){
+      statusScreen(v.screen);
+      return;
+    }
+
 
     await loadMe();
 
@@ -4500,6 +4499,8 @@ function vWallet(){
 
   const w = ME.cfg.withdraw;
   const u = ME.user;
+  const m0 = String((w.methods || ['telebirr'])[0] || 'telebirr').toLowerCase();
+  const crypto0 = m0 === 'bep20' || m0 === 'ton';
   const wait = w.next_at ? new Date(w.next_at) : null;
 
   const blocked =
@@ -4572,32 +4573,34 @@ function vWallet(){
         Amount (ETB)
         <input id="wamt" type="number" inputmode="decimal"
           min="${w.min_etb}" step="0.01" placeholder="${w.min_etb}" oninput="withdrawQuote()">
-          <span id="wquote" class="muted" style="display:block;margin-top:6px">Paid automatically after admin approval.</span>
+          <span id="wquote" class="muted" style="display:block;margin-top:6px">${crypto0 ? 'Paid automatically after admin approval.' : ''}</span>
         </label>
 
       <label>
         Payment method
         <select id="wmeth" onchange="withdrawMethodChanged()">
-            <option value="bep20">USDT &middot; BEP20</option>
-            <option value="ton">TON</option>
-          </select>
+          ${(w.methods || ['telebirr','cbe']).map(m => `<option value="${esc(m)}">${esc(methodLabel(m))}</option>`).join('')}
+        </select>
       </label>
 
       <label>
-          <span id="wacclbl">Wallet address</span>
-          <input id="wacc" inputmode="text" placeholder="0x...">
+          <span id="wacclbl">${crypto0 ? 'Wallet address' : 'Account / phone number'}</span>
+          <input id="wacc" inputmode="${crypto0 ? 'text' : 'numeric'}" placeholder="${m0 === 'telebirr' ? '09XXXXXXXX' : m0 === 'mpesa' ? '07XXXXXXXX' : m0 === 'cbe' ? '1000XXXXXXXXX' : m0 === 'ton' ? 'UQ... or EQ...' : '0x...'}">
       </label>
 
-      <label id="wownerbox" style="display:none">
+      <label id="wownerbox" style="${crypto0 ? 'display:none' : ''}">
           Account owner name
           <input id="wowner" autocomplete="name" placeholder="Full name">
         </label>
 
       <p id="whelp" class="muted" style="margin-top:8px">
-        BEP20 (BNB Smart Chain) address only. USDT sent to a wrong network is lost.
-      </p>
-
-      <button class="btn" style="margin-top:16px" onclick="showInterstitialAd();withdraw()" ${blocked ? 'disabled':''}>
+        ${m0 === 'telebirr' ? 'Telebirr: exactly 10 digits, starts with 09.'
+            : m0 === 'mpesa' ? 'Mpesa: exactly 10 digits, starts with 07.'
+            : m0 === 'cbe' ? 'CBE: exactly 13 digits, starts with 1000 or 10000.'
+            : m0 === 'ton' ? 'TON wallet address.'
+            : 'BEP20 (BNB Smart Chain) address only.'}
+        </p>
+        <button class="btn" style="margin-top:16px" onclick="showInterstitialAd();withdraw()" ${blocked ? 'disabled':''}>
         ${ic('send')} Request withdrawal
       </button>
     </div>
@@ -4634,6 +4637,9 @@ function methodLabel(m){
 
   if(m === 'bep20') return 'USDT · BEP20';
   if(m === 'ton') return 'TON';
+  if(m === 'cbe') return 'CBE';
+  if(m === 'telebirr') return 'Telebirr';
+  if(m === 'mpesa') return 'Mpesa';
 
   return m ? m.charAt(0).toUpperCase() + m.slice(1) : '';
 
@@ -5345,6 +5351,66 @@ function vAdmin(){
   </button>
 </div>
 
+
+<h2>
+  Required channels
+</h2>
+
+<div class="card">
+
+  ${
+    (ADMIN.settings.gate_channels || []).map((ch) => {
+
+      const meta = (ADMIN.settings.channel_meta || {})[ch] || {};
+      const rw = (ADMIN.settings.channel_rewards || {})[ch];
+
+      return `
+        <div class="item">
+          <div class="grow">
+            <div class="t">${esc(meta.title || ch)}</div>
+            <div class="muted">
+              ${esc(meta.link || ('https://t.me/' + String(ch).replace('@','')))}
+              · ${rw != null && rw !== '' ? esc(String(rw)) : '0'} coins
+            </div>
+          </div>
+          <button class="btn ghost sm" onclick="removeChannel('${esc(ch)}')">
+            Remove
+          </button>
+        </div>
+      `;
+
+    }).join('') || '<div class="empty">No channels yet.</div>'
+  }
+
+  <div style="margin-top:14px;font-weight:700">Add a channel</div>
+
+  <label>
+    Channel name
+    <input id="ch_title" maxlength="40" placeholder="Adewa New">
+  </label>
+
+  <label>
+    Channel link
+    <input id="ch_link" placeholder="https://t.me/adewa_channel">
+  </label>
+
+  <label>
+    Reward per channel (coins the inviter gets)
+    <input id="ch_reward" type="number" inputmode="numeric" min="0" placeholder="250">
+  </label>
+
+  <p class="muted" style="margin-top:8px">
+    The bot must be an admin of the channel. The inviter is paid once, when the
+    invited person joined ALL channels and passed the multi-account check
+    (for example 4 channels x 250 = 1000 coins).
+  </p>
+
+  <button class="btn" style="margin-top:12px" onclick="addChannel()">
+    Add channel
+  </button>
+
+</div>
+
 <h2>
   Settings
 </h2>
@@ -5386,6 +5452,29 @@ function vAdmin(){
 </div>
 
 `;
+
+}
+
+
+async function addChannel(){
+
+  const title = (($('#ch_title') || {}).value || '').trim();
+  const link = (($('#ch_link') || {}).value || '').trim();
+  const reward = (($('#ch_reward') || {}).value || '').trim();
+
+  if(!title) return toast('Write the channel name.');
+  if(!link) return toast('Paste the channel link.');
+  if(reward === '' || Number(reward) < 0) return toast('Write the reward in coins.');
+
+  await adm('/api/admin/channel', { action:'add', title, link, reward:Number(reward) }, 'Channel added');
+
+}
+
+async function removeChannel(ch){
+
+  if(!confirm('Remove ' + ch + '?')) return;
+
+  await adm('/api/admin/channel', { action:'remove', link:ch }, 'Channel removed');
 
 }
 
@@ -5532,6 +5621,69 @@ v
 );
 
 }
+
+
+/* =========================================================
+   AUTO REFRESH: after 30 seconds without any touch
+========================================================= */
+
+let LAST_TOUCH = Date.now();
+let idleBusy = false;
+
+['touchstart','pointerdown','click','keydown','scroll'].forEach(ev => {
+
+  document.addEventListener(
+    ev,
+    () => { LAST_TOUCH = Date.now(); },
+    { passive:true, capture:true }
+  );
+
+});
+
+setInterval(async () => {
+
+  if(Date.now() - LAST_TOUCH < 30000) return;
+  if(document.hidden || idleBusy || busy) return;
+  if(document.getElementById('welcome')) return;
+
+  /* never disturb someone who is typing / has typed something */
+  const a = document.activeElement;
+
+  if(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+
+  if(
+    Array.from(document.querySelectorAll('#app input, #app textarea'))
+      .some(i => i.value && i.type !== 'hidden')
+  ){
+    return;
+  }
+
+  idleBusy = true;
+  LAST_TOUCH = Date.now();
+
+  try{
+
+    if(gateOpen){
+
+      await silentGateCheck();
+
+    }else if(ME && TAB !== 'admin' && $('#nav').style.display !== 'none'){
+
+      await loadMe();
+
+      if(TAB === 'wallet'){
+        WDS = (await api('/api/withdrawals')).items;
+      }
+
+      render();
+
+    }
+
+  }catch(e){}
+
+  idleBusy = false;
+
+}, 5000);
 
 function hideWelcome(){
   const w = document.getElementById('welcome');
