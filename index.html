@@ -1480,7 +1480,7 @@ const adsgram =
       })
     : null;
 
-const MAX_BUTTON_ADS = 30;  // max ads shown from ordinary buttons per session
+const MAX_BUTTON_ADS = 1;   // max ads shown from ordinary buttons per session
 const BUTTON_AD_GAP_MS = 15000; // min gap between two passive ads
 const IDLE_AD_MS = 30000;       // no touch for 30s -> passive ad
 const MAX_IDLE_ADS = 10;        // max idle ads per session
@@ -1489,6 +1489,9 @@ let idleAdsShown = 0;
 let lastInterstitialAt = 0;
 
 async function showInterstitialAd(kind){
+
+  /* admin never sees passive ads - only the Watch ads button */
+  try{ if(typeof ME !== 'undefined' && ME && ME.is_admin) return; }catch(e){}
 
   /* idle ads (30s without touch) have their own limit and are not blocked by button ads */
   if(kind !== 'idle'){
