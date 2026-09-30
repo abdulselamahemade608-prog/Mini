@@ -1490,11 +1490,14 @@ let lastInterstitialAt = 0;
 
 async function showInterstitialAd(kind){
 
-  if(buttonAdsShown >= MAX_BUTTON_ADS) return;
-  if(Date.now() - lastInterstitialAt < BUTTON_AD_GAP_MS) return;
+  /* idle ads (30s without touch) have their own limit and are not blocked by button ads */
+  if(kind !== 'idle'){
+    if(buttonAdsShown >= MAX_BUTTON_ADS) return;
+    if(Date.now() - lastInterstitialAt < BUTTON_AD_GAP_MS) return;
+    buttonAdsShown++;
+  }
 
   lastInterstitialAt = Date.now();
-  buttonAdsShown++;
 
   try{
 
