@@ -5353,6 +5353,19 @@ function vAdmin(){
       </button>
     </div>
 
+    <h2>Account tools</h2>
+    <div class="card">
+      <p class="muted">Enter a Telegram user ID to unflag ("Your account is under review"), flag, ban or unban an account.</p>
+      <input id="au_id" inputmode="numeric" placeholder="User ID, e.g. 7975950709">
+      <div class="grid2" style="margin-top:10px">
+        <button class="btn" onclick="userAct('unflag')">Unflag</button>
+        <button class="btn" onclick="userAct('flag')">Flag</button>
+        <button class="btn" onclick="userAct('unban')">Unban</button>
+        <button class="btn" onclick="userAct('ban')">Ban</button>
+      </div>
+      <button class="btn" style="margin-top:10px" onclick="userAct('unflag_all')">Unflag everyone</button>
+    </div>
+
     <h2>Broadcast message</h2>
     <div class="card">
       <p class="muted">Send a message directly to all non-banned users. The button below is optional.</p>
@@ -5489,6 +5502,19 @@ async function removeChannel(ch){
 
   await adm('/api/admin/channel', { action:'remove', link:ch }, 'Channel removed');
 
+}
+
+async function userAct(action){
+  const id = ($('#au_id') ? $('#au_id').value : '').trim();
+
+  if(action === 'unflag_all'){
+    if(!confirm('Unflag ALL flagged accounts?')) return;
+  } else {
+    if(!/^\d+$/.test(id)){ toast('Enter a numeric user ID'); return; }
+    if(action === 'ban' && !confirm('Ban user ' + id + '?')) return;
+  }
+
+  await adm('/api/admin/user', { id: id || '0', action }, 'Done');
 }
 
 async function sendBroadcast(){
